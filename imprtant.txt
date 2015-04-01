@@ -1,0 +1,11 @@
+https://developer.riotgames.com/discussion/riot-games-api/show/2Nd5HtrN
+
+
+Hey guys,
+
+We know everyone has been looking forward to accessing match IDs through the new endpoint. We're making sure everything's working as intended and we'll be releasing this endpoint soon but in the mean time here's a look at what the games will look like when you look them up via the match endpoint:
+
+https://na.api.pvp.net/api/lol/na/v2.2/match/1778704162?includeTimeline=true&api_key=010ba2bc-2c40-4b98-873e-b1d148c9e379
+
+Cheers!~
+
