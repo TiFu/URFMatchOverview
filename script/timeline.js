@@ -34,14 +34,14 @@
 			// Place Divs inside the innerLineDiv (length / 7)
 			var $pointDivs = new Array();
 			// Create clusters for events
-			var cluster = new Array(Math.floor(o.timeLineWidth / 7));
-				for(i = 0; i < o.timeLineWidth / 7; i++) {
+			var cluster = new Array(Math.floor(o.timeLineWidth / 13));
+				for(i = 0; i < o.timeLineWidth / 13; i++) {
 					cluster[i] = new Array();
 				}
 			createClusters(o.events);
 			// now set the content of the pointDivs with the index inside the clusters
 			for (i = 0; i < cluster.length; i++) {
-				$pointDivs[i] = $('<div class="circle" ident="' + (i) + '">&nbsp;</div>').css({width:7, height:o.timeLineHeight}).appendTo($lineContainer);
+				$pointDivs[i] = $('<div class="circle" ident="' + (i) + '">&nbsp;</div>').css({width:13, height:o.timeLineHeight}).appendTo($lineContainer);
 					if (cluster[i].length > 0) {
 						var spanText = "";
 						for (z = 0; z < cluster[i].length; z++) {
@@ -50,7 +50,7 @@
 							}
 						}
 						if (spanText != "") {
-							$pointDivs[i].html('<span title="' + spanText + '" width="' + 7 + 'px" height="' + 7 + 'px"><img class="icon" src="images/circle.png" width="7px" height="7px"></span>');
+							$pointDivs[i].html('<span title="' + spanText + '"><img class="icon" src="images/circle.png"></span>');
 						}
 					}
 			}
@@ -104,7 +104,7 @@
 			}
 			
 			function createClusters(arr) {
-				border = o.timeLength * 8 / o.timeLineWidth;	
+				border = o.timeLength * 13 / o.timeLineWidth;	
 				for (i = 0; i < arr.length; i++) {
 					clust = Math.floor(arr[i] / border);
 					cluster[clust].push(i); // store index of element in that cluster
