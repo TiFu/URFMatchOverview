@@ -210,8 +210,8 @@ body{
 }
 .level{
     position:absolute;
-    margin-left:-25px;
     margin-top:50px;
+    margin-left:50px;
     font-size:13px;
     color:white;
     background-color: #bbc1bd;
@@ -255,4 +255,34 @@ body{
 table{
     border-spacing: 5px;
     border-collapse: separate;
+}
+
+.goldminions{
+    position: absolute;
+    margin-top: -65px;
+    margin-left:480px;
+    text-align: center;
+    color:white;
+}
+
+.gold{
+    background-color: #646464;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 2px 5px 2px 5px;
+
+}
+.countgold{
+    background-color: #3c3c3c;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 2px 5px 2px 5px;
+}
+
+.minion{
+    position: absolute;
+    margin-top: -65px;
+    margin-left:550px;
+    text-align: center;
+    color:white;  
 }
