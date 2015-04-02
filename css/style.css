@@ -1,0 +1,107 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 02/04/2015, 03:10:38 ص
+    Author     : Dante
+*/
+
+@font-face {
+    font-family: 'f1reg';
+    src: url('../fonts/taile.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'f1bold';
+    src: url('../fonts/taileb.ttf') format('truetype');
+}
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    font-family: 'f1reg';
+    background-color: #eeeeee;
+
+}
+
+.main_info{
+    width: 1280px;
+    margin: 0 auto;
+    border:8px solid #d4d4d4;
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+.part_chat{
+    float:left;
+    padding-left:10px;
+    padding-top: 7px;
+    padding-bottom: 10px;
+    width:740px;
+}
+.highelight{
+    font-size: 20.63px;
+    color:#e5e5e5;
+    background-color: #666666;
+    font-family: 'f1reg';
+    padding: 5px 9px 5px 9px;
+    width:230px;
+
+}
+
+.highelight_comment{
+    margin-top: 10px;
+    height:470px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.part_map{
+    float:right;
+    padding-right:10px;
+    padding-top: 7px;
+}
+
+.highelight_comment p {
+    background: url('../images/rect.png') no-repeat;
+    height: 18px;
+    padding-left:25px;
+    padding-bottom: 17px;
+    font-size: 15px;
+}
+
+.chat_time{
+    font-size: 16.57px;
+    font-weight: bold;
+}
+.chat_info{
+    margin-left: 5px;
+    color:#c07704;
+    font-weight: bold;
+}
+
+.participantblue{
+    color:blue;
+    font-weight: bold;
+}
+.participantred{
+    color:red;
+    font-weight: bold;
+}
+
+.items_name{
+    color:darkviolet;
+    font-weight: bold;
+}
+
+.monsters{
+    color:orangered;
+}
+
+.events{
+    color:#951b1b;
+}
