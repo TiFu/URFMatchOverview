@@ -14,7 +14,7 @@
 			}, options);
 
 			// Declare variables
-			var $currentTime = 0;
+			var $currentTime = 0.0;
 			var $pause = false;
 			var $id = $(this).attr("id");
 		
@@ -32,7 +32,7 @@
 			// innterLineDiv
 			var $innerLineDiv  = $('<div class="innerLine">&nbsp;</div>').css({width:0, height:o.timeLineHeight}).appendTo($outerLineDiv);
 			// Place Divs inside the innerLineDiv (length / 7)
-			var $pointDivs = new Array();
+			var $pointDiv = $('<div class="circle"></div>').css({width:o.timeLineWidth}).appendTo($lineContainer);
 			// Create clusters for events
 			var cluster = new Array(Math.floor(o.timeLineWidth / 13));
 				for(i = 0; i < o.timeLineWidth / 13; i++) {
@@ -41,49 +41,37 @@
 			createClusters(o.events);
 			// now set the content of the pointDivs with the index inside the clusters
 			for (i = 0; i < cluster.length; i++) {
-				$pointDivs[i] = $('<div class="circle" ident="' + (i) + '">&nbsp;</div>').css({width:13, height:o.timeLineHeight}).appendTo($lineContainer);
 					if (cluster[i].length > 0) {
+						var sum = 0;
 						var spanText = "";
 						for (z = 0; z < cluster[i].length; z++) {
 							if (o.showEvent[cluster[i][z]]) {
+								sum += o.events[cluster[i][z]];
 								spanText += o.hoverText[cluster[i][z]] + '\n';
 							}
 						}
 						if (spanText != "") {
-							$pointDivs[i].html('<span data-uk-tooltip title="' + spanText + '"><img class="icon" src="images/circle.png"></span>');
+							var avg = sum / cluster[i].length;
+							$('<div><span data-uk-tooltip title="' + spanText + '"><img class="icon" src="images/circle.png"></span></div>').css({position:"absolute", left:avg / o.timeLength * o.timeLineWidth}).appendTo($pointDiv);
 						}
 					}
 			}
 			
-			// setInterval for timerUpdate (intervall min = 30ms)
-			var $factor = Math.ceil(30 / (o.animationLength * 1000 / o.timeLength));
-			if ($factor == 0) {
-				$factor = 1;
-			}
-			var  $timer = $.timer($(this).attr("id"), function() {incrementTime($factor);}, $factor*o.animationLength*1000 / o.timeLength);
-			$timer.start();
-			
-			// set up the timer
-			updateTimer();
 			// start animation for width
+			updateTimer();
 			animate(o.animationLength);
 		
 			// Private helper functions
 			function animate(time) {
 				$innerLineDiv.animate({
 						width:o.timeLineWidth,
-					},time*1000, 'linear', function() {});
+					},{ duration:time*1000, step: function(currentWidth) {
+							$currentTime = o.timeLength * currentWidth / o.timeLineWidth;
+							updateTimer();
+						}
+					});
 			}
-			
-			function incrementTime(by) {
-				$currentTime += by;
-				$currentTime = Math.min($currentTime, o.timeLength);
-				updateTimer();
-				if ($currentTime >= o.timeLength) {
-					$timer.stop();
-				}
-			}
-			
+						
 			function secToMin(sec) {
 				var min  = Math.floor(sec / 60);
 				var secs = sec - min*60;
@@ -99,12 +87,10 @@
 			}
 
 			function pauseLocal() {
-				$timer.pause();
 				$innerLineDiv.pause();
 			}
 			
 			function playLocal() {
-				$timer.resume();
 				$innerLineDiv.resume();				
 			}
 			

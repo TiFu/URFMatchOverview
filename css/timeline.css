@@ -34,6 +34,8 @@
     margin-top: -14px;
 }
 .circle {
+
+	position:relative;
     margin-top:-0px;
     float:left;
 }

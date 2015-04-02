@@ -24,7 +24,7 @@ and open the template in the editor.
                 $('#timeline').timeliner();
             });
 			function event_callback(time) {
-				console.log(time);
+				//console.log(time);
 			}
 		</script>
      	<!-- timeline -->
