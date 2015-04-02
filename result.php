@@ -30,6 +30,8 @@ and open the template in the editor.
                     <p><span class="chat_time">[8:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">Kill</span> Monster <span class="monsters">Dragon</span></span></p>
                     <p><span class="chat_time">[2:25 PM]</span><span class="chat_info"><span class="participantblue">participantId (Sion)</span> Has <span class="events">Level Up!</span></span></p>
                     <p><span class="chat_time">[7:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">Destroy</span> INHIBITOR BUILDING For <span class="participantblue">Blue Team</span> In MID LANE</span></p>
+                    <p><span class="chat_time">[7:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">Destroy</span> NEXUS TURRET For <span class="participantblue">Blue Team</span> In MID LANE</span></p>
+                    <p><span class="chat_time">[2:25 PM]</span><span class="chat_info"><span class="participantblue">participantId (Sion)</span> Has <span class="events">Destroy</span> OUTER TURRET For <span class="participantred">Red Team</span> In Bot LANE</span></p>
 
                 </div>
             </div>
@@ -37,7 +39,7 @@ and open the template in the editor.
                 <div id="map"></div>
                 <script>
                     var cords = [
-                        [4940, 13651], [8955, 8510], [7016, 10775],[11598,11667]
+                        [4940, 13651], [8955, 8510], [7016, 10775],[11598,11667],[13052,12612],[10504,1029],[12611,13084]
                     ],
                             domain = {
                                 min: {x: -1000, y: -570},
