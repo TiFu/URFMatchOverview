@@ -18,6 +18,7 @@
     border: 2px solid #a1a1a1;
     border-radius: 25px;
     background-color:#9C9C9C;
+	margin-left:3px;
 }
 
 .innerLine {
@@ -28,12 +29,16 @@
     border-bottom:1px solid #A20000;
 }
 .icon {
-    width:14px;
-    height:14px;
+	width:13px;
+	height:14px;
     position: absolute;
     margin-top: -14px;
-}
+	margin-left:3px;
+	}
 .circle {
-    margin-top:-0px;
+	background-color:blue;
+	position:relative;
+	margin-top:-0px;
+	z-index:5;
     float:left;
 }

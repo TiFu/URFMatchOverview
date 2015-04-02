@@ -9,6 +9,6 @@ function saveMatchIds($server, $beginDate) {
     $gazaaaxz = json_decode($z0rrrxzp, true);
     foreach ($gazaaaxz as $key => $value) {
         $matchid = "{$value}\r\n";
-        file_put_contents("$server.txt", $matchid . "\n", FILE_APPEND);
+        file_put_contents($server ."_" .date("d") .".txt", $matchid . "\n", FILE_APPEND);
     }
 }
