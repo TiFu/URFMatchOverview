@@ -1,34 +1,27 @@
-.timeline {
-	z-index: 1;
+.timer {
+	font-size:7pt;
+	text-align:right;
+}
+
+.button {
+	float:left;
+}
+#test  {
+	position:relative;
+}
+
+.outerLine {
 	background-color:#9C9C9C;
 	border-bottom: 1px solid #FFF;
 }
-.innerTimeline {
-	z-index:2;
+
+.innerLine {
 	background-color:#A20000;
 }
-
-#img {
-	z-index:500;
+.icon {
+	margin-top:-7px;
+}
+.circle {
+	margin-top:-0px;
 	float:left;
-	margin-top:-14px;
-}
-#circle {
-z-index: 501;
-margin-top: 7px;
-position: absolute;
-}
-
-#test {
-	z-index:-10;
-}
-.overlay {
-	position:absolute;
-	top:21px;
-	z-index:450;
-}
-.timer {
-	height:8px;
-	text-align:right;
-	font-size:5pt;
 }

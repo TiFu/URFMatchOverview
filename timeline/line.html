@@ -1,31 +1,23 @@
-<!DOCTYPE html>
-<html>    
-    <head>
-        <script src='jquery-1.6.2.min.js'></script>
-        <script src="jquery.pause.min.js"></script>
-        <script src="jquery.timer.js"></script>
-        <script src="script.js"></script>
-        <title>Time Line Page</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="demo.css">
-        <script>
-            $(document).ready(function () {
-                $('#test').timeliner();
-
-            });
-
-            function listenEvent(time) {
-                // events specified by options or standard values in timeliner
-            }
-        </script>
-
-    </head>
-    <body>
-        <div id="test">
-        </div>
-        <br><div>Hallo Welt!</div>
-        <input type="submit" onClick="$('#test').timeliner.pause()" value="Pause">
-        <input type="submit" onClick="$('#test').timeliner.play()" value="Resume">
-        <input type="submit" onClick="$('#test').timeliner.setTime(15)" value="Set 15">
-    </body>
+<html>
+	<head>
+		<script src='jquery-1.6.2.min.js'></script>
+		<script src="jquery.pause.min.js"></script>
+		<script src="jquery.timer.js"></script>
+		<script src="timeline.js"></script>
+		<link rel="stylesheet" href="demo.css">
+		<script>
+			$(document).ready(function() {
+							$('#test').timeliner();
+			});
+			
+			function listenEvent(time) {
+				// events specified by options or standard values in timeliner
+			}
+		</script>
+			
+	</head>
+	<body>
+	<div id="test">
+	</div><br>
+	</body>
 </html>
