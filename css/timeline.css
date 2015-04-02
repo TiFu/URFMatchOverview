@@ -1,5 +1,5 @@
 .timer {
-    font-size:10pt;
+    font-size:12pt;
     text-align:right;
 }
 
@@ -10,6 +10,10 @@
     position:relative;
 }
 
+.pauseplay {
+	width:12px;
+	height:12px;
+}
 .outerLine {
     border: 2px solid #a1a1a1;
     border-radius: 25px;

@@ -25,7 +25,7 @@
 			// Timer & Buttons div. TODO: add Button divs
 			var $timerDiv = $('<div class="timer"></div>').prependTo($timerButton);
 			// Add Button div
-			//var $button = $('<div class="button"><img src="images/play.png" onClick="$(\'' + $id + '\').timeliner.pauseplay()" height=6px width=6px;></div>').css({marginLeft:(o.timeLineWidth - 29), marginTop:3}).prependTo($timerButton);
+			var $button = $('<div class="button"><img class="pauseplay" src="images/play.png" onClick="$(\'' + $id + '\').timeliner.pauseplay()"></div>').prependTo($timerButton);
 			// Line div
 			var $lineContainer = $('<div class="lineContainer"></div>').css({width:o.timeLineWidth, height:o.timeLineHeight}).appendTo($container);
 			var $outerLineDiv = $('<div class="outerLine"></div>').css({width:o.timeLineWidth, height:o.timeLineHeight}).appendTo($lineContainer);
