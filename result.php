@@ -9,7 +9,25 @@ and open the template in the editor.
         <title>TODO supply a title</title> 
         <meta charset="UTF-8" />
         <script src="script/d3.v3.min.js"></script>
-        <link href="css/style.css" rel="stylesheet" type="text/css" />
+
+     	<!-- timeline -->
+		<script src='script/jquery-1.6.2.min.js'></script>
+		<script src="script/jquery.pause.min.js"></script>
+		<script src="script/jquery.timer.js"></script>
+		<script src="script/timeline.js"></script>
+		<link rel="stylesheet" href="css/timeline.css">
+		<script>
+			$(document).ready(function() {
+							$('#timeline').timeliner();
+			});
+			
+			function listenEvent(time) {
+				// events specified by options or standard values in timeliner
+			}
+		</script>
+     	<!-- timeline -->
+
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </head>
     <body>
@@ -87,8 +105,7 @@ and open the template in the editor.
                 </script>
             </div>
             <div class="clear"></div>
-            <div class="timeline">
-                here the time line
+            <div id ="timeline" class="timeline">
             </div>
             <div class="clear"></div>
             <div class="statsteam">

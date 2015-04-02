@@ -3,14 +3,14 @@
 		// SET OPTIOSN
 		return $(this).each(function(){
 			var o = $.extend({
-				events: [1, 1, 10, 15, 20], // Event times in seconds. Callback function will notify about events
+				events: [1, 1, 10, 15, 1700], // Event times in seconds. Callback function will notify about events
 				showEvent: [true, true, true, true, true], // Should the event be shown in the bar?
 				hoverText: ["First event", "double", "Second Event", "Third Event", "Last event"], // Hover text
-				timeLineHeight: 5,
-				innerLineHeight: 5,
-				timeLineWidth: 500, // width in px
-				timeLength: 30, // time length
-				animationLength:15 // animation length
+				timeLineHeight: 10,
+				innerLineHeight: 10,
+				timeLineWidth: 1000, // width in px
+				timeLength: 1800, // time length
+				animationLength:60 // animation length
 			}, options);
 
 			// Declare variables
@@ -25,7 +25,7 @@
 			// Timer & Buttons div. TODO: add Button divs
 			var $timerDiv = $('<div class="timer"></div>').prependTo($timerButton);
 			// Add Button div
-			var $button = $('<div class="button"><img src="play.png" onClick="$(\'' + $id + '\').timeliner.pauseplay()" height=6px width=6px;></div>').css({marginLeft:(o.timeLineWidth - 29), marginTop:3}).prependTo($timerButton);
+			//var $button = $('<div class="button"><img src="images/play.png" onClick="$(\'' + $id + '\').timeliner.pauseplay()" height=6px width=6px;></div>').css({marginLeft:(o.timeLineWidth - 29), marginTop:3}).prependTo($timerButton);
 			// Line div
 			var $lineContainer = $('<div class="lineContainer"></div>').css({width:o.timeLineWidth, height:o.timeLineHeight}).appendTo($container);
 			var $outerLineDiv = $('<div class="outerLine"></div>').css({width:o.timeLineWidth, height:o.timeLineHeight}).appendTo($lineContainer);
@@ -50,7 +50,7 @@
 							}
 						}
 						if (spanText != "") {
-							$pointDivs[i].html('<span title="' + spanText + '" width="' + 7 + 'px" height="' + 7 + 'px"><img class="icon" src="circle.png" width="7px" height="7px"></span>');
+							$pointDivs[i].html('<span title="' + spanText + '" width="' + 7 + 'px" height="' + 7 + 'px"><img class="icon" src="images/circle.png" width="7px" height="7px"></span>');
 						}
 					}
 			}
