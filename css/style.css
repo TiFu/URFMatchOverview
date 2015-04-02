@@ -33,7 +33,6 @@ and open the template in the editor.
 body{
     font-family: 'f1reg';
     background-color: #eeeeee;
-
 }
 
 .main_info{
@@ -120,19 +119,17 @@ body{
     width: 1280px;
     padding-top: 30px;
     padding-bottom: 30px;
-	padding-left:100px;
+    padding-left:100px;
 }
 
 .redteam{
     width: 639px;
-    height: 300px;
     border-right:1px solid #bcbcbc;
     background-color: #f2c6c7;
     float:left;
 }
 .blueteam{
     width: 639px;
-    height: 300px;
     border-left:1px solid #bcbcbc;
     background-color: #c6e8f2;
     float:right;
@@ -207,6 +204,55 @@ body{
 }
 
 .champpic{
+    width:120px;
     padding-left: 8px;
     padding-top: 10px;
+}
+.level{
+    position:absolute;
+    margin-left:-25px;
+    margin-top:50px;
+    font-size:13px;
+    color:white;
+    background-color: #bbc1bd;
+    border-radius: 5px;
+    padding:0px 2px 0px 2px;
+    border: 1px solid black;
+}
+
+.summonerspell{
+    float:right;
+    width: 37px;
+}
+
+.summonerkda{
+    text-align: center;
+    position: absolute;
+    margin-top: -65px;
+    margin-left:150px;
+    padding: 0px 5px 0px 5px;
+    color:#832c2c;
+    font-family: 'LaoUIb';
+    font-size: 18.64px;
+}
+.champbuild{
+    text-align: center;
+    position: absolute;
+    margin-top: -93px;
+    margin-left:280px;
+    color:#832c2c;
+    font-family: 'LaoUIb';
+    font-size: 18.64px;
+}
+.kda{
+
+    color:#515151;
+}
+.trinket{
+    position: absolute;
+    margin-top: -20px;
+}
+table{
+    border-spacing: 5px;
+    border-collapse: separate;
 }

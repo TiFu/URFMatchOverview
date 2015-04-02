@@ -124,13 +124,319 @@ and open the template in the editor.
 
                 </div>
                 <div class="redteam">
-                    <div class="champlloadin">
+                      <div class="champlloadin">
                         <div class="champpic">
                             <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                        </div>
-                    </div>
+                            <span class="level" data-uk-tooltip title="Level">18</span>
+                            <div class="summonerspell">
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                            </div>                                
+                        </div> 
+                      <div class="summonerkda">
+                        Twisted Fate <br />
+                        <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
+                    </div>       
+                       <div class="champbuild">
+                           <table>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                                <tr>
+                               </tr>                              
+                           </table>
+                    </div>                         
+                    </div>  
+                                        <div class="champlloadin">
+                        <div class="champpic">
+                            <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
+                            <span class="level" data-uk-tooltip title="Level">18</span>
+                            <div class="summonerspell">
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                            </div>                                
+                        </div> 
+                      <div class="summonerkda">
+                        Twisted Fate <br />
+                        <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
+                    </div>       
+                       <div class="champbuild">
+                           <table>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                                <tr>
+                               </tr>                              
+                           </table>
+                    </div>                         
+                    </div>  
+                                        <div class="champlloadin">
+                        <div class="champpic">
+                            <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
+                            <span class="level" data-uk-tooltip title="Level">18</span>
+                            <div class="summonerspell">
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                            </div>                                
+                        </div> 
+                      <div class="summonerkda">
+                        Twisted Fate <br />
+                        <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
+                    </div>       
+                       <div class="champbuild">
+                           <table>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                                <tr>
+                               </tr>                              
+                           </table>
+                    </div>                         
+                    </div>  
+                                        <div class="champlloadin">
+                        <div class="champpic">
+                            <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
+                            <span class="level" data-uk-tooltip title="Level">18</span>
+                            <div class="summonerspell">
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                            </div>                                
+                        </div> 
+                      <div class="summonerkda">
+                        Twisted Fate <br />
+                        <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
+                    </div>       
+                       <div class="champbuild">
+                           <table>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                                <tr>
+                               </tr>                              
+                           </table>
+                    </div>                         
+                    </div>  
+                                        <div class="champlloadin">
+                        <div class="champpic">
+                            <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
+                            <span class="level" data-uk-tooltip title="Level">18</span>
+                            <div class="summonerspell">
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                            </div>                                
+                        </div> 
+                      <div class="summonerkda">
+                        Twisted Fate <br />
+                        <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
+                    </div>       
+                       <div class="champbuild">
+                           <table>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                                <tr>
+                               </tr>                              
+                           </table>
+                    </div>                         
+                    </div>  
+                    
                 </div>
                 <div class="blueteam">
+                                        <div class="champlloadin">
+                        <div class="champpic">
+                            <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
+                            <span class="level" data-uk-tooltip title="Level">18</span>
+                            <div class="summonerspell">
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                            </div>                                
+                        </div> 
+                      <div class="summonerkda">
+                        Twisted Fate <br />
+                        <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
+                    </div>       
+                       <div class="champbuild">
+                           <table>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                                <tr>
+                               </tr>                              
+                           </table>
+                    </div>                         
+                    </div>  
+                                        <div class="champlloadin">
+                        <div class="champpic">
+                            <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
+                            <span class="level" data-uk-tooltip title="Level">18</span>
+                            <div class="summonerspell">
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                            </div>                                
+                        </div> 
+                      <div class="summonerkda">
+                        Twisted Fate <br />
+                        <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
+                    </div>       
+                       <div class="champbuild">
+                           <table>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                                <tr>
+                               </tr>                              
+                           </table>
+                    </div>                         
+                    </div>  
+                                        <div class="champlloadin">
+                        <div class="champpic">
+                            <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
+                            <span class="level" data-uk-tooltip title="Level">18</span>
+                            <div class="summonerspell">
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                            </div>                                
+                        </div> 
+                      <div class="summonerkda">
+                        Twisted Fate <br />
+                        <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
+                    </div>       
+                       <div class="champbuild">
+                           <table>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                                <tr>
+                               </tr>                              
+                           </table>
+                    </div>                         
+                    </div>  
+                                        <div class="champlloadin">
+                        <div class="champpic">
+                            <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
+                            <span class="level" data-uk-tooltip title="Level">18</span>
+                            <div class="summonerspell">
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                            </div>                                
+                        </div> 
+                      <div class="summonerkda">
+                        Twisted Fate <br />
+                        <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
+                    </div>       
+                       <div class="champbuild">
+                           <table>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                                <tr>
+                               </tr>                              
+                           </table>
+                    </div>                         
+                    </div>  
+                                        <div class="champlloadin">
+                        <div class="champpic">
+                            <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
+                            <span class="level" data-uk-tooltip title="Level">18</span>
+                            <div class="summonerspell">
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                                <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
+                            </div>                                
+                        </div> 
+                      <div class="summonerkda">
+                        Twisted Fate <br />
+                        <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
+                    </div>       
+                       <div class="champbuild">
+                           <table>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                               <tr>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                                   <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
+                               </tr>
+                                <tr>
+                               </tr>                              
+                           </table>
+                    </div>                         
+                    </div>  
                 </div>               
             </div>
 
