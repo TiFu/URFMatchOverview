@@ -10,7 +10,7 @@
 				innerLineHeight: 10,
 				timeLineWidth: 1000, // width in px
 				timeLength: 1800, // time length
-				animationLength:60 // animation length
+				animationLength:10 // animation length
 			}, options);
 
 			// Declare variables
@@ -55,8 +55,12 @@
 					}
 			}
 			
-			// setInterval for timerUpdate
-			var  $timer = $.timer($(this).attr("id"), function() {incrementTime();}, o.animationLength / o.timeLength * 1000);
+			// setInterval for timerUpdate (intervall min = 30ms)
+			var $factor = Math.ceil(30 / (o.animationLength * 1000 / o.timeLength));
+			if ($factor == 0) {
+				$factor = 1;
+			}
+			var  $timer = $.timer($(this).attr("id"), function() {incrementTime($factor);}, $factor*o.animationLength*1000 / o.timeLength);
 			$timer.start();
 			
 			// set up the timer
@@ -71,8 +75,9 @@
 					},time*1000, 'linear', function() {});
 			}
 			
-			function incrementTime() {
-				$currentTime++;
+			function incrementTime(by) {
+				$currentTime += by;
+				$currentTime = Math.min($currentTime, o.timeLength);
 				updateTimer();
 				if ($currentTime >= o.timeLength) {
 					$timer.stop();
