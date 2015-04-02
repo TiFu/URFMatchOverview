@@ -18,6 +18,13 @@ and open the template in the editor.
     src: url('../fonts/taileb.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'LaoUIb';
+    src: url('../fonts/LaoUIb.ttf') format('truetype');
+}
+
+
+
 *{
     padding: 0;
     margin: 0;
@@ -104,4 +111,90 @@ body{
 
 .events{
     color:#951b1b;
+}
+
+.clear{
+    clear: both;
+}
+.timeline{
+    width: 1280px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+}
+
+.redteam{
+    width: 640px;
+    height: 300px;
+    background-color: #f2c6c7;
+    float:left;
+}
+.blueteam{
+    width: 640px;
+    height: 300px;
+    background-color: #c6e8f2;
+    float:right;
+}
+
+.summary{
+    width: 1280px;
+    height:80px;
+    background-color: #bcbcbc;
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+.tred{
+    background:url('../images/redteam.png') no-repeat 20% 30%;
+    width:63px;
+    height:80px;
+    font-family: 'LaoUIb';
+    font-size: 41.67px;
+    padding-left:100px;
+    padding-top: 10px;
+    color:white;
+    float:left;
+}
+.tblue{
+    background:url('../images/blueteam.png') no-repeat 90% 30%;
+    width:63px;
+    height:80px;
+    font-family: 'LaoUIb';
+    font-size: 41.67px;
+    padding-top: 10px;
+    color:white;
+    float:right;
+    padding-right:165px;
+}
+
+.redgold{
+    float:left;
+    background: url('../images/coin.png') no-repeat 0% 20%;
+    width:60px;
+    height: 25px;
+    padding-left:13px;
+    font-size:15px;
+    font-weight: bold;
+    margin-left:250px;
+    margin-top: 10px;
+}
+
+.destroyred{
+    float:left;
+    font-size:15px;
+    font-weight: bold;
+    margin-top: 50px;
+    margin-left:-160px;
+
+}
+
+.score{
+    position: absolute;
+    margin-left: 590px;
+    font-size:30px;
+    color:gold;
+    width:100px;
+    text-align: center;
+    margin-top: 10px;
 }

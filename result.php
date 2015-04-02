@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>TODO supply a title</title> 
         <meta charset="UTF-8" />
         <script src="script/d3.v3.min.js"></script>
         <link href="css/style.css" rel="stylesheet" type="text/css" />
@@ -39,13 +39,13 @@ and open the template in the editor.
                 <div id="map"></div>
                 <script>
                     var cords = [
-                        [4940, 13651], [8955, 8510], [7016, 10775],[11598,11667],[13052,12612],[10504,1029],[12611,13084]
+                        [4940, 13651], [8955, 8510], [7016, 10775], [11598, 11667], [13052, 12612], [10504, 1029], [12611, 13084]
                     ],
                             domain = {
                                 min: {x: -1000, y: -570},
                                 max: {x: 14800, y: 14800}
                             },
-                            width = 512,
+                    width = 512,
                             height = 512,
                             bg = "http://i.imgur.com/aZ3O4h1.png",
                             xScale, yScale, svg;
@@ -86,6 +86,30 @@ and open the template in the editor.
                             .attr('class', 'kills');
                 </script>
             </div>
+            <div class="clear"></div>
+            <div class="timeline">
+                here the time line
+            </div>
+            <div class="clear"></div>
+            <div class="statsteam">
+                <div class="summary">
+                    <div class="tred">Victory</div>
+                    <div class="redgold">0.0K</div>
+                    <div class="destroyred">Towers : 0  - Dragons : 0  - Baron : 0</div>                    
+                    <div class="tblue">Defeat</div>
+                    <div class="redgold">0.0K</div>
+                    <div class="destroyred">Towers : 0  - Dragons : 0  - Baron : 0</div>    
+                                        <div class="score">10-15</div>
+
+                </div>
+                <div class="redteam">
+                    
+                </div>
+                 <div class="blueteam">
+                    
+                </div>               
+            </div>
+    
         </div>  
     </body>
 </html>
