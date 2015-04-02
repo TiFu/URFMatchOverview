@@ -123,7 +123,7 @@ and open the template in the editor.
                       <div class="champlloadin">
                         <div class="champpic">
                             <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                            <span class="level" data-uk-tooltip title="Level">18</span>
+                            <div class="level" data-uk-tooltip title="Level">18</div>
                             <div class="summonerspell">
                                 <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
                                 <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
