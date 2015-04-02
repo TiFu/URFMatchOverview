@@ -47,7 +47,7 @@ and open the template in the editor.
                             },
                     width = 512,
                             height = 512,
-                            bg = "http://i.imgur.com/aZ3O4h1.png",
+                            bg = "images/map.jpg",
                             xScale, yScale, svg;
 
                     color = d3.scale.linear()
