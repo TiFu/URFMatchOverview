@@ -9,7 +9,6 @@ and open the template in the editor.
         <title>TODO supply a title</title> 
         <meta charset="UTF-8" />
         <script src="script/d3.v3.min.js"></script>
-
         <!-- timeline -->
         <link id="data-uikit-theme" rel="stylesheet" href="tip/uikit.docs.min.css">
         <script src="tip/jquery.js"></script>
@@ -24,13 +23,11 @@ and open the template in the editor.
             $(document).ready(function () {
                 $('#timeline').timeliner();
             });
-
-            function listenEvent(time) {
-                // events specified by options or standard values in timeliner
-            }
-        </script>
-        <!-- timeline -->
-
+			function event_callback(time) {
+				console.log(time);
+			}
+		</script>
+     	<!-- timeline -->
         <link href="css/style.css" rel="stylesheet" type="text/css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </head>
@@ -38,7 +35,7 @@ and open the template in the editor.
         <div class="main_info">
             <div class="part_chat">
                 <div class="highelight">Highlight Match .. (00:30)</div>
-                <div class="highelight_comment">
+                <div id="comments" class="highelight_comment">
                     <p><span class="chat_time">[0:01 PM]</span><span class="chat_info">Welcome to Summoner's Rift!</span></p> 
                     <p><span class="chat_time">[1:25 PM]</span><span class="chat_info">Thirty seconds until minions spawn!</span></p>
                     <p><span class="chat_time">[1:55 PM]</span><span class="chat_info">Minions have spawned!</span></p>
@@ -54,7 +51,6 @@ and open the template in the editor.
                     <p><span class="chat_time">[7:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">Destroy</span> INHIBITOR BUILDING For <span class="participantblue">Blue Team</span> In MID LANE</span></p>
                     <p><span class="chat_time">[7:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">Destroy</span> NEXUS TURRET For <span class="participantblue">Blue Team</span> In MID LANE</span></p>
                     <p><span class="chat_time">[2:25 PM]</span><span class="chat_info"><span class="participantblue">participantId (Sion)</span> Has <span class="events">Destroy</span> OUTER TURRET For <span class="participantred">Red Team</span> In Bot LANE</span></p>
-
                 </div>
             </div>
             <div class="part_map">  
