@@ -10,24 +10,28 @@ and open the template in the editor.
         <meta charset="UTF-8" />
         <script src="script/d3.v3.min.js"></script>
 
-     	<!-- timeline -->
-		<script src='script/jquery-1.6.2.min.js'></script>
-		<script src="script/jquery.pause.min.js"></script>
-		<script src="script/jquery.timer.js"></script>
-		<script src="script/timeline.js"></script>
-		<link rel="stylesheet" href="css/timeline.css">
-		<script>
-			$(document).ready(function() {
-							$('#timeline').timeliner();
-			});
-			
-			function listenEvent(time) {
-				// events specified by options or standard values in timeliner
-			}
-		</script>
-     	<!-- timeline -->
+        <!-- timeline -->
+        <link id="data-uikit-theme" rel="stylesheet" href="tip/uikit.docs.min.css">
+        <script src="tip/jquery.js"></script>
+        <script src="tip/uikit.min.js"></script>
+        <script src="tip/tooltip.js"></script>
+        <script src='script/jquery-1.6.2.min.js'></script>
+        <script src="script/jquery.pause.min.js"></script>
+        <script src="script/jquery.timer.js"></script>
+        <script src="script/timeline.js"></script>
+        <link rel="stylesheet" href="css/timeline.css">
+        <script>
+            $(document).ready(function () {
+                $('#timeline').timeliner();
+            });
 
-		<link href="css/style.css" rel="stylesheet" type="text/css" />
+            function listenEvent(time) {
+                // events specified by options or standard values in timeliner
+            }
+        </script>
+        <!-- timeline -->
+
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </head>
     <body>
@@ -116,17 +120,20 @@ and open the template in the editor.
                     <div class="tblue">Defeat</div>
                     <div class="redgold">0.0K</div>
                     <div class="destroyred">Towers : 0  - Dragons : 0  - Baron : 0</div>    
-                                        <div class="score">10-15</div>
+                    <div class="score">10-15</div>
 
                 </div>
                 <div class="redteam">
-                    
+                    <div class="champlloadin">
+                        <div class="champpic">
+                            <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
+                        </div>
+                    </div>
                 </div>
-                 <div class="blueteam">
-                    
+                <div class="blueteam">
                 </div>               
             </div>
-    
+
         </div>  
     </body>
 </html>
