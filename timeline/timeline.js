@@ -21,7 +21,7 @@
 			// Cache elements
 			var $container = $(this).show();
 			// Timer and button container
-			$timerButton = $('<div></div>').prependTo($container);
+			$timerButton = $('<div></div>').css({width:o.timeLineWidth}).prependTo($container);
 			// Timer & Buttons div. TODO: add Button divs
 			var $timerDiv = $('<div class="timer"></div>').prependTo($timerButton);
 			// Add Button div
