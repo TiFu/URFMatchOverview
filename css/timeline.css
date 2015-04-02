@@ -1,27 +1,28 @@
 .timer {
-	font-size:10pt;
-	text-align:right;
+    font-size:10pt;
+    text-align:right;
 }
 
 .button {
-	float:left;
+    float:left;
 }
 #test  {
-	position:relative;
+    position:relative;
 }
 
 .outerLine {
-	background-color:#9C9C9C;
-	border-bottom: 1px solid #FFF;
+    background-color:#9C9C9C;
+    border-bottom: 1px solid #FFF;
 }
 
 .innerLine {
-	background-color:#A20000;
+    background-color:#A20000;
 }
 .icon {
-	margin-top:-20px;
+    position: absolute;
+    margin-top: -10px;
 }
 .circle {
-	margin-top:-0px;
-	float:left;
+    margin-top:-0px;
+    float:left;
 }
