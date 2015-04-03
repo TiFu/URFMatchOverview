@@ -44,8 +44,8 @@
 
 			// Function to generate minutes:seconds format from seconds
 			function getdisplaytime(secs){
-				var mins = Math.floor(secs/60);
-				secs = (secs-(mins*60));
+				var mins = Math.floor(secs/100);
+				secs = (secs-(mins*100));
 				if(secs<10){ secs = '0'+secs; }
 				return mins+':'+secs;
 			}

@@ -8,7 +8,7 @@
 				hoverText: ["First event", "double", "Second Event", "Third Event", "Last event"], // Hover text
 				timeLineHeight: 10,
 				innerLineHeight: 10,
-				timeLineWidth: 1000, // width in px
+				timeLineWidth: 1050, // width in px
 				timeLength: 1800, // time length
 				animationLength:10 // animation length
 			}, options);
@@ -65,7 +65,7 @@
 			function animate(time) {
 				$innerLineDiv.animate({
 						width:o.timeLineWidth,
-					},{ duration:time*1000, step: function(currentWidth) {
+					},{ duration:time*1000	, step: function(currentWidth) {
 							$currentTime = o.timeLength * currentWidth / o.timeLineWidth;
 							updateTimer();
 						}
