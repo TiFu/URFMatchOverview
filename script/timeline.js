@@ -17,7 +17,7 @@
 			var $currentTime = 0.0;
 			var $pause = false;
 			var $id = $(this).attr("id");
-		
+			var $eventPointer = 0;
 			// Cache elements
 			var $container = $(this).show();
 			// Timer conainer
@@ -30,8 +30,6 @@
 			for (var i = 0; i <= o.timeLength; i += 300) {
 				i = Math.min(o.timeLength, i);
 				$('<div class="timer">'  + secToMin(i) + '</div>').css({position:"absolute",left:i / o.timeLength * (o.timeLineWidth-20), marginTop:-20}).appendTo($timerContainer);
-				console.log("Added time: " + secToMin(i));
-				console.log("Offset left:" + i / o.timeLength * o.timeLineWidth);
 			}
 			// Add Button div
 			var $button = $('<div class="button"><img data-uk-tooltip title="Play/Pasue" class="pauseplay" src="images/play.png" onClick="$(\'' + $id + '\').timeliner.pauseplay()"></div>').prependTo($timerButton);
@@ -72,7 +70,12 @@
 			function animate(time) {
 				$innerLineDiv.animate({
 						width:o.timeLineWidth,
-					},{ duration:time*1000});
+					},{ duration:time*1000, step: function(currentWidth) {
+							while (o.events[$eventPointer] < currentWidth  / o.timeLineWidth * o.timeLength) {
+								the_event_callback($eventPointer);
+								$eventPointer++;
+							}
+					}});
 			}
 						
 			function secToMin(sec) {
@@ -109,6 +112,14 @@
 				} else {
 					$pause = true;
 					pauseLocal();
+				}
+			}
+			
+			// Callback
+			function the_event_callback(eventPointer) {
+				if(typeof event_callback == 'function'){
+					// call with current time
+					event_callback(eventPointer);
 				}
 			}
 		});

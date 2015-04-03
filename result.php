@@ -94,8 +94,8 @@ foreach ($events as $event) {
 echo rtrim($string, ',');
 ?>]});
             });
-            function event_callback(time) {
-                //console.log(time);
+            function event_callback(eventPointer) {
+                console.log(eventPointer);
             }
         </script>
         <!-- timeline -->
