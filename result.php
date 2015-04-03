@@ -1,3 +1,23 @@
+<?php
+// Config and constants
+include("config/config.php");
+include("functions.php");
+include("classes/match.php");
+// Load match
+if (isset($_GET['matchId'])) {
+$matchId = $_GET['matchId'];
+} else {
+	$matchId = getRandomMatchId();
+}
+
+if (!is_int($matchId)) {
+	// do error handling here
+}
+$match = new Match(file_get_contents("data/" .$matchId .".json"));
+$events = $match->getEvents(array("CHAMPION_KILL"));
+// Generate map from participantId -> champ name
+
+?>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -21,7 +41,25 @@ and open the template in the editor.
         <link rel="stylesheet" href="css/timeline.css">
         <script>
             $(document).ready(function () {
-                $('#timeline').timeliner();
+                $('#timeline').timeliner({events: [<?php 
+					$string = "";
+					foreach ($events as $event) {
+						$string .= ((int) ($event['timestamp']/1000)) .',';
+					}
+					echo rtrim($string, ',');
+				?>], showEvent: [<?php 
+					$string = "";
+					foreach ($events as $event) {
+						$string .= 'true,';
+					}
+					echo rtrim($string, ',');
+				?>], hoverText: [<?php 
+					$string = "";
+					foreach ($events as $event) {
+						$string .= '"Test",';
+					}
+					echo rtrim($string, ',');
+			?>]});
             });
             function event_callback(time) {
                 //console.log(time);

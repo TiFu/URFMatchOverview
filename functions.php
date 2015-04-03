@@ -17,4 +17,33 @@ function storeUrlToFilesystem($url, $localFile) {
     return false;
 }
 
+function getRandomMatchId() {
+	$dirscan = scandir(ID_PATH);
+	$files = array();
+	foreach ($dirscan as $file) {
+		if (endsWith($file, ".txt")) {
+			$files[] = $file;
+		}
+	}
+	$idFileCount = count($files);
+	$file = mt_rand(0, $idFileCount - 1); // file selected
+
+	// Number of lines:
+	$fileLines = count(file(ID_PATH .$files[$file]));
+	$lineNumber = mt_rand(0, $fileLines - 1); // Random number
+	$file = new SplFileObject(ID_PATH .$files[$file]);
+	$file->seek($lineNumber);
+		
+	return $file->current();
+}
+
+function startsWith($haystack, $needle) {
+    // search backwards starting from haystack length characters from the end
+    return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+}
+
+function endsWith($haystack, $needle) {
+    // search forward starting from end minus needle length characters
+    return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== FALSE);
+}
 ?>
