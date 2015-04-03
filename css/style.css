@@ -23,7 +23,10 @@ and open the template in the editor.
     src: url('../fonts/LaoUIb.ttf') format('truetype');
 }
 
-
+#timer{
+    float: right;
+margin-top: -3px;
+}
 
 *{
     padding: 0;

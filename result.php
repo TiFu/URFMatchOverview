@@ -5,18 +5,17 @@ include("functions.php");
 include("classes/match.php");
 // Load match
 if (isset($_GET['matchId'])) {
-$matchId = $_GET['matchId'];
+    $matchId = $_GET['matchId'];
 } else {
-	$matchId = getRandomMatchId();
+    $matchId = getRandomMatchId();
 }
 
 if (!is_int($matchId)) {
-	// do error handling here
+    // do error handling here
 }
-$match = new Match(file_get_contents("data/" .$matchId .".json"));
+$match = new Match(file_get_contents("data/" . $matchId . ".json"));
 $events = $match->getEvents(array("CHAMPION_KILL"));
 // Generate map from participantId -> champ name
-
 ?>
 <!DOCTYPE html>
 <!--
@@ -28,6 +27,40 @@ and open the template in the editor.
     <head>
         <title>TODO supply a title</title> 
         <meta charset="UTF-8" />
+                            <script type="text/javascript">
+                        // set minutes
+                        var mins = 44.10;
+
+                        // calculate the seconds (don't change this! unless time progresses at a different speed for you...)
+                        var secs = mins * 60;
+                        function countdown() {
+                            setTimeout('Decrement()', 1000);
+                        }
+                        function Decrement() {
+                            if (document.getElementById) {
+                                minutes = document.getElementById("minutes");
+                                seconds = document.getElementById("seconds");
+                                // if less than a minute remaining
+                                if (seconds < 59) {
+                                    seconds.value = secs;
+                                } else {
+                                    minutes.value = getminutes();
+                                    seconds.value = getseconds();
+                                }
+                                secs--;
+                                setTimeout('Decrement()', 1000);
+                            }
+                        }
+                        function getminutes() {
+                            // minutes is seconds divided by 60, rounded down
+                            mins = Math.floor(secs / 60);
+                            return mins;
+                        }
+                        function getseconds() {
+                            // take mins remaining (as seconds) away from total seconds remaining
+                            return secs - Math.round(mins * 60);
+                        }
+                    </script>
         <script src="script/d3.v3.min.js"></script>
         <!-- timeline -->
         <link id="data-uikit-theme" rel="stylesheet" href="tip/uikit.docs.min.css">
@@ -41,25 +74,25 @@ and open the template in the editor.
         <link rel="stylesheet" href="css/timeline.css">
         <script>
             $(document).ready(function () {
-                $('#timeline').timeliner({events: [<?php 
-					$string = "";
-					foreach ($events as $event) {
-						$string .= ((int) ($event['timestamp']/1000)) .',';
-					}
-					echo rtrim($string, ',');
-				?>], showEvent: [<?php 
-					$string = "";
-					foreach ($events as $event) {
-						$string .= 'true,';
-					}
-					echo rtrim($string, ',');
-				?>], hoverText: [<?php 
-					$string = "";
-					foreach ($events as $event) {
-						$string .= '"Test",';
-					}
-					echo rtrim($string, ',');
-			?>]});
+                $('#timeline').timeliner({events: [<?php
+$string = "";
+foreach ($events as $event) {
+    $string .= ((int) ($event['timestamp'] / 1000)) . ',';
+}
+echo rtrim($string, ',');
+?>], showEvent: [<?php
+$string = "";
+foreach ($events as $event) {
+    $string .= 'true,';
+}
+echo rtrim($string, ',');
+?>], hoverText: [<?php
+$string = "";
+foreach ($events as $event) {
+    $string .= '"Test",';
+}
+echo rtrim($string, ',');
+?>]});
             });
             function event_callback(time) {
                 //console.log(time);
@@ -72,8 +105,19 @@ and open the template in the editor.
     <body>
         <div class="main_info">
             <div class="part_chat">
-                <div class="highelight">Highlight Match .. (00:30)</div>
+                <div class="highelight">Highlight Match ..  <div id="timer">
+                        <input id="minutes" size="1" type="text" disabled="">
+                        <input id="seconds" size="1" type="text" disabled="">
+                    </div>
+                    <script>
+                        countdown();
+                    </script></div>
                 <div id="comments" class="highelight_comment">
+                    <?php
+                    $content = json_decode(file_get_contents("data/mapinfo.json"), true);
+                    $timer = $content['matchDuration'] /60;
+                    echo $min = round($timer,2);
+                    ?>
                     <p><span class="chat_time">[0:01 PM]</span><span class="chat_info">Welcome to Summoner's Rift!</span></p> 
                     <p><span class="chat_time">[1:25 PM]</span><span class="chat_info">Thirty seconds until minions spawn!</span></p>
                     <p><span class="chat_time">[1:55 PM]</span><span class="chat_info">Minions have spawned!</span></p>
@@ -87,7 +131,6 @@ and open the template in the editor.
                     <p><span class="chat_time">[8:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">Kill</span> Monster <span class="monsters">Dragon</span></span></p>
                     <p><span class="chat_time">[2:25 PM]</span><span class="chat_info"><span class="participantblue">participantId (Sion)</span> Has <span class="events">Level Up!</span></span></p>
                     <p><span class="chat_time">[7:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">Destroy</span> INHIBITOR BUILDING For <span class="participantblue">Blue Team</span> In MID LANE</span></p>
-
                 </div>
             </div>
             <div class="part_map">  
@@ -197,7 +240,7 @@ and open the template in the editor.
                             <div class="countgold">12000</div>    
                         </div>                        
                     </div>  
-                     <div class="champlloadin">
+                    <div class="champlloadin">
                         <div class="champpic">
                             <span class="level" data-uk-tooltip title="Level">18</span>
                             <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
@@ -236,7 +279,7 @@ and open the template in the editor.
                             <div class="countgold">12000</div>    
                         </div>                        
                     </div> 
-                                        <div class="champlloadin">
+                    <div class="champlloadin">
                         <div class="champpic">
                             <span class="level" data-uk-tooltip title="Level">18</span>
                             <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
@@ -275,7 +318,7 @@ and open the template in the editor.
                             <div class="countgold">12000</div>    
                         </div>                        
                     </div> 
-                                        <div class="champlloadin">
+                    <div class="champlloadin">
                         <div class="champpic">
                             <span class="level" data-uk-tooltip title="Level">18</span>
                             <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
@@ -314,7 +357,7 @@ and open the template in the editor.
                             <div class="countgold">12000</div>    
                         </div>                        
                     </div> 
-                                        <div class="champlloadin">
+                    <div class="champlloadin">
                         <div class="champpic">
                             <span class="level" data-uk-tooltip title="Level">18</span>
                             <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
@@ -394,7 +437,7 @@ and open the template in the editor.
                             <div class="countgold">12000</div>    
                         </div>                        
                     </div> 
-                                        <div class="champlloadin">
+                    <div class="champlloadin">
                         <div class="champpic">
                             <span class="level" data-uk-tooltip title="Level">18</span>
                             <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
@@ -433,7 +476,7 @@ and open the template in the editor.
                             <div class="countgold">12000</div>    
                         </div>                        
                     </div> 
-                                        <div class="champlloadin">
+                    <div class="champlloadin">
                         <div class="champpic">
                             <span class="level" data-uk-tooltip title="Level">18</span>
                             <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
@@ -472,7 +515,7 @@ and open the template in the editor.
                             <div class="countgold">12000</div>    
                         </div>                        
                     </div> 
-                                        <div class="champlloadin">
+                    <div class="champlloadin">
                         <div class="champpic">
                             <span class="level" data-uk-tooltip title="Level">18</span>
                             <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
@@ -511,7 +554,7 @@ and open the template in the editor.
                             <div class="countgold">12000</div>    
                         </div>                        
                     </div> 
-                                        <div class="champlloadin">
+                    <div class="champlloadin">
                         <div class="champpic">
                             <span class="level" data-uk-tooltip title="Level">18</span>
                             <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
