@@ -10,7 +10,7 @@
 				innerLineHeight: 10,
 				timeLineWidth: 1050, // width in px
 				timeLength: 1800, // time length
-				animationLength:10 // animation length
+				animationLength:120 // animation length
 			}, options);
 
 			// Declare variables
