@@ -20,10 +20,19 @@
 		
 			// Cache elements
 			var $container = $(this).show();
+			// Timer conainer
+			$timerContainer = $('<div class="timerContainer"></div>').css({position:"relative", width:o.timeLineWidth}).prependTo($container);
 			// Timer and button container
-			$timerButton = $('<div></div>').css({width:o.timeLineWidth}).prependTo($container);
+			$timerButton = $('<div></div>').css({width:o.timeLineWidth, position:"absolute", marginTop:-35}).prependTo($timerContainer);
 			// Timer & Buttons div. TODO: add Button divs
-			var $timerDiv = $('<div class="timer"></div>').prependTo($timerButton);
+			// Create timers above the line
+			// one timer every 10 minutes.
+			for (var i = 0; i <= o.timeLength; i += 300) {
+				i = Math.min(o.timeLength, i);
+				$('<div class="timer">'  + secToMin(i) + '</div>').css({position:"absolute",left:i / o.timeLength * (o.timeLineWidth-20), marginTop:-20}).appendTo($timerContainer);
+				console.log("Added time: " + secToMin(i));
+				console.log("Offset left:" + i / o.timeLength * o.timeLineWidth);
+			}
 			// Add Button div
 			var $button = $('<div class="button"><img data-uk-tooltip title="Play/Pasue" class="pauseplay" src="images/play.png" onClick="$(\'' + $id + '\').timeliner.pauseplay()"></div>').prependTo($timerButton);
 			// Line div
@@ -57,19 +66,13 @@
 					}
 			}
 			
-			// start animation for width
-			updateTimer();
 			animate(o.animationLength);
 		
 			// Private helper functions
 			function animate(time) {
 				$innerLineDiv.animate({
 						width:o.timeLineWidth,
-					},{ duration:time*1000	, step: function(currentWidth) {
-							$currentTime = o.timeLength * currentWidth / o.timeLineWidth;
-							updateTimer();
-						}
-					});
+					},{ duration:time*1000});
 			}
 						
 			function secToMin(sec) {
@@ -81,10 +84,6 @@
 				}
 				return min + ":" + secs;
 			}			
-			
-			function updateTimer() {
-				$timerDiv.html(secToMin($currentTime));
-			}
 
 			function pauseLocal() {
 				$innerLineDiv.pause();

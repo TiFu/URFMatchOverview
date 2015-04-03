@@ -1,4 +1,5 @@
 .timer {
+	position:absolute;
     font-size:12pt;
     text-align:right;
 }
