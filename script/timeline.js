@@ -9,8 +9,9 @@
 				timeLineHeight: 10,
 				innerLineHeight: 10,
 				timeLineWidth: 1050, // width in px
-				timeLength: 1800, // time length
-				animationLength:120 // animation length
+				timeLength: 3600, // time length
+				animationLength:60, // animation length
+				updateTime: 500 // number of ms between to event calls (don't set it too low -> performance issues!!!)
 			}, options);
 
 			// Declare variables
@@ -27,9 +28,14 @@
 			// Timer & Buttons div. TODO: add Button divs
 			// Create timers above the line
 			// one timer every 10 minutes.
+			var end = 0;
 			for (var i = 0; i <= o.timeLength; i += 300) {
 				i = Math.min(o.timeLength, i);
 				$('<div class="timer">'  + secToMin(i) + '</div>').css({position:"absolute",left:i / o.timeLength * (o.timeLineWidth-20), marginTop:-20}).appendTo($timerContainer);
+				end = i;
+			}
+			if (end != o.timeLength) {
+				$('<div class="timer">'  + secToMin(o.timeLength) + '</div>').css({position:"absolute",left:(o.timeLineWidth-20), marginTop:-20}).appendTo($timerContainer);				
 			}
 			// Add Button div
 			var $button = $('<div class="button"><img data-uk-tooltip title="Play/Pasue" class="pauseplay" src="images/play.png" onClick="$(\'' + $id + '\').timeliner.pauseplay()"></div>').prependTo($timerButton);
@@ -65,15 +71,21 @@
 			}
 			
 			animate(o.animationLength);
-		
+			var $lastCall = 0;
 			// Private helper functions
 			function animate(time) {
 				$innerLineDiv.animate({
 						width:o.timeLineWidth,
 					},{ duration:time*1000, step: function(currentWidth) {
+							var incr = false;
 							while (o.events[$eventPointer] < currentWidth  / o.timeLineWidth * o.timeLength) {
-								the_event_callback($eventPointer);
+								incr = true;
 								$eventPointer++;
+							}
+							var newTime = new Date().getTime();
+							if (incr &&  newTime - $lastCall > o.updateTime) {
+								$lastCall = newTime;
+								the_event_callback($eventPointer-1);
 							}
 					}});
 			}
@@ -116,10 +128,10 @@
 			}
 			
 			// Callback
-			function the_event_callback(eventPointer) {
+			function the_event_callback(lastEvent) {
 				if(typeof event_callback == 'function'){
 					// call with current time
-					event_callback(eventPointer);
+					event_callback(lastEvent);
 				}
 			}
 		});

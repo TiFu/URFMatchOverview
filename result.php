@@ -13,8 +13,8 @@ if (isset($_GET['matchId'])) {
 if (!is_int($matchId)) {
     // do error handling here
 }
-$match = new Match(file_get_contents("data/" . $matchId . ".json"));
-$events = $match->getEvents(array("CHAMPION_KILL"));
+$match = new Match(file_get_contents("data/" .$matchId .".json"));
+$logEvents = $match->getEvents(array("BUILDING_KILL", "ELITE_MONSTER_KILL"));
 // Generate map from participantId -> champ name
 ?>
 <!DOCTYPE html>
@@ -74,28 +74,60 @@ and open the template in the editor.
         <link rel="stylesheet" href="css/timeline.css">
         <script>
             $(document).ready(function () {
-                $('#timeline').timeliner({events: [<?php
-$string = "";
-foreach ($events as $event) {
-    $string .= ((int) ($event['timestamp'] / 1000)) . ',';
-}
-echo rtrim($string, ',');
-?>], showEvent: [<?php
-$string = "";
-foreach ($events as $event) {
-    $string .= 'true,';
-}
-echo rtrim($string, ',');
-?>], hoverText: [<?php
-$string = "";
-foreach ($events as $event) {
-    $string .= '"Test",';
-}
-echo rtrim($string, ',');
-?>]});
+                $('#timeline').timeliner({events: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= ((int) ($event['timestamp']/1000)) .',';
+					}
+					echo rtrim($string, ',');
+				?>], showEvent: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= 'true,';
+					}
+					echo rtrim($string, ',');
+				?>], hoverText: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= '"Test",';
+					}
+					echo rtrim($string, ',');
+			?>], timeLength: <?php echo $match->getDuration() ?>});
             });
+			var evts = 
+			<?php
+				$jsonEvents = json_encode($logEvents);
+				echo $jsonEvents;
+			?>;
+			function appendTextBox(text, time) {
+					document.getElementById("comments").innerHTML += '<p><span class="chat_time">' + secToMin(time/1000) + '</span><span class="chat_info">' + text + '</span></p>';
+			}
+			function secToMin(sec) {
+				var min  = Math.floor(sec / 60);
+				var secs = sec - min*60;
+				secs = Math.floor(secs);
+				if (secs < 10) {
+					secs = 0 + "" + secs;
+				}
+				return min + ":" + secs;
+			}
+			globalPointer = 0;
+			/**
+			 * Gets the last event pointer of a given time frame (keep track with a local eventPointer)
+			 *
+			 */
             function event_callback(eventPointer) {
-                console.log(eventPointer);
+				// first create string
+				var $string = "";
+				var sum = 0;
+				var elements = 0;
+				while (globalPointer <= eventPointer) {
+					$string += evts[globalPointer]["eventType"];
+					sum += evts[globalPointer]['timestamp'];
+					globalPointer++;
+					elements++;
+				}
+				appendTextBox($string, sum / elements);
             }
         </script>
         <!-- timeline -->

@@ -10,6 +10,9 @@ class Match  {
 		$this->cache = new Cache();
 	}
 	
+	public function getDuration() {
+		return $this->matchArray['matchDuration'];
+	}
 	/**
 	 *	Returns the events 
 	 *
@@ -29,9 +32,18 @@ class Match  {
 					}
 				}
 			}
+			usort($events, array("Match", "compareEvents"));
 			$this->cache->setData("events" .implode("|", $eventTypes), $events);
 		}
 		return $events;
+	}
+	
+	private static function compareEvents($a, $b) {
+		if ($a['timestamp'] == $b['timestamp']) {
+			return 0;
+		}
+		
+		return ($a['timestamp'] < $b['timestamp']) ? -1 : 1;
 	}
 	
 	public function getRegion() {
