@@ -27,40 +27,6 @@ and open the template in the editor.
     <head>
         <title>TODO supply a title</title> 
         <meta charset="UTF-8" />
-                            <script type="text/javascript">
-                        // set minutes
-                        var mins = 44.10;
-
-                        // calculate the seconds (don't change this! unless time progresses at a different speed for you...)
-                        var secs = mins * 60;
-                        function countdown() {
-                            setTimeout('Decrement()', 1000);
-                        }
-                        function Decrement() {
-                            if (document.getElementById) {
-                                minutes = document.getElementById("minutes");
-                                seconds = document.getElementById("seconds");
-                                // if less than a minute remaining
-                                if (seconds < 59) {
-                                    seconds.value = secs;
-                                } else {
-                                    minutes.value = getminutes();
-                                    seconds.value = getseconds();
-                                }
-                                secs--;
-                                setTimeout('Decrement()', 1000);
-                            }
-                        }
-                        function getminutes() {
-                            // minutes is seconds divided by 60, rounded down
-                            mins = Math.floor(secs / 60);
-                            return mins;
-                        }
-                        function getseconds() {
-                            // take mins remaining (as seconds) away from total seconds remaining
-                            return secs - Math.round(mins * 60);
-                        }
-                    </script>
         <script src="script/d3.v3.min.js"></script>
         <!-- timeline -->
         <link id="data-uikit-theme" rel="stylesheet" href="tip/uikit.docs.min.css">
@@ -137,19 +103,53 @@ and open the template in the editor.
     <body>
         <div class="main_info">
             <div class="part_chat">
-                <div class="highelight">Highlight Match ..  <div id="timer">
-                        <input id="minutes" size="1" type="text" disabled="">
-                        <input id="seconds" size="1" type="text" disabled="">
-                    </div>
-                    <script>
-                        countdown();
-                    </script></div>
+                <script>
+                String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second parm
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) {
+        hours = "0" + hours;
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    var time = hours + ':' + minutes + ':' + seconds;
+    return time;
+};
+
+var count = '<?php 
+$content = json_decode(file_get_contents("data/mapinfo.json"), true);
+echo $timer = $content['matchDuration'];
+?>';
+
+var counter = setInterval(timer, 1000);
+
+function timer() {
+
+    console.log(count);
+
+    if (parseInt(count) <= 0) {
+        clearInterval(counter);
+        return;
+    }
+    var temp = count.toHHMMSS();
+    count = (parseInt(count) - 1).toString();
+
+    $('#timer').html(temp);
+}
+            </script>
+                <div class="highelight">Highlight Match <span id="timer"></span>
+                </div>
                 <div id="comments" class="highelight_comment">
-                    <?php
-                    $content = json_decode(file_get_contents("data/mapinfo.json"), true);
-                    $timer = $content['matchDuration'] /60;
-                    echo $min = round($timer,2);
-                    ?>
+<?php
+
+?>
                     <p><span class="chat_time">[0:01 PM]</span><span class="chat_info">Welcome to Summoner's Rift!</span></p> 
                     <p><span class="chat_time">[1:25 PM]</span><span class="chat_info">Thirty seconds until minions spawn!</span></p>
                     <p><span class="chat_time">[1:55 PM]</span><span class="chat_info">Minions have spawned!</span></p>
@@ -169,48 +169,43 @@ and open the template in the editor.
                 <div id="map"></div>
                 <script>
                     var cords = [
-                        [4940, 13651], [8955, 8510], [7016, 10775], [11598, 11667], [13052, 12612], [10504, 1029], [12611, 13084]
+                            [4940, 13651], [8955, 8510], [7016, 10775], [11598, 11667], [13052, 12612], [10504, 1029], [12611, 13084]
                     ],
                             domain = {
-                                min: {x: -1000, y: -570},
-                                max: {x: 14800, y: 14800}
+                            min: {x: - 1000, y: - 570},
+                                    max: {x: 14800, y: 14800}
                             },
-                    width = 512,
+                            width = 512,
                             height = 512,
                             bg = "images/map.jpg",
                             xScale, yScale, svg;
-
-                    color = d3.scale.linear()
+                            color = d3.scale.linear()
                             .domain([0, 3])
                             .range(["white", "steelblue"])
                             .interpolate(d3.interpolateLab);
-
-                    xScale = d3.scale.linear()
+                            xScale = d3.scale.linear()
                             .domain([domain.min.x, domain.max.x])
                             .range([0, width]);
-
-                    yScale = d3.scale.linear()
+                            yScale = d3.scale.linear()
                             .domain([domain.min.y, domain.max.y])
                             .range([height, 0]);
-
-                    svg = d3.select("#map").append("svg:svg")
+                            svg = d3.select("#map").append("svg:svg")
                             .attr("width", width)
                             .attr("height", height);
-
-                    svg.append('image')
+                            svg.append('image')
                             .attr('xlink:href', bg)
                             .attr('x', '0')
                             .attr('y', '0')
                             .attr('width', '530')
                             .attr('height', height);
-                    svg.append('svg:g').selectAll("circle")
+                            svg.append('svg:g').selectAll("circle")
                             .data(cords)
                             .enter().append("svg:circle")
                             .attr('cx', function (d) {
-                                return xScale(d[0]);
+                            return xScale(d[0]);
                             })
                             .attr('cy', function (d) {
-                                return yScale(d[1]);
+                            return yScale(d[1]);
                             })
                             .attr('r', 8)
                             .attr('class', 'kills');
