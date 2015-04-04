@@ -1,12 +1,13 @@
-// Holds the current event pointer
-globalEventPointer = 0;
-/**
- * Gets the last event pointer of a given time frame (keep track with a local eventPointer)
- */
-function event_callback(eventPointer) {
-    // first create string
-    while (globalEventPointer <= eventPointer) {
-        $string = generateEventString($evts[globalEventPointer]);
+			// Holds the current event pointer
+			globalEventPointer = 0;
+			/**
+			 * Gets the last event pointer of a given time frame (keep track with a local eventPointer)
+			 */
+            function event_callback(eventPointer) {
+				// first create string
+				while (globalEventPointer <= eventPointer) {
+					$string = generateEventString($evts[globalEventPointer]);
+                    drawomap([$evts[globalEventPointer]['position']['x'],[$evts[globalEventPointer]['position']['y']]]) ;
 
         if ($string != "") {
             appendTextBox($string, $evts[globalEventPointer]['timestamp']);
