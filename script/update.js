@@ -40,7 +40,14 @@
 						var killerId = $evt["killerId"];
 						var $killer = $participants[$evt["killerId"]];
 						$string = makeFirstLetterCapital(transform($evt["monsterType"])) + ' was slain by ' + teamSpan($killer['teamId']) + $champs[$killer['championId']] + '</span>!';
-					} else {
+					} else if (type == "CHAMPION_KILL") {
+                                            if ($evt["killerId"] == 0) {
+                                                $string = "A minion ";
+                                            } else {
+                                                $string  = $champs[$participants[$evt["killerId"]]["championId"]];
+                                            }
+                                          $string += " killed " + $champs[$participants[$evt["victimId"]]["championId"]];  
+                                        } else {
 						$string = "";
 					}
 
