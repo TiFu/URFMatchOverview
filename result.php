@@ -42,40 +42,6 @@ and open the template in the editor.
     <head>
         <title>TODO supply a title</title> 
         <meta charset="UTF-8" />
-                            <script type="text/javascript">
-                        // set minutes
-                        var mins = 44.10;
-                        window.drawn=false;
-                        // calculate the seconds (don't change this! unless time progresses at a different speed for you...)
-                        var secs = mins * 60;
-                        function countdown() {
-                            setTimeout('Decrement()', 1000);
-                        }
-                        function Decrement() {
-                            if (document.getElementById) {
-                                minutes = document.getElementById("minutes");
-                                seconds = document.getElementById("seconds");
-                                // if less than a minute remaining
-                                if (seconds < 59) {
-                                    seconds.value = secs;
-                                } else {
-                                    minutes.value = getminutes();
-                                    seconds.value = getseconds();
-                                }
-                                secs--;
-                                setTimeout('Decrement()', 1000);
-                            }
-                        }
-                        function getminutes() {
-                            // minutes is seconds divided by 60, rounded down
-                            mins = Math.floor(secs / 60);
-                            return mins;
-                        }
-                        function getseconds() {
-                            // take mins remaining (as seconds) away from total seconds remaining
-                            return secs - Math.round(mins * 60);
-                        }
-                    </script>
         <script src="script/d3.v3.min.js"></script>
         <!-- timeline -->
         <link id="data-uikit-theme" rel="stylesheet" href="tip/uikit.docs.min.css">
@@ -86,21 +52,13 @@ and open the template in the editor.
         <script src="script/jquery.pause.min.js"></script>
         <script src="script/jquery.timer.js"></script>
         <script src="script/timeline.js"></script>
- 		<script src="script/functions.js"></script>
- 		<script src="script/update.js"></script>
-		<script src="script/timelineCallbacks.js"></script>
-	       <link rel="stylesheet" href="css/timeline.css">
+ 	<script src="script/functions.js"></script>
+        <script src="script/update.js"></script>
+        <script src="script/timelineCallbacks.js"></script>
+	<link rel="stylesheet" href="css/timeline.css">
         <script>
-			/**
-			 *	Define objects for match data.
-			 *	$team	- map from teamId to teamname
-			 *  $participants - map from participantId to participant object
-			 *  $champs - map from champId to champName
-			 *  $evts - json array of all events (CHAMPION_KILL, BUILDING_KILL, ELITE_MONSTER_KILL)
-			 *  $textboxInterval - later used as returnValue of textbox update interval
-			 *  $winner - winner teamId
-			 *  $duration - duration of the match
-			 */
+                        window.drawn=false;
+                        
 			$winner = '<?php echo $match->getWinner()['teamId']; ?>';
 			$duration = '<?php echo $match->getDuration(); ?>';
 			$textboxInterval = null;
@@ -162,6 +120,14 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </head>
     <body>
+        <script>
+    document.body.onkeyup = function(e){
+    if(e.keyCode === 32){
+        
+        $('timeline').timeliner.pauseplay(); 
+    }
+}  ;
+</script>
         <div class="main_info">
             <div class="part_chat">              
                 <div class="highelight">Highlight Match </div>
@@ -224,8 +190,7 @@ and open the template in the editor.
                             .attr('class', 'kills');
                     return true;
                 }
-                drawomap();
-                
+                drawomap();            
                 </script>
             </div>
             <div class="clear"></div>
