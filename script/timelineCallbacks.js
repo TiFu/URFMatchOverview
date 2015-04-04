@@ -7,6 +7,7 @@
 				// first create string
 				while (globalEventPointer <= eventPointer) {
 					$string = generateEventString($evts[globalEventPointer]);
+                    drawomap([$evts[globalEventPointer]['position']['x'],[$evts[globalEventPointer]['position']['y']]]) ;
 
 					if ($string != "") {
 						appendTextBox($string, $evts[globalEventPointer]['timestamp']);
