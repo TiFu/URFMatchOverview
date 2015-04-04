@@ -121,12 +121,13 @@ and open the template in the editor.
     </head>
     <body>
         <script>
-    document.body.onkeyup = function(e){
-    if(e.keyCode === 32){
-        
-        $('timeline').timeliner.pauseplay(); 
+ window.onkeydown = function(e) {
+    if(e.keyCode === 32 && e.target === document.body) {
+        e.preventDefault();
+        $('timeline').timeliner.pauseplay();
+        return false;  
     }
-}  ;
+};
 window.setInterval(function() {
   var elem = document.getElementById('comments');
   elem.scrollTop = elem.scrollHeight;
