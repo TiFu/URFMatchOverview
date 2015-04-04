@@ -166,12 +166,12 @@ and open the template in the editor.
             <div class="part_chat">              
                 <div class="highelight">Highlight Match </div>
             <div id="comments" class="highelight_comment">
-                    <p><span class="chat_time">[0:00]</span><span class="chat_info">Welcome to Summoner's Rift!</span></p> 
+                    <p><span class="chat_time">[0:00]</span><span class="chat_info">Welcome to Summoner's Rift !</span></p> 
                 </div>
             </div>
             <div class="part_map">  
                 <div id="map"></div>
-                <script>
+                 <script>
                    
                 function drawomap(cord){
                     var cords = [ cord
