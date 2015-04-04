@@ -17,7 +17,7 @@ if (isset($_GET['matchId'])) {
 if (!is_int($matchId)) {
     // do error handling here
 }
-$match = new Match(file_get_contents("data/mapinfo.json"));
+$match = new Match(file_get_contents("data/".$matchId.".json"));
 $startEvents = $match->getEvents(array("CHAMPION_KILL", "BUILDING_KILL", "ELITE_MONSTER_KILL"));
 $logEvents = array();
 

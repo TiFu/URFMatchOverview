@@ -42,11 +42,13 @@
 						$string = makeFirstLetterCapital(transform($evt["monsterType"])) + ' was slain by ' + teamSpan($killer['teamId']) + $champs[$killer['championId']] + '</span>!';
 					} else if (type == "CHAMPION_KILL") {
                                             if ($evt["killerId"] == 0) {
-                                                $string = "A minion ";
+                                                $string = "<img data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" /> ";
                                             } else {
-                                                $string  = $champs[$participants[$evt["killerId"]]["championId"]];
+                                                $killern = $champs[$participants[$evt["killerId"]]["championId"]];
+                                                $string  = "<img data-uk-tooltip title=\"" + $killern + "\" + width=\"46\" height=\"46\" src=\"images/champion/" + $killern + ".png\" /> ";
                                             }
-                                          $string += " killed " + $champs[$participants[$evt["victimId"]]["championId"]];  
+                                            $victimn = $champs[$participants[$evt["victimId"]]["championId"]];
+                                          $string += " killed " + "<img data-uk-tooltip title=\"" + $victimn + "\" width=\"46\" height=\"46\" src=\"images/champion/" + $victimn + ".png\" /> "; 
                                         } else {
 						$string = "";
 					}
