@@ -13,7 +13,7 @@ if (isset($_GET['matchId'])) {
 if (!is_int($matchId)) {
     // do error handling here
 }
-$match = new Match(file_get_contents("data/2040109985.json"));
+$match = new Match(file_get_contents("data/mapinfo.json"));
 $logEvents = $match->getEvents(array("BUILDING_KILL", "ELITE_MONSTER_KILL"));
 // Generate map from participantId -> champ name
 ?>
