@@ -57,6 +57,7 @@ class Match  {
 			$info = array();
 			foreach ($this->matchArray['teams'] as $team) {
 				if ($team['teamId'] == $teamId) {
+					$info['teamId'] = $team['teamId'];
 					$info['dragonKills'] = $team['dragonKills'];
 					$info['baronKills'] = $team['baronKills'];
 					$info['winner'] = $team['winner'];
@@ -75,10 +76,21 @@ class Match  {
 				$id = $team['teamId'];
 			}
 		}
-		echo "Winning team: " + $id ."<br>";
 		return $this->getTeam($id);
 	}
 	
+	public function getParticipants() {
+		$info = $this->cache->getData("participants");
+		if ($info === false) {
+			$info = array();
+			foreach ($this->matchArray['participantIdentities'] as $identity) {
+				$inf = $this->getParticipant($identity['participantId']);
+				$info[] = $inf;
+			}
+			$this->cache->setData("participants", $info);
+		}
+		return $info;
+	}
 	/**
 	 * Returns an participant array with comprimated stats.
 	 *
@@ -90,7 +102,7 @@ class Match  {
 			$info = array();
 			$participant = null;
 			foreach ($this->matchArray['participants'] as $currentParticipant) {
-				if ($participant['participantId'] == $participantId) {
+				if ($currentParticipant['participantId'] == $participantId) {
 					$participant = $currentParticipant;
 				}
 			}
@@ -130,14 +142,6 @@ class Match  {
 			// Participant Timeline
 			$info['lane'] = $participant['timeline']['lane'];
 	
-		
-			// Participant Identity	
-			foreach($this->matchArray['participantIdentities'] as $currentIdentity) {
-				if ($currentIdentity['participantId'] == $participantId) {
-					$info['summonerName'] = $currentIdentity['player']['summonerName'];
-					return;
-				}
-			}
 			$this->cache->setData("participant" .$participantId, $info);
 		}
 		return $info;

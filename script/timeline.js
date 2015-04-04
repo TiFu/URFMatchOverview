@@ -11,7 +11,7 @@
 				timeLineWidth: 1050, // width in px
 				timeLength: 3600, // time length
 				animationLength:60, // animation length
-				updateTime: 500 // number of ms between to event calls (don't set it too low -> performance issues!!!)
+				updateTime: 250 // number of ms between to event calls (don't set it too low -> performance issues!!!)
 			}, options);
 
 			// Declare variables
@@ -57,14 +57,16 @@
 					if (cluster[i].length > 0) {
 						var sum = 0;
 						var spanText = "";
+						var elements = 0;
 						for (z = 0; z < cluster[i].length; z++) {
 							if (o.showEvent[cluster[i][z]]) {
 								sum += o.events[cluster[i][z]];
 								spanText += o.hoverText[cluster[i][z]] + '\n';
+								elements++;
 							}
 						}
-						if (spanText != "") {
-							var avg = sum / cluster[i].length;
+						if (elements > 0) {
+							var avg = sum / elements;
 							$('<div><span data-uk-tooltip title="' + spanText + '"><img class="icon" src="images/circle.png"></span></div>').css({position:"absolute", left:avg / o.timeLength * o.timeLineWidth}).appendTo($pointDiv);
 						}
 					}
@@ -87,6 +89,8 @@
 								$lastCall = newTime;
 								the_event_callback($eventPointer-1);
 							}
+					}, complete: function (){
+						the_complete_callback();
 					}});
 			}
 						
@@ -133,6 +137,13 @@
 					// call with current time
 					event_callback(lastEvent);
 				}
+			}
+			
+			function the_complete_callback() {
+				if(typeof complete_callback == 'function'){
+					// call with current time
+					complete_callback();
+				}				
 			}
 		});
 	};

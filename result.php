@@ -1,8 +1,12 @@
 <?php
+error_reporting(E_ALL);
 // Config and constants
 include("config/config.php");
 include("functions.php");
 include("classes/match.php");
+// Use mysqli (object orientation ftw)
+$mysqli = mysqli_init();
+$mysqli->real_connect(SERVER, DB_USER, DB_PW, DATABASE);
 // Load match
 if (isset($_GET['matchId'])) {
     $matchId = $_GET['matchId'];
@@ -13,9 +17,20 @@ if (isset($_GET['matchId'])) {
 if (!is_int($matchId)) {
     // do error handling here
 }
-$match = new Match(file_get_contents("data/mapinfo.json"));
-$logEvents = $match->getEvents(array("BUILDING_KILL", "ELITE_MONSTER_KILL"));
-// Generate map from participantId -> champ name
+$match = new Match(file_get_contents("data/" .$matchId .".json"));
+$startEvents = $match->getEvents(array("CHAMPION_KILL", "BUILDING_KILL", "ELITE_MONSTER_KILL"));
+$logEvents = array();
+
+// Filter red and blue buff out of the events
+foreach($startEvents as $event) {
+	if ($event['eventType'] == "ELITE_MONSTER_KILL") {
+		if ($event['monsterType'] == "BARON_NASHOR" || $event['monsterType'] == "DRAGON") {
+			$logEvents[] = $event;
+		}
+	} else {
+		$logEvents[] = $event;
+	}
+}
 ?>
 <!DOCTYPE html>
 <!--
@@ -71,8 +86,53 @@ and open the template in the editor.
         <script src="script/jquery.pause.min.js"></script>
         <script src="script/jquery.timer.js"></script>
         <script src="script/timeline.js"></script>
-        <link rel="stylesheet" href="css/timeline.css">
+ 		<script src="script/functions.js"></script>
+ 		<script src="script/update.js"></script>
+		<script src="script/timelineCallbacks.js"></script>
+	       <link rel="stylesheet" href="css/timeline.css">
         <script>
+			/**
+			 *	Define objects for match data.
+			 *	$team	- map from teamId to teamname
+			 *  $participants - map from participantId to participant object
+			 *  $champs - map from champId to champName
+			 *  $evts - json array of all events (CHAMPION_KILL, BUILDING_KILL, ELITE_MONSTER_KILL)
+			 *  $textboxInterval - later used as returnValue of textbox update interval
+			 *  $winner - winner teamId
+			 *  $duration - duration of the match
+			 */
+			$winner = '<?php echo $match->getWinner()['teamId']; ?>';
+			$duration = '<?php echo $match->getDuration(); ?>';
+			$textboxInterval = null;
+
+			$team = new Array();
+			$team['100'] = "blue";
+			$team['200'] = "red";
+
+			$participants = new Array();
+			<?php
+				foreach($match->getParticipants() as $participant) {
+					echo '$participants[' .$participant['participantId'] .'] = ' .json_encode($participant) .';';
+				}
+			?>
+
+			$champs = new Array();
+			<?php
+				$champs = $mysqli->query("SELECT * FROM " .CHAMP_TABLE);
+				while ($champ = $champs->fetch_assoc()) {
+					echo '$champs[' .$champ['id'] .'] = "' .$champ['name'] .'";';
+				}
+			?>
+
+			var $evts = 
+			<?php
+				$jsonEvents = json_encode($logEvents);
+				echo $jsonEvents;
+			?>;
+		
+			/**
+			 *  Initialize the timeline with events, showEvent and hoverText (currently BS)
+			 */
             $(document).ready(function () {
                 $('#timeline').timeliner({events: [<?php 
 					$string = "";
@@ -83,58 +143,21 @@ and open the template in the editor.
 				?>], showEvent: [<?php 
 					$string = "";
 					foreach ($logEvents as $event) {
-						$string .= 'true,';
+						$string .= ($event['eventType'] != 'CHAMPION_KILL') .',';
 					}
 					echo rtrim($string, ',');
 				?>], hoverText: [<?php 
 					$string = "";
 					foreach ($logEvents as $event) {
-						$string .= '"Test",';
+						$string .= '"' .$event['eventType'] .'",';
 					}
 					echo rtrim($string, ',');
 			?>], timeLength: <?php echo $match->getDuration() ?>});
-            });
-			var evts = 
-			<?php
-				$jsonEvents = json_encode($logEvents);
-				echo $jsonEvents;
-			?>;
-			function appendTextBox(text, time) {
-					document.getElementById("comments").innerHTML += '<p><span class="chat_time">[' + secToMin(time/1000) + ']</span><span class="chat_info">' + text + '</span></p>';
-                                        window.cord = [13741,14180];
-                       }
-			function secToMin(sec) {
-				var min  = Math.floor(sec / 60);
-				var secs = sec - min*60;
-				secs = Math.floor(secs);
-				if (secs < 10) {
-					secs = 0 + "" + secs;
-				}
-				return min + ":" + secs;
-			}
-			globalPointer = 0;
-			/**
-			 * Gets the last event pointer of a given time frame (keep track with a local eventPointer)
-			 *
-			 */
-            function event_callback(eventPointer) {
-				// first create string
-				var $string = "";
-				var sum = 0;
-				var elements = 0;
-				while (globalPointer <= eventPointer) {
-					$string += evts[globalPointer]["eventType"];
-					sum += evts[globalPointer]['timestamp'];
-                                        drawomap([evts[globalPointer]['position']['x'],[evts[globalPointer]['position']['y']]]) ;
-                                        globalPointer++;
-					elements++;
-				}
-				appendTextBox($string, sum / elements);
-                                
-                                 
-            }
+				// Update textBox periodically (every 250ms)
+				$textboxInterval = setInterval(updateTextBox, 250);
+			});
         </script>
-        <!-- timeline -->
+       <!-- timeline -->
         <link href="css/style.css" rel="stylesheet" type="text/css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </head>
@@ -143,6 +166,7 @@ and open the template in the editor.
             <div class="part_chat">              
                 <div class="highelight">Highlight Match </div>
             <div id="comments" class="highelight_comment">
+                    <p><span class="chat_time">[0:00]</span><span class="chat_info">Welcome to Summoner's Rift!</span></p> 
                 </div>
             </div>
             <div class="part_map">  

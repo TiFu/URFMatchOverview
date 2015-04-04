@@ -1,7 +1,7 @@
 <?php
-define("CHAMP_DB", "champs");
-define("ITEM_DB", "items");
-define("AVERAGE_DB", "averages");
+define("CHAMP_TABLE", "champs");
+define("ITEM_TABLE", "items");
+define("AVERAGE_TABLE", "averages");
 define("MATCH_PATH", "matches/");
 define("ID_PATH", "ids/");
 ?>
