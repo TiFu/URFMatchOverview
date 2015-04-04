@@ -13,7 +13,7 @@ if (isset($_GET['matchId'])) {
 if (!is_int($matchId)) {
     // do error handling here
 }
-$match = new Match(file_get_contents("data/" .$matchId .".json"));
+$match = new Match(file_get_contents("data/mapinfo.json"));
 $logEvents = $match->getEvents(array("BUILDING_KILL", "ELITE_MONSTER_KILL"));
 // Generate map from participantId -> champ name
 ?>
@@ -100,8 +100,9 @@ and open the template in the editor.
 				echo $jsonEvents;
 			?>;
 			function appendTextBox(text, time) {
-					document.getElementById("comments").innerHTML += '<p><span class="chat_time">' + secToMin(time/1000) + '</span><span class="chat_info">' + text + '</span></p>';
-			}
+					document.getElementById("comments").innerHTML += '<p><span class="chat_time">[' + secToMin(time/1000) + ']</span><span class="chat_info">' + text + '</span></p>';
+                                        cord = [13741,14180];
+                       }
 			function secToMin(sec) {
 				var min  = Math.floor(sec / 60);
 				var secs = sec - min*60;
@@ -136,71 +137,16 @@ and open the template in the editor.
     </head>
     <body>
         <div class="main_info">
-            <div class="part_chat">
-                                <script>
-                String.prototype.toHHMMSS = function () {
-    var sec_num = parseInt(this, 10); // don't forget the second parm
-    var hours = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-    if (hours < 10) {
-        hours = "0" + hours;
-    }
-    if (minutes < 10) {
-        minutes = "0" + minutes;
-    }
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
-    var time = hours + ':' + minutes + ':' + seconds;
-    return time;
-};
-
-var count = '<?php 
-$content = json_decode(file_get_contents("data/mapinfo.json"), true);
-echo $timer = $content['matchDuration'];
-?>';
-
-var counter = setInterval(timer, 1000);
-
-function timer() {
-
-    console.log(count);
-
-    if (parseInt(count) <= 0) {
-        clearInterval(counter);
-        return;
-    }
-    var temp = count.toHHMMSS();
-    count = (parseInt(count) - 1).toString();
-
-    $('#timer').html(temp);
-}
-            </script>
-                <div class="highelight">Highlight Match <span id="timer"></span>
-                </div>
+            <div class="part_chat">              
+                <div class="highelight">Highlight Match </div>
             <div id="comments" class="highelight_comment">
-                    <p><span class="chat_time">[0:01 PM]</span><span class="chat_info">Welcome to Summoner's Rift!</span></p> 
-                    <p><span class="chat_time">[1:25 PM]</span><span class="chat_info">Thirty seconds until minions spawn!</span></p>
-                    <p><span class="chat_time">[1:55 PM]</span><span class="chat_info">Minions have spawned!</span></p>
-                    <p><span class="chat_time">[2:25 PM]</span><span class="chat_info"><span class="participantblue">participantId (Thresh)</span> Has <span class="events">Level Up!</span></span></p>
-                    <p><span class="chat_time">[3:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">ITEM PURCHASED</span> Named <span class="items_name">Doran Shiled</span> </span></p>
-                    <p><span class="chat_time">[4:01 PM]</span><span class="chat_info"><span class="participantblue">creatorId (Sion)</span> Has <span class="events">WARD PLACED</span> With Type  <span class="items_name">YELLOW TRINKET</span> </span></p>
-                    <p><span class="chat_time">[5:01 PM]</span><span class="chat_info"><span class="participantred">killerId (Jinx)</span> Has <span class="events">Kill</span> <span class="participantblue">victimId (Thresh)</span> For <span class="items_name">First Blood !</span> </span></p>
-                    <p><span class="chat_time">[6:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">ITEM DESTROYED</span> Named <span class="items_name">Doran Shiled</span> </span></p>
-                    <p><span class="chat_time">[7:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">Destroy</span> OUTER TURRET For <span class="participantblue">Blue Team</span> In MID LANE</span></p>
-                    <p><span class="chat_time">[8:01 PM]</span><span class="chat_info"><span class="participantblue">participantId (Sion)</span> Has <span class="events">Kill</span> Monster <span class="monsters">RED LIZARD</span></span></p>
-                    <p><span class="chat_time">[8:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">Kill</span> Monster <span class="monsters">Dragon</span></span></p>
-                    <p><span class="chat_time">[2:25 PM]</span><span class="chat_info"><span class="participantblue">participantId (Sion)</span> Has <span class="events">Level Up!</span></span></p>
-                    <p><span class="chat_time">[7:01 PM]</span><span class="chat_info"><span class="participantred">participantId (Jinx)</span> Has <span class="events">Destroy</span> INHIBITOR BUILDING For <span class="participantblue">Blue Team</span> In MID LANE</span></p>
                 </div>
             </div>
             <div class="part_map">  
                 <div id="map"></div>
                 <script>
-                    var cords = [
-                        [4940, 13651], [8955, 8510], [7016, 10775], [11598, 11667], [13052, 12612], [10504, 1029], [12611, 13084]
+                    function drawomap(cord){
+                    var cords = [ cord
                     ],
                             domain = {
                                 min: {x: -1000, y: -570},
@@ -243,8 +189,10 @@ function timer() {
                             .attr('cy', function (d) {
                                 return yScale(d[1]);
                             })
-                            .attr('r', 8)
+                            .attr('r', 5)
                             .attr('class', 'kills');
+                }
+                drawomap();
                 </script>
             </div>
             <div class="clear"></div>
