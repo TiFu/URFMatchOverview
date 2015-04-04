@@ -13,7 +13,7 @@ if (isset($_GET['matchId'])) {
 if (!is_int($matchId)) {
     // do error handling here
 }
-$match = new Match(file_get_contents("data/mapinfo.json"));
+$match = new Match(file_get_contents("data/2040109985.json"));
 $logEvents = $match->getEvents(array("BUILDING_KILL", "ELITE_MONSTER_KILL"));
 // Generate map from participantId -> champ name
 ?>
@@ -30,7 +30,7 @@ and open the template in the editor.
                             <script type="text/javascript">
                         // set minutes
                         var mins = 44.10;
-
+                        window.drawn=false;
                         // calculate the seconds (don't change this! unless time progresses at a different speed for you...)
                         var secs = mins * 60;
                         function countdown() {
@@ -101,7 +101,7 @@ and open the template in the editor.
 			?>;
 			function appendTextBox(text, time) {
 					document.getElementById("comments").innerHTML += '<p><span class="chat_time">[' + secToMin(time/1000) + ']</span><span class="chat_info">' + text + '</span></p>';
-                                        cord = [13741,14180];
+                                        window.cord = [13741,14180];
                        }
 			function secToMin(sec) {
 				var min  = Math.floor(sec / 60);
@@ -125,10 +125,13 @@ and open the template in the editor.
 				while (globalPointer <= eventPointer) {
 					$string += evts[globalPointer]["eventType"];
 					sum += evts[globalPointer]['timestamp'];
-					globalPointer++;
+                                        drawomap([evts[globalPointer]['position']['x'],[evts[globalPointer]['position']['y']]]) ;
+                                        globalPointer++;
 					elements++;
 				}
 				appendTextBox($string, sum / elements);
+                                
+                                 
             }
         </script>
         <!-- timeline -->
@@ -145,7 +148,8 @@ and open the template in the editor.
             <div class="part_map">  
                 <div id="map"></div>
                 <script>
-                    function drawomap(cord){
+                   
+                function drawomap(cord){
                     var cords = [ cord
                     ],
                             domain = {
@@ -169,18 +173,21 @@ and open the template in the editor.
                     yScale = d3.scale.linear()
                             .domain([domain.min.y, domain.max.y])
                             .range([height, 0]);
-
-                    svg = d3.select("#map").append("svg:svg")
+                            
+                            if(drawn!=true){
+                             this.svg = d3.select("#map").append("svg:svg")
                             .attr("width", width)
                             .attr("height", height);
 
-                    svg.append('image')
+                    this.svg.append('image')
                             .attr('xlink:href', bg)
                             .attr('x', '0')
                             .attr('y', '0')
                             .attr('width', '530')
                             .attr('height', height);
-                    svg.append('svg:g').selectAll("circle")
+                drawn=true;     
+                    }
+                    this.svg.append('svg:g').selectAll("circle")
                             .data(cords)
                             .enter().append("svg:circle")
                             .attr('cx', function (d) {
@@ -191,8 +198,10 @@ and open the template in the editor.
                             })
                             .attr('r', 5)
                             .attr('class', 'kills');
+                    return true;
                 }
                 drawomap();
+                
                 </script>
             </div>
             <div class="clear"></div>
