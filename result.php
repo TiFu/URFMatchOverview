@@ -201,7 +201,6 @@ and open the template in the editor.
                         <div class="eventsgame"  data-uk-tooltip title="Match Start"></div>
                         <div class="eventsgame" style="margin-left: 50px;"  data-uk-tooltip title="Kill Some One"></div>
                          <div class="eventsgame" style="margin-left: 150px;"  data-uk-tooltip title="Destroy"></div>
-  
                     </div>
             </div>
             <div class="clear"></div>
