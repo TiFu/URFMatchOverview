@@ -195,7 +195,14 @@ and open the template in the editor.
                 </script>
             </div>
             <div class="clear"></div>
-            <div id ="timeline" class="timeline">
+            <div class="timeline">
+                    <div class="timelength">
+                        <div class="loadingtime" style="width:200px;"></div>
+                        <div class="eventsgame"  data-uk-tooltip title="Match Start"></div>
+                        <div class="eventsgame" style="margin-left: 50px;"  data-uk-tooltip title="Kill Some One"></div>
+                         <div class="eventsgame" style="margin-left: 150px;"  data-uk-tooltip title="Destroy"></div>
+  
+                    </div>
             </div>
             <div class="clear"></div>
             <div class="statsteam">
