@@ -1,9 +1,20 @@
 <?php
-include("functions.php");
-define("RATE_LMIT_10_SEC", 10);
-define("RATE_LMIT_10_ MIN", 500);
-$request10SecCounter = 0;
-$request10MinCounter = 0;
+function storeUrlToFilesystem($url, $localFile) {
+    try {
+        $data = file_get_contents($url);
+		if ($data === FALSE) { // check if HTTP request was successfull
+			echo "Request failed<br>";
+			return false;
+		}
+        $handle = fopen($localFile, "w");
+        fwrite($handle, $data);
+        fclose($handle);
+        return true;
+    } catch (Exception $e) {
+        echo 'Caught exception: ', $e->getMessage(), "\n";
+    }
+    return false;
+}
 $url = "http://elofight.com/{region}{day}_.txt";
 // all regions
 $regions = array();
@@ -22,7 +33,7 @@ $regions[] = "tr";
 if (isset($_GET['day'])) {
 	$day = $_GET['day'];
 } else {
-	$day = date("d");
+	$day = date("d") - 1;
 }
 
 // Replace day
