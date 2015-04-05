@@ -79,13 +79,16 @@
 				$innerLineDiv.animate({
 						width:o.timeLineWidth,
 					},{ duration:time*1000, step: function(currentWidth) {
+							var newTime = new Date().getTime();
+							if (newTime - $lastCall < o.updateTime) {
+								return;
+							}
 							var incr = false;
 							while (o.events[$eventPointer] < currentWidth  / o.timeLineWidth * o.timeLength) {
 								incr = true;
 								$eventPointer++;
 							}
-							var newTime = new Date().getTime();
-							if (incr &&  newTime - $lastCall > o.updateTime) {
+							if (incr) {
 								$lastCall = newTime;
 								the_event_callback($eventPointer-1);
 							}

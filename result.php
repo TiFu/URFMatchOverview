@@ -113,6 +113,7 @@ and open the template in the editor.
 			?>], timeLength: <?php echo $match->getDuration() ?>});
 				// Update textBox periodically (every 250ms)
 				$textboxInterval = setInterval(updateTextBox, 250);
+				$commentBox = $("#comments");
 			});
         </script>
        <!-- timeline -->

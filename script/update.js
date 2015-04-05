@@ -1,14 +1,15 @@
 			// Text store betweent textbox updates
-			var $updateText = "";
+			$updateText = "";
+			
+
 			function appendTextBox(text, time) {
 					$updateText += '<p><span class="chat_time">[' + secToMin(time/1000) + ']</span><span class="chat_info">' + text + '</span></p>';
 			}
 			
 			function updateTextBox() {
-				document.getElementById("comments").innerHTML += $updateText;
+				$($updateText).appendTo($commentBox);
 				$updateText = "";
-                                  var elem = document.getElementById('comments');
-                                    elem.scrollTop = elem.scrollHeight;
+				$commentBox.scrollTop($commentBox.scrollHeight);
 			}
 			function secToMin(sec) {
 				var min  = Math.floor(sec / 60);
@@ -19,7 +20,17 @@
 				}
 				return min + ":" + secs;
 			}
-
+			$lanes = [];
+			$lanes["BOT_LANE"] = makeFirstLetterCapital(transform("BOT_LANE"));
+			$lanes["MID_LANE"] = makeFirstLetterCapital(transform("MID_LANE"));
+			$lanes["TOP_LANE"] = makeFirstLetterCapital(transform("TOP_LANE"));
+			
+			$towerTypes = [];
+			$towerTypes["BASE_TURRET"] = transform("BASE_TURRET");
+			$towerTypes["INNER_TURRET"] = transform("INNER_TURRET");
+			$towerTypes["NEXUS_TURRET"] = transform("NEXUS_TURRET");
+			$towerTypes["OUTER_TURRET"] = transform("OUTER_TURRET");
+			
 			function generateEventString($evt) {
 					var type = $evt["eventType"];
 					if (type == "BUILDING_KILL") {
@@ -28,9 +39,9 @@
 						var $killer = $participants[$evt["killerId"]];
 						
 						if ($evt['buildingType'] == "TOWER_BUILDING") {
-							$string += makeFirstLetterCapital(transform($evt['laneType'])) + " " + transform($evt['towerType']) + "</span> Got Destroyed";
+							$string +=$lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "</span> Got Destroyed";
 						} else { // inhib
-							$string += makeFirstLetterCapital(transform($evt['laneType'])) + " Inhibitor</span> Got Destroyed";							
+							$string += $lanes[$evt['laneType']] + " Inhibitor</span> Got Destroyed";							
 						}
 						
 						if (killerId != 0) {
@@ -47,10 +58,10 @@
                                                 $string = "<img data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" /> ";
                                             } else {
                                                 $killern = $champs[$participants[$evt["killerId"]]["championId"]];
-                                                $string  = "<img data-uk-tooltip title=\"" + $killern + "\" + width=\"46\" height=\"46\" src=\"images/champion/" + $killern + ".png\" /> ";
+                                                $string  = "<img data-uk-tooltip title=\"" + $killern + "\" src=\"images/champion/" + $killern + "46.png\" /> ";
                                             }
                                             $victimn = $champs[$participants[$evt["victimId"]]["championId"]];
-                                          $string += " killed " + "<img data-uk-tooltip title=\"" + $victimn + "\" width=\"46\" height=\"46\" src=\"images/champion/" + $victimn + ".png\" /> "; 
+                                          $string += " killed " + "<img data-uk-tooltip title=\"" + $victimn + "\" width=\"46\" height=\"46\" src=\"images/champion/" + $victimn + "46.png\" /> "; 
                                         } else {
 						$string = "";
 					}
