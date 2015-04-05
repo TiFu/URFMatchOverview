@@ -34,6 +34,9 @@ if (isset($_GET['day'])) {
 	$day = $_GET['day'];
 } else {
 	$day = date("d") - 1;
+	if ($day < 10) {
+		$day = '0' .$day;
+	}
 }
 
 // Replace day
@@ -47,8 +50,9 @@ echo "Requesting file for " .$day .' .April<br>';
 		// ids for server
 		$ids = explode("\n\n", $content);
 		mkdir($region);
-		foreach ($ids as $id) {
+		echo $copy .'<br>';
+/*		foreach ($ids as $id) {
 			storeUrlToFileSystem("https://" .$region .".api.pvp.net/api/lol/" .$region ."/v2.2/match/" .rtrim($id) ."?includeTimeLine=true&api_key=503c05e8-3148-432d-b475-61ece09d1629", $region ."/" .rtrim($id) .".json");			
-		}
+		}*/
 	}
 ?>
