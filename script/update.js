@@ -7,6 +7,8 @@
 			function updateTextBox() {
 				document.getElementById("comments").innerHTML += $updateText;
 				$updateText = "";
+                                  var elem = document.getElementById('comments');
+                                    elem.scrollTop = elem.scrollHeight;
 			}
 			function secToMin(sec) {
 				var min  = Math.floor(sec / 60);
@@ -26,20 +28,20 @@
 						var $killer = $participants[$evt["killerId"]];
 						
 						if ($evt['buildingType'] == "TOWER_BUILDING") {
-							$string += makeFirstLetterCapital(transform($evt['laneType'])) + " " + transform($evt['towerType']) + "</span> got destroyed";
+							$string += makeFirstLetterCapital(transform($evt['laneType'])) + " " + transform($evt['towerType']) + "</span> Got Destroyed";
 						} else { // inhib
-							$string += makeFirstLetterCapital(transform($evt['laneType'])) + " inhibitor</span> got destroyed";							
+							$string += makeFirstLetterCapital(transform($evt['laneType'])) + " Inhibitor</span> Got Destroyed";							
 						}
 						
 						if (killerId != 0) {
-							$string += ' by ' + teamSpan($killer['teamId']) +	$champs[$killer['championId']] + '</span>!';
+							$string += ' By ' + teamSpan($killer['teamId']) + $champs[$killer['championId']] + '</span> !';
 						} else {
-							$string += ' by a minion!';
+							$string += ' By a Minion!';
 						}
 					} else if (type == "ELITE_MONSTER_KILL" && ($evt["monsterType"] == "BARON_NASHOR" || $evt["monsterType"] == "DRAGON")) {
 						var killerId = $evt["killerId"];
 						var $killer = $participants[$evt["killerId"]];
-						$string = makeFirstLetterCapital(transform($evt["monsterType"])) + ' was slain by ' + teamSpan($killer['teamId']) + $champs[$killer['championId']] + '</span>!';
+						$string = makeFirstLetterCapital(transform($evt["monsterType"])) + ' Was Slain By ' + teamSpan($killer['teamId']) + $champs[$killer['championId']] + '</span> !';
 					} else if (type == "CHAMPION_KILL") {
                                             if ($evt["killerId"] == 0) {
                                                 $string = "<img data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" /> ";

@@ -128,10 +128,6 @@ and open the template in the editor.
         return false;  
     }
 };
-window.setInterval(function() {
-  var elem = document.getElementById('comments');
-  elem.scrollTop = elem.scrollHeight;
-},1);
 </script>
         <div class="main_info">
             <div class="part_chat">              
