@@ -107,7 +107,7 @@ and open the template in the editor.
 				?>], hoverText: [<?php 
 					$string = "";
 					foreach ($logEvents as $event) {
-						$string .= '"' .createHoverText($event) .'",';
+						$string .= "\"" .$match->createHoverText($event) ."\",";
 					}
 					echo rtrim($string, ',');
 			?>], timeLength: <?php echo $match->getDuration() ?>});
