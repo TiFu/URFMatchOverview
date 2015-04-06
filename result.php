@@ -611,7 +611,13 @@ and open the template in the editor.
                     </div> 
                 </div>               
             </div>
-
+            <div class="clear"></div>       
+                <div class="summary">
+                    <div class="urfdata">Ultra Rapid Fire Champions Statistical</div>
+                        
+                </div>
+            <div class="backurf">      
+                    </div>
         </div>  
     </body>
 </html>
