@@ -3,7 +3,7 @@
 			
 
 			function appendTextBox(text, time) {
-					$updateText += '<p><span class="chat_time">[' + secToMin(time/1000) + ']</span><span class="chat_info">' + text + '</span></p>';
+					$updateText += '<p><span class="xd"><span class="chat_time">[' + secToMin(time/1000) + ']</span><span class="chat_info">' + text + '</span></span></p>';
 			}
 			
 			function updateTextBox() {

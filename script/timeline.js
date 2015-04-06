@@ -36,13 +36,13 @@
 						return false;  
 					}
 			});
-			$('<img src="images/play.png" class="playButton" onClick="$(' + $id + ').timeliner.pauseplay()">').appendTo($timerDiv);
+			$('<img src="images/play.png" data-uk-tooltip title="Play/Stop" class="playButton" onClick="$(' + $id + ').timeliner.pauseplay()">').appendTo($timerDiv);
 			for (var i = 300; i <= o.timeLength; i += 300) {
 				i = Math.min(o.timeLength, i);
 				$('<span class="time">'  + secToMin(i) + '</span>').css({position:"absolute", left: Math.max(i / o.timeLength * $width - 5, 0)}).appendTo($timerDiv);
 				end = i;
 			}
-			if (end != o.timeLength) {
+			if (end !== o.timeLength) {
 				$('<span class="time">'  + secToMin(o.timeLength) + '</span>').css({position:"absolute", left:$width}).appendTo($timerDiv);				
 			}
 
@@ -135,14 +135,14 @@
 			
 			// Callback
 			function the_event_callback(lastEvent) {
-				if(typeof event_callback == 'function'){
+				if(typeof event_callback === 'function'){
 					// call with current time
 					event_callback(lastEvent);
 				}
 			}
 			
 			function the_complete_callback() {
-				if(typeof complete_callback == 'function'){
+				if(typeof complete_callback === 'function'){
 					// call with current time
 					complete_callback();
 				}				
