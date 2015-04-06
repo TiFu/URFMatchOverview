@@ -39,7 +39,7 @@ $mysqli->real_connect(SERVER, DB_USER, DB_PW, DATABASE);
 	 }
 
 	 if ($result) {
-		 $mysqli->query("INSERT INTO " .ANALYZED_GAMES_TABLE ." (gameId, region) VALUES (" .$gameId .", '" .$region "')");
+                 $mysqli->query("INSERT INTO " .ANALYZED_GAMES_TABLE ." (gameId, region) VALUES ($gameId, $region) ");
 		 return true;
 	 } else {
 		 return false;
