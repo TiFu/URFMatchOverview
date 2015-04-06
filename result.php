@@ -107,7 +107,7 @@ and open the template in the editor.
 				?>], hoverText: [<?php 
 					$string = "";
 					foreach ($logEvents as $event) {
-						$string .= '"' .$event['eventType'] .'",';
+						$string .= '"' .createHoverText($event) .'",';
 					}
 					echo rtrim($string, ',');
 			?>], timeLength: <?php echo $match->getDuration() ?>});
@@ -121,15 +121,6 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </head>
     <body>
-        <script>
- window.onkeydown = function(e) {
-    if(e.keyCode === 32 && e.target === document.body) {
-        e.preventDefault();
-        $('timeline').timeliner.pauseplay();
-        return false;  
-    }
-};
-</script>
         <div class="main_info">
             <div class="part_chat">              
                 <div class="highelight">Highlight Match </div>
@@ -196,28 +187,22 @@ and open the template in the editor.
                 </script>
             </div>
             <div class="clear"></div>
-            <div class="timeline">
-                    <div class="timelength">
-                        <div class="loadingtime" style="width:200px;"></div>
-                        <div class="eventsgame"  data-uk-tooltip title="Match Start"></div>
-                        <div class="eventsgame" style="margin-left: 50px;"  data-uk-tooltip title="Kill Some One"></div>
-                         <div class="eventsgame" style="margin-left: 150px;"  data-uk-tooltip title="Destroy"></div>
-                    </div>
-            </div>
+            <div id="timeline" class="timeline">
+         </div>
             <div class="clear"></div>
             <div class="statsteam">
                 <div class="summary">
-                    <div class="tred">Victory</div>
+                    <div class="tblue">Victory</div>
                     <div class="redgold">0.0K</div>
                     <div class="destroyred">Towers : 0  - Dragons : 0  - Baron : 0</div>                    
-                    <div class="tblue">Defeat</div>
+                    <div class="tred">Defeat</div>
                     <div class="redgold">0.0K</div>
                     <div class="destroyred">Towers : 0  - Dragons : 0  - Baron : 0</div>    
                     <div class="score">10-15</div>
 
                 </div>
                 <div class="redteam">
-
+					<div class="redteamborder">
                     <div class="champlloadin">
                         <div class="champpic">
                             <span class="level" data-uk-tooltip title="Level">18</span>
@@ -413,8 +398,10 @@ and open the template in the editor.
                             <div class="countgold">12000</div>    
                         </div>                        
                     </div> 
-                </div>
+					</div>
+				</div>
                 <div class="blueteam">
+					<div class="blueteamborder">
                     <div class="champlloadin">
                         <div class="champpic">
                             <span class="level" data-uk-tooltip title="Level">18</span>
@@ -609,7 +596,8 @@ and open the template in the editor.
                             <div class="gold">Minions</div>
                             <div class="countgold">12000</div>    
                         </div>                        
-                    </div> 
+                    </div>
+				</div>					
                 </div>               
             </div>
             <div class="clear"></div>       

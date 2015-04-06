@@ -36,6 +36,33 @@ function getRandomMatchId() {
 		
 	return $file->current();
 }
+function transformTypeToText($type) {
+	$arr = explode("_", $type);
+	$val = "";
+	foreach ($arr as $a) {
+		$val .= ucfirst(strtolower($a)) ." ";
+	}
+	return rtrim($val);
+}
+
+function createHoverText($event) {
+	if ($event["eventType"] == "BUILDING_KILL") {
+		if ($event["buildingType"] == "TOWER_BUILDING") {
+			$string = transformTypeToText($event["laneType"]) ." " .transformTypeToText($event['towerType']);
+		} else if ($event["buildingType"] == "INHIBITOR_BUILDING") {
+			$string  = transformTypeToText($event["laneType"]) ." inhibitor";
+		}
+	} else if ($event["eventType"] == "ELITE_MONSTER_KILL") {
+			if ($event["monsterType"] == "BARON_NASHOR") {
+				$string = "Baron Nashor";
+			} else if ($event["monsterType"] == "DRAGON") {
+				$string = "Dragon";
+			}
+	} else {
+		$string = ""; 
+	}
+	return $string;
+}
 
 function startsWith($haystack, $needle) {
     // search backwards starting from haystack length characters from the end

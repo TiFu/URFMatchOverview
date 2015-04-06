@@ -9,7 +9,7 @@
 			function updateTextBox() {
 				$($updateText).appendTo($commentBox);
 				$updateText = "";
-				$commentBox.scrollTop($commentBox.scrollHeight);
+				$commentBox.scrollTop($commentBox[0].scrollHeight);
 			}
 			function secToMin(sec) {
 				var min  = Math.floor(sec / 60);
@@ -55,17 +55,16 @@
 						$string = makeFirstLetterCapital(transform($evt["monsterType"])) + ' Was Slain By ' + teamSpan($killer['teamId']) + $champs[$killer['championId']] + '</span> !';
 					} else if (type == "CHAMPION_KILL") {
                                             if ($evt["killerId"] == 0) {
-                                                $string = "<img data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" /> ";
+                                                $string = "<img class=\"champImageSmall\" data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" /> ";
                                             } else {
                                                 $killern = $champs[$participants[$evt["killerId"]]["championId"]];
-                                                $string  = "<img data-uk-tooltip title=\"" + $killern + "\" src=\"images/champion/" + $killern + "46.png\" /> ";
+                                                $string  = "<img class=\"champImageSmall\" data-uk-tooltip title=\"" + $killern + "\" src=\"images/champion/" + $killern + "46.png\" /> ";
                                             }
                                             $victimn = $champs[$participants[$evt["victimId"]]["championId"]];
-                                          $string += " killed " + "<img data-uk-tooltip title=\"" + $victimn + "\" width=\"46\" height=\"46\" src=\"images/champion/" + $victimn + "46.png\" /> "; 
+                                          $string += " killed " + "<img class=\"champImageSmall\" data-uk-tooltip title=\"" + $victimn + "\" width=\"46\" height=\"46\" src=\"images/champion/" + $victimn + "46.png\" /> "; 
                                         } else {
 						$string = "";
 					}
-
 					return $string;
 			}
 			

@@ -8,7 +8,7 @@
 				hoverText: ["First event", "double", "Second Event", "Third Event", "Last event"], // Hover text
 				timeLineHeight: 10,
 				innerLineHeight: 10,
-				timeLineWidth: 1050, // width in px
+				timeLineWidth: "97%", // width in px
 				timeLength: 3600, // time length
 				animationLength:60, // animation length
 				updateTime: 250 // number of ms between to event calls (don't set it too low -> performance issues!!!)
@@ -20,71 +20,70 @@
 			var $id = $(this).attr("id");
 			var $eventPointer = 0;
 			// Cache elements
-			var $container = $(this).show();
-			// Timer conainer
-			$timerContainer = $('<div class="timerContainer"></div>').css({position:"relative", width:o.timeLineWidth}).prependTo($container);
-			// Timer and button container
-			$timerButton = $('<div></div>').css({width:o.timeLineWidth, position:"absolute", marginTop:-35}).prependTo($timerContainer);
-			// Timer & Buttons div. TODO: add Button divs
-			// Create timers above the line
-			// one timer every 10 minutes.
+			var $wrapper = $(this).show();
+			var $container = $('<div style="margin:0px auto"></div>').css({width:o.timeLineWidth}).appendTo($wrapper);
+			var $timerDiv = $('<div class="timer"></div>').css({width:o.timeLineWidth}).appendTo($container);
+			var $outerLineDiv = $('<div class="timelength"></div>').css({width:o.timeLineWidth}).appendTo($container);
+			var $innerLineDiv = $('<div class="loadingtime"></div>').appendTo($outerLineDiv);
+			var $width = $outerLineDiv.width();
+			// one timer every 5 minutes.
 			var end = 0;
-			for (var i = 0; i <= o.timeLength; i += 300) {
+			// Space to pause listener
+			$(document).keypress(function(e) {
+				   if(e.which === 32 && e.target === document.body) {
+						e.preventDefault();
+						$($id).timeliner.pauseplay();
+						return false;  
+					}
+			});
+			$('<img src="images/play.png" class="playButton" onClick="$(' + $id + ').timeliner.pauseplay()">').appendTo($timerDiv);
+			for (var i = 300; i <= o.timeLength; i += 300) {
 				i = Math.min(o.timeLength, i);
-				$('<div class="timer">'  + secToMin(i) + '</div>').css({position:"absolute",left:i / o.timeLength * (o.timeLineWidth-20), marginTop:-20}).appendTo($timerContainer);
+				$('<span class="time">'  + secToMin(i) + '</span>').css({position:"absolute", left: Math.max(i / o.timeLength * $width - 5, 0)}).appendTo($timerDiv);
 				end = i;
 			}
 			if (end != o.timeLength) {
-				$('<div class="timer">'  + secToMin(o.timeLength) + '</div>').css({position:"absolute",left:(o.timeLineWidth-20), marginTop:-20}).appendTo($timerContainer);				
+				$('<span class="time">'  + secToMin(o.timeLength) + '</span>').css({position:"absolute", left:$width}).appendTo($timerDiv);				
 			}
-			// Add Button div
-			var $button = $('<div class="button"><img data-uk-tooltip title="Play/Pasue" class="pauseplay" src="images/play.png" onClick="$(\'' + $id + '\').timeliner.pauseplay()"></div>').prependTo($timerButton);
-			// Line div
-			var $lineContainer = $('<div class="lineContainer"></div>').css({width:o.timeLineWidth, height:o.timeLineHeight}).appendTo($container);
-			var $outerLineDiv = $('<div class="outerLine"></div>').css({width:o.timeLineWidth, height:o.timeLineHeight}).appendTo($lineContainer);
-			// innterLineDiv
-			var $innerLineDiv  = $('<div class="innerLine">&nbsp;</div>').css({width:0, height:o.timeLineHeight}).appendTo($outerLineDiv);
-			// Place Divs inside the innerLineDiv (length / 7)
-			var $pointDiv = $('<div class="circle"></div>').css({width:o.timeLineWidth}).appendTo($lineContainer);
+
 			// Create clusters for events
-			var cluster = new Array(Math.floor(o.timeLineWidth / 13));
-				for(i = 0; i < o.timeLineWidth / 13; i++) {
+			var cluster = new Array(Math.floor($width / 10));
+				for(i = 0; i < $width / 10; i++) {
 					cluster[i] = new Array();
 				}
+
 			createClusters(o.events);
 			// now set the content of the pointDivs with the index inside the clusters
 			for (i = 0; i < cluster.length; i++) {
 					if (cluster[i].length > 0) {
-						var sum = 0;
 						var spanText = "";
 						var elements = 0;
 						for (z = 0; z < cluster[i].length; z++) {
 							if (o.showEvent[cluster[i][z]]) {
-								sum += o.events[cluster[i][z]];
-								spanText += o.hoverText[cluster[i][z]] + '\n';
+								spanText += o.hoverText[cluster[i][z]] + '<br>';
 								elements++;
 							}
 						}
 						if (elements > 0) {
-							var avg = sum / elements;
-							$('<div><span data-uk-tooltip title="' + spanText + '"><img class="icon" src="images/circle.png"></span></div>').css({position:"absolute", left:avg / o.timeLength * o.timeLineWidth}).appendTo($pointDiv);
+							$('<div class="eventsgame" data-uk-tooltip title="' + spanText + '"></div></div>').css({position:"absolute", left:(i*10)}).appendTo($outerLineDiv);
 						}
 					}
 			}
-			
+
 			animate(o.animationLength);
 			var $lastCall = 0;
 			// Private helper functions
 			function animate(time) {
 				$innerLineDiv.animate({
-						width:o.timeLineWidth,
+						width:$width,
 					},{ duration:time*1000, step: function(currentWidth) {
+							
 							var newTime = new Date().getTime();
 							if (newTime - $lastCall < o.updateTime) {
 								return;
 							}
 							var incr = false;
-							while (o.events[$eventPointer] < currentWidth  / o.timeLineWidth * o.timeLength) {
+							while (o.events[$eventPointer] < currentWidth  / $width * o.timeLength) {
 								incr = true;
 								$eventPointer++;
 							}
@@ -116,7 +115,7 @@
 			}
 			
 			function createClusters(arr) {
-				border = o.timeLength * 13 / o.timeLineWidth;	
+				border = o.timeLength * 10 / $width;	
 				for (i = 0; i < arr.length; i++) {
 					clust = Math.floor(arr[i] / border);
 					cluster[clust].push(i); // store index of element in that cluster
