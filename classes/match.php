@@ -91,6 +91,28 @@ class Match  {
 		}
 		return $info;
 	}
+	
+	function createHoverText($event) {
+	if ($event["eventType"] == "BUILDING_KILL") {
+		if ($event["buildingType"] == "TOWER_BUILDING") {
+			$string = "<span class=participant" .($event["teamId"] == 100 ? "blue" :"red") .">" .transformTypeToText($event["laneType"]) ." " .transformTypeToText($event['towerType']) ."</span>";
+		} else if ($event["buildingType"] == "INHIBITOR_BUILDING") {
+		$string  = "<span class=participant" .($event["teamId"] == 100 ? "blue" :"red") .">" .transformTypeToText($event["laneType"]) ." inhibitor</span>";
+		}
+	} else if ($event["eventType"] == "ELITE_MONSTER_KILL") {
+			$string = "<span class=participant" .($this->getParticipant($event["killerId"])["teamId"] == 100 ? "blue" : "red") .">";
+			if ($event["monsterType"] == "BARON_NASHOR") {
+				$string .= "Baron Nashor";
+			} else if ($event["monsterType"] == "DRAGON") {
+				$string .= "Dragon";
+			}
+			$string .= "</span>";
+	} else {
+		$string = ""; 
+	}
+	return $string;
+}
+
 	/**
 	 * Returns an participant array with comprimated stats.
 	 *
@@ -109,6 +131,9 @@ class Match  {
 			if ($participant == null) {
 				return $info;
 			}
+			$info['currentKills'] = 0;
+			$info['currentDeaths'] = 0;
+			$info['currentAssists'] = 0;
 			// Participant
 			$info['championId'] = $participant['championId'];
 			$info['participantId'] = $participantId;

@@ -8,7 +8,7 @@ class Cache {
 	
 	public function getData($tag) {
 		 if (array_key_exists($tag, $this->cache)) {
-			 return $cache[$tag];
+			 return $this->cache[$tag];
 		 } else {
 			 return false;
 		 }
