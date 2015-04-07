@@ -101,6 +101,13 @@
 					for (var k = 0; k < 7; k++){
 						$item = $($itemsIMG[k]);
 						$id = $stats[i]["items"][k]["itemId"];
+						var $elem = $item.parent().find("span"); // TODO propably save it 
+						if ($stats[i]["items"][k]["stock"] > 1) {
+							$elem.html($stats[i]["items"][k]["stock"]);
+							$elem.show();
+						} else {
+							$elem.hide();
+						}
 						$item.attr("src", $item.attr("src").replace(/(.*)\/.*(\.png$)/i, '$1/' + $id + '$2'));
 						$item.attr("title", $items[$id]);
 						$item.attr("alt", $items[$id]);
