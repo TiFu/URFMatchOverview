@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 include("config/config.php");
 include("functions.php");
 include("classes/match.php");
+include("templates.php");
 // Use mysqli (object orientation ftw)
 $mysqli = mysqli_init();
 $mysqli->real_connect(SERVER, DB_USER, DB_PW, DATABASE);
@@ -17,7 +18,7 @@ if (isset($_GET['matchId'])) {
 if (!is_int($matchId)) {
     // do error handling here
 }
-$match = new Match(file_get_contents("data/" . $matchId . ".json"));
+$match = new Match(file_get_contents("data/".$matchId.".json"), $mysqli);
 $startEvents = $match->getEvents(array("CHAMPION_KILL", "BUILDING_KILL", "ELITE_MONSTER_KILL"));
 $logEvents = array();
 
@@ -40,7 +41,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title> 
+        <title>URF Match Timeline</title> 
         <meta charset="UTF-8" />
         <script src="script/d3.v3.min.js"></script>
         <script type="text/javascript" src="script/jquery-1.10.2.min.js"></script>
@@ -87,34 +88,90 @@ while ($champ = $champs->fetch_assoc()) {
 $jsonEvents = json_encode($logEvents);
 echo $jsonEvents;
 ?>;
+			$participants = new Array();
+			<?php
+				foreach($match->getParticipants() as $participant) {
+					echo '$participants[' .$participant['participantId'] .'] = ' .json_encode($participant) .';';
+				}
+			?>
+			$items = new Array();
+			$items[0] = "Empty";
+			<?php
+				$items = $mysqli->query("SELECT id, name FROM " .ITEM_TABLE);
+				while ($item = $items->fetch_assoc()){
+					echo '$items[' .$item['id'] .'] = '.json_encode($item["name"]) .";";
+				}
+			?>
+			$champs = new Array();
+			<?php
+				$champions[] = array();
+				$champs = $mysqli->query("SELECT * FROM " .CHAMP_TABLE);
+				while ($champ = $champs->fetch_assoc()) {
+					$champions[$champ["id"]] = $champ["name"];
+					// JS champs
+					// TODO: only save the champs needed! (propably change the select)
+					echo '$champs[' .$champ['id'] .'] = "' .$champ['name'] .'";';
+				}
+			?>
 
             /**
              *  Initialize the timeline with events, showEvent and hoverText (currently BS)
              */
             $(document).ready(function () {
-                $('#timeline').timeliner({events: [<?php
-$string = "";
-foreach ($logEvents as $event) {
-    $string .= ((int) ($event['timestamp'] / 1000)) . ',';
-}
-echo rtrim($string, ',');
-?>], showEvent: [<?php
-$string = "";
-foreach ($logEvents as $event) {
-    $string .= ($event['eventType'] != 'CHAMPION_KILL') . ',';
-}
-echo rtrim($string, ',');
-?>], hoverText: [<?php
-$string = "";
-foreach ($logEvents as $event) {
-    $string .= "\"" . $match->createHoverText($event) . "\",";
-}
-echo rtrim($string, ',');
-?>], timeLength: <?php echo $match->getDuration() ?>});
                 // Update textBox periodically (every 250ms)
                 $textboxInterval = setInterval(updateTextBox, 250);
                 $commentBox = $("#comments");
-            });
+                $('#timeline').timeliner({events: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= ((int) ($event['timestamp']/1000)) .',';
+					}
+					echo rtrim($string, ',');
+				?>], showEvent: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= ($event['eventType'] != 'CHAMPION_KILL' && $event['eventType'] != 'STAT_UPDATE') .',';
+					}
+					echo rtrim($string, ',');
+				?>], hoverText: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= "\"" .$match->createHoverText($event) ."\",";
+					}
+					echo rtrim($string, ',');
+			?>], timeLength: <?php echo $match->getDuration() ?>});
+				// Update textBox periodically (every 250ms)
+				$textboxInterval = setInterval(updateTextBox, 250);
+				$commentBox = $("#comments");
+				for (i = 1; i <=  10; i++) {
+					$participants[i]["field"] = $("#participant" + i);
+					$participants[i]["field"]["items"] = $participants[i]["field"].find(".champbuild").find("img");
+					$participants[i]["field"]["currentGold"] = $participants[i]["field"].find("#currentGold");
+					$participants[i]["field"]["currentMinions"] = $participants[i]["field"].find("#currentMinions");
+					$participants[i]["field"]["level"] = $participants[i]["field"].find(".level");
+				}
+				$towerCountField = new Array();
+				$towerCountField[100] = $('#towerCount100');// blue team;
+				$towerCountField[200] = $('#towerCount200');
+				
+				$dragonCountField = new Array();
+				$dragonCountField[100] = $('#dragonCount100');
+				$dragonCountField[200] = $('#dragonCount200');
+				
+				$baronCountField = new Array();
+				$baronCountField[100] = $('#baronCount100');
+				$baronCountField[200] = $('#baronCount200');
+				
+				$goldCountField = new Array();
+				$goldCountField[100] = $('#blueGold');
+				$goldCountField[200] = $('#redGold');
+			
+				$blueTeamKillsField = $('#blueTeamKills');
+				$redTeamKillsField = $('#redTeamKills');
+				
+				$('#blueVictory').html($winner == 100 ? "Victory" : "Defeat");
+				$('#redVictory').html($winner == 200 ? "Victory" : "Defeat");
+			});
         </script>
         <!-- timeline -->
         <link href="css/style.css" rel="stylesheet" type="text/css" />
@@ -192,413 +249,82 @@ echo rtrim($string, ',');
             <div class="clear"></div>
             <div class="statsteam">
                 <div class="summary">
-                    <div class="tblue">Victory</div>
-                    <div class="redgold">0.0K</div>
-                    <div class="destroyred">Towers : 0  - Dragons : 0  - Baron : 0</div>                    
-                    <div class="tred">Defeat</div>
-                    <div class="redgold">0.0K</div>
-                    <div class="destroyred">Towers : 0  - Dragons : 0  - Baron : 0</div>    
-                    <div class="score">10-15</div>
+                    <div id="blueVictory" class="tblue">Victory</div>
+                    <div id="blueGold" class="redgold">5.0K</div>
+                    <div class="destroyred">Towers : <span id="towerCount100">0</span>  - Dragons : <span id="dragonCount100">0</span>  - Baron : <span id="baronCount100">0</span></div>                    
+                    <div id="redVictory" class="tred">Defeat</div>
+                    <div id="redGold" class="redgold">0.0K</div>
+                    <div class="destroyred">Towers : <span id="towerCount200">0</span>  - Dragons : <span id="dragonCount200">0</span>  - Baron : <span id="baronCount200">0</span></div>                    
+                    <div class="score"><span id="blueTeamKills">0</span>-<span id="redTeamKills">0</span></div>
 
                 </div>
-                <div class="redteam">
-                    <div class="redteamborder">
-                        <div class="champlloadin">
-                            <div class="champpic">
-                                <span class="level" data-uk-tooltip title="Level">18</span>
-                                <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                                <div class="summonerspell">
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                </div>                                
-                            </div> 
-                            <div class="summonerkda">
-                                Twisted Fate <br />
-                                <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
-                            </div>       
-                            <div class="champbuild">
-                                <table>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                    </tr>                              
-                                </table>
-                            </div>
-                            <div class="goldminions">
-                                <div class="gold">Gold</div>
-                                <div class="countgold">12000</div>    
-                            </div>
-                            <div class="minion">
-                                <div class="gold">Minions</div>
-                                <div class="countgold">12000</div>    
-                            </div>                        
-                        </div>  
-                        <div class="champlloadin">
-                            <div class="champpic">
-                                <span class="level" data-uk-tooltip title="Level">18</span>
-                                <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                                <div class="summonerspell">
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                </div>                                
-                            </div> 
-                            <div class="summonerkda">
-                                Twisted Fate <br />
-                                <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
-                            </div>       
-                            <div class="champbuild">
-                                <table>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                    </tr>                              
-                                </table>
-                            </div>
-                            <div class="goldminions">
-                                <div class="gold">Gold</div>
-                                <div class="countgold">12000</div>    
-                            </div>
-                            <div class="minion">
-                                <div class="gold">Minions</div>
-                                <div class="countgold">12000</div>    
-                            </div>                        
-                        </div> 
-                        <div class="champlloadin">
-                            <div class="champpic">
-                                <span class="level" data-uk-tooltip title="Level">18</span>
-                                <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                                <div class="summonerspell">
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                </div>                                
-                            </div> 
-                            <div class="summonerkda">
-                                Twisted Fate <br />
-                                <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
-                            </div>       
-                            <div class="champbuild">
-                                <table>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                    </tr>                              
-                                </table>
-                            </div>
-                            <div class="goldminions">
-                                <div class="gold">Gold</div>
-                                <div class="countgold">12000</div>    
-                            </div>
-                            <div class="minion">
-                                <div class="gold">Minions</div>
-                                <div class="countgold">12000</div>    
-                            </div>                        
-                        </div> 
-                        <div class="champlloadin">
-                            <div class="champpic">
-                                <span class="level" data-uk-tooltip title="Level">18</span>
-                                <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                                <div class="summonerspell">
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                </div>                                
-                            </div> 
-                            <div class="summonerkda">
-                                Twisted Fate <br />
-                                <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
-                            </div>       
-                            <div class="champbuild">
-                                <table>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                    </tr>                              
-                                </table>
-                            </div>
-                            <div class="goldminions">
-                                <div class="gold">Gold</div>
-                                <div class="countgold">12000</div>    
-                            </div>
-                            <div class="minion">
-                                <div class="gold">Minions</div>
-                                <div class="countgold">12000</div>    
-                            </div>                        
-                        </div> 
-                        <div class="champlloadin">
-                            <div class="champpic">
-                                <span class="level" data-uk-tooltip title="Level">18</span>
-                                <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                                <div class="summonerspell">
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                </div>                                
-                            </div> 
-                            <div class="summonerkda">
-                                Twisted Fate <br />
-                                <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
-                            </div>       
-                            <div class="champbuild">
-                                <table>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                    </tr>                              
-                                </table>
-                            </div>
-                            <div class="goldminions">
-                                <div class="gold">Gold</div>
-                                <div class="countgold">12000</div>    
-                            </div>
-                            <div class="minion">
-                                <div class="gold">Minions</div>
-                                <div class="countgold">12000</div>    
-                            </div>                        
-                        </div> 
-                    </div>
-                </div>
                 <div class="blueteam">
-                    <div class="blueteamborder">
-                        <div class="champlloadin">
-                            <div class="champpic">
-                                <span class="level" data-uk-tooltip title="Level">18</span>
-                                <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                                <div class="summonerspell">
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                </div>                                
-                            </div> 
-                            <div class="summonerkda">
-                                Twisted Fate <br />
-                                <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
-                            </div>       
-                            <div class="champbuild">
-                                <table>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                    </tr>                              
-                                </table>
-                            </div>
-                            <div class="goldminions">
-                                <div class="gold">Gold</div>
-                                <div class="countgold">12000</div>    
-                            </div>
-                            <div class="minion">
-                                <div class="gold">Minions</div>
-                                <div class="countgold">12000</div>    
-                            </div>                        
-                        </div> 
-                        <div class="champlloadin">
-                            <div class="champpic">
-                                <span class="level" data-uk-tooltip title="Level">18</span>
-                                <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                                <div class="summonerspell">
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                </div>                                
-                            </div> 
-                            <div class="summonerkda">
-                                Twisted Fate <br />
-                                <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
-                            </div>       
-                            <div class="champbuild">
-                                <table>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                    </tr>                              
-                                </table>
-                            </div>
-                            <div class="goldminions">
-                                <div class="gold">Gold</div>
-                                <div class="countgold">12000</div>    
-                            </div>
-                            <div class="minion">
-                                <div class="gold">Minions</div>
-                                <div class="countgold">12000</div>    
-                            </div>                        
-                        </div> 
-                        <div class="champlloadin">
-                            <div class="champpic">
-                                <span class="level" data-uk-tooltip title="Level">18</span>
-                                <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                                <div class="summonerspell">
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                </div>                                
-                            </div> 
-                            <div class="summonerkda">
-                                Twisted Fate <br />
-                                <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
-                            </div>       
-                            <div class="champbuild">
-                                <table>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                    </tr>                              
-                                </table>
-                            </div>
-                            <div class="goldminions">
-                                <div class="gold">Gold</div>
-                                <div class="countgold">12000</div>    
-                            </div>
-                            <div class="minion">
-                                <div class="gold">Minions</div>
-                                <div class="countgold">12000</div>    
-                            </div>                        
-                        </div> 
-                        <div class="champlloadin">
-                            <div class="champpic">
-                                <span class="level" data-uk-tooltip title="Level">18</span>
-                                <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                                <div class="summonerspell">
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                </div>                                
-                            </div> 
-                            <div class="summonerkda">
-                                Twisted Fate <br />
-                                <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
-                            </div>       
-                            <div class="champbuild">
-                                <table>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                    </tr>                              
-                                </table>
-                            </div>
-                            <div class="goldminions">
-                                <div class="gold">Gold</div>
-                                <div class="countgold">12000</div>    
-                            </div>
-                            <div class="minion">
-                                <div class="gold">Minions</div>
-                                <div class="countgold">12000</div>    
-                            </div>                        
-                        </div> 
-                        <div class="champlloadin">
-                            <div class="champpic">
-                                <span class="level" data-uk-tooltip title="Level">18</span>
-                                <img src="images/chmp.jpg" width="79" height="79" alt="championname" />
-                                <div class="summonerspell">
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                    <img src="images/flash.png" data-uk-tooltip title="Flash" width="37" height="37" alt="championname" />
-                                </div>                                
-                            </div> 
-                            <div class="summonerkda">
-                                Twisted Fate <br />
-                                <span class="kda" data-uk-tooltip title="Kill - Death - Assist">0 - 0 - 0</span>
-                            </div>       
-                            <div class="champbuild">
-                                <table>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                        <td class="trinket" colspan="3"><img src="images/item.png" data-uk-tooltip title="Flash" width="38" height="38" alt="championname" /></td>
-                                    </tr>
-                                    <tr>
-                                    </tr>                              
-                                </table>
-                            </div>
-                            <div class="goldminions">
-                                <div class="gold">Gold</div>
-                                <div class="countgold">12000</div>    
-                            </div>
-                            <div class="minion">
-                                <div class="gold">Minions</div>
-                                <div class="countgold">12000</div>    
-                            </div>                        
-                        </div>
-                    </div>					
+					<div class="blueteamborder">
+					<?php
+						$summonerSpells = array();
+						$summoners = $mysqli->query("SELECT * FROM " .SUMMONERS_TABLE);
+						while ($summoner = $summoners->fetch_assoc()) {
+							$summonerSpells[$summoner["id"]] = $summoner["name"];
+						}
+						
+						$participants = $match->getParticipants();
+						$search = array("{participantId}", "{champname}", "{kills}", "{deaths}", "{assists}" ,"{item0}", "{item1}", "{item2}", "{item3}", "{item4}", "{item5}", "{trinket}", "{gold}", "{minions}", "{level}", "{sum1}", "{sum2}");
+						foreach ($participants as $participant) {
+							if ($participant["teamId"] == BLUE_SIDE_ID) {
+								$replace = array();
+								$replace[] = $participant["participantId"];
+								$replace[] = $champions[$participant["championId"]];
+								$replace[] = $participant["currentKills"];
+								$replace[] = $participant["currentDeaths"];
+								$replace[] = $participant["currentAssists"];
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 475;
+								$replace[] = 0;
+								$replace[] = 1;
+								$replace[] = $summonerSpells[$participant["spell1"]];
+								$replace[] = $summonerSpells[$participant["spell2"]];
+								echo str_replace($search, $replace, PARTICIPANT_TEMPLATE);
+							}
+						}						
+					?>
+					</div>					
                 </div>               
+                <div class="redteam">
+					<div class="redteamborder">
+					<?php
+						foreach ($participants as $participant) {
+							if ($participant["teamId"] == RED_SIDE_ID) {
+								$replace = array();
+								$replace[] = $participant["participantId"];
+								$replace[] = $champions[$participant["championId"]];
+								$replace[] = $participant["currentKills"];
+								$replace[] = $participant["currentDeaths"];
+								$replace[] = $participant["currentAssists"];
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 475;
+								$replace[] = 0;
+								$replace[] = 1;
+								$replace[] = $summonerSpells[$participant["spell1"]];
+								$replace[] = $summonerSpells[$participant["spell2"]];
+
+								echo str_replace($search, $replace, PARTICIPANT_TEMPLATE);
+							}
+						}						
+					?>
+					</div>
+				</div>
             </div>
             <div class="clear"></div>       
             <div class="summary">

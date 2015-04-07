@@ -48,7 +48,7 @@
 
 			// Create clusters for events
 			var cluster = new Array(Math.floor($width / 10));
-				for(i = 0; i < $width / 10; i++) {
+				for(i = 0; i < $width / 10+1; i++) {
 					cluster[i] = new Array();
 				}
 

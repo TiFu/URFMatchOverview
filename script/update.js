@@ -7,9 +7,11 @@
 			}
 			
 			function updateTextBox() {
-				$($updateText).appendTo($commentBox);
-				$updateText = "";
-				$commentBox.scrollTop($commentBox[0].scrollHeight);
+				if ($updateText != "") {
+					$($updateText).appendTo($commentBox);
+					$commentBox.scrollTop($commentBox[0].scrollHeight);
+					$updateText = "";
+				}
 			}
 			function secToMin(sec) {
 				var min  = Math.floor(sec / 60);
@@ -40,6 +42,7 @@
 						
 						if ($evt['buildingType'] == "TOWER_BUILDING") {
 							$string +=$lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "</span> Got Destroyed";
+							updateTowerCount(($evt["teamId"] == 100 ? 200 : 100)); // reverse teams (blue team turret destroyed -> redTeamCounter++)
 						} else { // inhib
 							$string += $lanes[$evt['laneType']] + " Inhibitor</span> Got Destroyed";							
 						}
@@ -53,34 +56,100 @@
 						var killerId = $evt["killerId"];
 						var $killer = $participants[$evt["killerId"]];
 						$string = makeFirstLetterCapital(transform($evt["monsterType"])) + ' Was Slain By ' + teamSpan($killer['teamId']) + $champs[$killer['championId']] + '</span> !';
+							if ($evt["monsterType"] == "DRAGON") {
+								updateDragonCount($killer['teamId']);
+							} else if ($evt["monsterType"] == "BARON_NASHOR") {
+								updateBaronCount($killer["teamId"]);
+							}
 					} else if (type == "CHAMPION_KILL") {
                                             if ($evt["killerId"] == 0) {
                                                 $string = "<img class=\"champImageSmall\" data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" /> ";
                                             } else {
 												updateCurrentKDA($evt["killerId"], $evt["victimId"], $evt["assistingParticipantIds"]);
 												$killern = $champs[$participants[$evt["killerId"]]["championId"]];
-                                                $string  = "<img class=\"champImageSmall\" style=\"border: 1px solid " + $team[$participants[$evt["killerId"]]["teamId"]]+ "\" data-uk-tooltip title=\"" + $killern + " " + kda($evt["killerId"]) + "\" src=\"images/champion/" + $killern + "46.png\" /> ";
+                                                $string  = "<img class=\"champImageSmall\" style=\"border: 1px solid " + $team[$participants[$evt["killerId"]]["teamId"]]+ "\" data-uk-tooltip title=\"" + $killern + " (" + kda($evt["killerId"]) + ")\" src=\"images/champion/" + $killern + "46.png\" /> ";
                                             }
                                             $victimn = $champs[$participants[$evt["victimId"]]["championId"]];
-                                          $string += " killed " + "<img class=\"champImageSmall\" style=\"border: 1px solid " + $team[$participants[$evt["victimId"]]["teamId"]]+ "\" data-uk-tooltip title=\"" + $victimn + " " + kda($evt["victimId"]) +"\" width=\"46\" height=\"46\" src=\"images/champion/" + $victimn + "46.png\" /> "; 
-                                        } else {
+                                          $string += " killed " + "<img class=\"champImageSmall\" style=\"border: 1px solid " + $team[$participants[$evt["victimId"]]["teamId"]]+ "\" data-uk-tooltip title=\"" + $victimn + " (" + kda($evt["victimId"]) +")\" width=\"46\" height=\"46\" src=\"images/champion/" + $victimn + "46.png\" /> "; 
+                    } else if (type == "STAT_UPDATE") {
+						updateStats($evt['data']);
 						$string = "";
-					}
+					} else {
+						$string = "";
+					} 
 					return $string;
 			}
 
 			function kda($id) {
 				$part = $participants[$id];
-				$string = "(" + $part["currentKills"] + "-" + $part["currentDeaths"] + "-" + $part["currentAssists"] + ")";
+				$string = "" + $part["currentKills"] + " - " + $part["currentDeaths"] + " - " + $part["currentAssists"] + "";
 				return $string;
 			}
 
+			// Map from partId -> items
+			function updateStats($stats) {
+				var blueSum = 0;
+				var redSum = 0;
+				for (var i = 1; i <= 10; i++) { // iterate over all participants
+					if ($participants[i]["teamId"] == 100) {
+						blueSum += $stats[i]["totalGold"];
+					} else if ($participants[i]["teamId"] == 200) {
+						redSum += $stats[i]["totalGold"];
+					}
+					// items first
+					$itemsIMG = $participants[i]["field"]["items"];
+					for (var k = 0; k < 7; k++){
+						$item = $($itemsIMG[k]);
+						$id = $stats[i]["items"][k]["itemId"];
+						$item.attr("src", $item.attr("src").replace(/(.*)\/.*(\.png$)/i, '$1/' + $id + '$2'));
+						$item.attr("title", $items[$id]);
+						$item.attr("alt", $items[$id]);
+						// TODO add stack counter wenn stack != 1
+					}
+					$participants[i]["field"]["currentGold"].html($stats[i]["totalGold"]);
+					$participants[i]["field"]["currentMinions"].html($stats[i]["minionsKilled"]);
+					$participants[i]["field"]["level"].html($stats[i]["level"]);
+				}
+				// Update gold counts
+				$goldCountField[100].html(Math.round(blueSum / 100.0) / 10.0 + "K")
+				$goldCountField[200].html(Math.round(redSum / 100.0) / 10.0 + "K")
+			}
+			function updateDragonCount($killerTeam) {
+				var $value = $dragonCountField[$killerTeam].html();
+				$value++;
+				$dragonCountField[$killerTeam].html($value);
+			}
+			
+			function updateBaronCount($killerTeam) {
+				var $value = $baronCountField[$killerTeam].html();
+				$value++;
+				$baronCountField[$killerTeam].html($value);
+			}
+			
+			function updateTowerCount($killerTeam) {
+				var $valu = $towerCountField[$killerTeam].html();
+				$valu++;
+				$towerCountField[$killerTeam].html($valu);
+			}
 			function updateCurrentKDA($killer, $victim, $assists) {
+				// Update team kill count
+				if ($participants[$killer]["teamId"] == 100) {
+					var $value = $blueTeamKillsField.html();
+					$value++;
+					$blueTeamKillsField.html($value);
+				} else if ($participants[$killer]["teamId"] == 200) {
+					var $value = $redTeamKillsField.html();
+					$value++;
+					$redTeamKillsField.html($value);
+				}
 				$participants[$killer]["currentKills"]++;
+				$participants[$killer]["field"].find(".kda").html(kda($killer));
 				$participants[$victim]["currentDeaths"]++;
+				$participants[$victim]["field"].find(".kda").html(kda($victim));
 				if (typeof $assists != 'undefined') {
 					for(i = 0; i < $assists.length; i++) {
 						$participants[$assists[i]]["currentAssists"]++;
+						$participants[$assists[i]]["field"].find(".kda").html(kda($assists[i]));
 					}
 				}
 			}

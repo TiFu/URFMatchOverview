@@ -5,14 +5,14 @@
 			 */
 function event_callback(eventPointer) {
 			// first create string
-		while (globalEventPointer <= eventPointer) {
-			$string = generateEventString($evts[globalEventPointer]);
-            drawomap([$evts[globalEventPointer]['position']['x'],[$evts[globalEventPointer]['position']['y']]]) ;
-
-        if ($string != "") {
-            appendTextBox($string, $evts[globalEventPointer]['timestamp']);
-
-        }
+	while (globalEventPointer <= eventPointer) {
+		$string = generateEventString($evts[globalEventPointer]);
+		if ( typeof $evts[globalEventPointer]["position"] !== "undefined") { // if position exists
+			drawomap([$evts[globalEventPointer]['position']['x'],[$evts[globalEventPointer]['position']['y']]]) ;
+		}
+		if ($string != "") {
+			appendTextBox($string, $evts[globalEventPointer]['timestamp']);
+		}
         globalEventPointer++;
     }
 }
