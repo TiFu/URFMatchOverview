@@ -34,7 +34,7 @@ function getRandomMatchId() {
 	$file = new SplFileObject(ID_PATH .$files[$file]);
 	$file->seek($lineNumber);
 		
-	return $file->current();
+	return rtrim($file->current());
 }
 function transformTypeToText($type) {
 	$arr = explode("_", $type);
