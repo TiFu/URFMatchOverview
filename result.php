@@ -47,9 +47,9 @@ and open the template in the editor.
         <script type="text/javascript" src="script/jquery-1.10.2.min.js"></script>
         <script type="text/javascript" src="script/jquery.tablesorter.min.js"></script> 
         <!-- timeline -->
-        <link id="data-uikit-theme" rel="stylesheet" href="tip/uikit.docs.min.css">
-        <script src="tip/uikit.min.js"></script>
-        <script src="tip/tooltip.js"></script>
+        <link id="data-uikit-theme" rel="stylesheet" href="css/uikit.docs.min.css">
+        <script src="script/uikit.min.js"></script>
+        <script src="script/tooltip.js"></script>
         <script src="script/jquery.pause.min.js"></script>
         <script src="script/jquery.timer.js"></script>
         <script src="script/timeline.js"></script>
