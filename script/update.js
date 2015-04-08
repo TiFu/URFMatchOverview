@@ -63,14 +63,14 @@
 							}
 					} else if (type == "CHAMPION_KILL") {
                                             if ($evt["killerId"] == 0) {
-                                                $string = "<img class=\"champImageSmall\" data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" /> ";
+                                                $string = "<img alt=\"Minion\" class=\"champImageSmall\" data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" /> ";
                                             } else {
 												updateCurrentKDA($evt["killerId"], $evt["victimId"], $evt["assistingParticipantIds"]);
 												$killern = $champs[$participants[$evt["killerId"]]["championId"]];
-                                                $string  = "<img class=\"champImageSmall\" style=\"border: 1px solid " + $team[$participants[$evt["killerId"]]["teamId"]]+ "\" data-uk-tooltip title=\"" + $killern + " (" + kda($evt["killerId"]) + ")\" src=\"images/champion/" + $killern + "46.png\" /> ";
+                                                $string  = "<img alt=\"" + $killern + "\" class=\"champImageSmall\" style=\"border: 1px solid " + $team[$participants[$evt["killerId"]]["teamId"]]+ "\" data-uk-tooltip title=\"" + $killern + " (" + kda($evt["killerId"]) + ")\" src=\"images/champion/" + $killern.replace(" ", "%20") + "46.png\" /> ";
                                             }
                                             $victimn = $champs[$participants[$evt["victimId"]]["championId"]];
-                                          $string += " killed " + "<img class=\"champImageSmall\" style=\"border: 1px solid " + $team[$participants[$evt["victimId"]]["teamId"]]+ "\" data-uk-tooltip title=\"" + $victimn + " (" + kda($evt["victimId"]) +")\" width=\"46\" height=\"46\" src=\"images/champion/" + $victimn + "46.png\" /> "; 
+                                          $string += " killed " + "<img alt=\"" + $victimn + "\" class=\"champImageSmall\" style=\"border: 1px solid " + $team[$participants[$evt["victimId"]]["teamId"]]+ "\" data-uk-tooltip title=\"" + $victimn + " (" + kda($evt["victimId"]) +")\" width=\"46\" height=\"46\" src=\"images/champion/" + $victimn.replace(" ", "%20") + "46.png\" /> "; 
                     } else if (type == "STAT_UPDATE") {
 						updateStats($evt['data']);
 						$string = "";

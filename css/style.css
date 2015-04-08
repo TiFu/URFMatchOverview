@@ -282,7 +282,7 @@ body{
 }
 .trinket{
     position: absolute;
-    margin-top: -20px;
+    margin-top: -24px;
 }
 table{
     border-spacing: 5px;
@@ -324,9 +324,12 @@ table{
     height: 525px;
 }
 
-
+#keywords td {
+	padding:0;
+}
 
 #keywords {
+	border-spacing:0;
     width: 100%;
     font-size:10px;
     margin-bottom: 15px;
