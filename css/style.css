@@ -368,9 +368,9 @@ table{
 
 
 
-#keywords thead  th.headerSortUp span {background-image: url('up-arrow.png');}
+#keywords thead  th.headerSortUp span {background-image: url('down-arrow.png');}
 
-#keywords thead  th.headerSortDown span {background-image: url('down-arrow.png');}
+#keywords thead  th.headerSortDown span {background-image: url('up-arrow.png');}
 
 #keywords tbody tr {color: #555;}
 

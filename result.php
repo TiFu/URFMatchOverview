@@ -415,7 +415,7 @@ GROUP BY `id`
 ");
                                 $rowx3 = $result3->fetch_assoc();
                                 echo "<tr class=\"yellow\">\n";
-                                echo "<td><span>$num</span></th>\n";
+                                echo "<td><span>$num</span></td>\n";
                                 echo "<td><span><img data-uk-tooltip title=\"{$rowx['name']}\" style=\"border-radius: 50%;\" width=\"24\" height=\"24\" src=\"images/champion/" .str_replace(" ", "%20",$rowx['name']) ."46.png\" alt=\"\" /></span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['pick'],2)."%</percentege> Pickrate In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['pick'],0) / 10)."%</rate> Pickrate In All Servers\">".round($row['pick'],2)."%</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['kda'],2)."</percentege> KDA Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['kda'],1) / 10)."%</rate> KDA Per Game In All Servers\">".round($row['kda'],2)."</span></td>\n";
