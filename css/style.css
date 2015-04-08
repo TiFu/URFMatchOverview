@@ -319,9 +319,10 @@ table{
     color:white;  
 }
 .backurf{
-    background: url('../images/urfdata.jpg') no-repeat;
+    background: url('../images/urfdata.jpg') 50% 50%;
     width: 1280px;
-    height: 525px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 #keywords td {
