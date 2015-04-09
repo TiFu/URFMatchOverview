@@ -21,8 +21,8 @@ rate{
     color:yellow;
 }
 .xd{
-float: left;
-margin-top: -10px;
+    float: left;
+    margin-top: -10px;
 }
 
 @font-face {
@@ -236,13 +236,13 @@ body{
     padding-top: 10px;
 }
 .stat {
-	position:absolute;
+    position:absolute;
     color:white;
     background-color: #bbc1bd;
     border-radius: 5px;
-	margin-left:25px; 
-	margin-top:20px;
-	font-size:10px;
+    margin-left:25px; 
+    margin-top:20px;
+    font-size:10px;
     padding:0px 2px 0px 2px;
     border: 1px solid black;
 }
@@ -331,7 +331,7 @@ table{
 }
 
 #keywords td {
-	padding:0;
+    padding:0;
 }
 
 #keywords {
@@ -340,7 +340,7 @@ table{
     font-size:10px;
     background-color: #fbedb8;
     border-collapse: collapse;
-    opacity:0.8;
+    opacity:0.9;
 }
 #keywords td{
     padding:10px;
@@ -348,7 +348,10 @@ table{
     vertical-align: middle;
     font-size: 11px;
     text-shadow: 0px 1px rgba(255, 255, 255, 0.9);
-    color: #292929;
+    color: #34495E;
+}
+#keywords tbody tr:hover{
+    background-color:#dbdbdb;border-bottom:1px solid #b8b8b8;border-top:1px solid #cecece;
 }
 
 #keywords thead tr th {

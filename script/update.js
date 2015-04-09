@@ -69,7 +69,7 @@
 					} else if (type == "ELITE_MONSTER_KILL" && ($evt["monsterType"] == "BARON_NASHOR" || $evt["monsterType"] == "DRAGON")) {
 						var killerId = $evt["killerId"];
 						var $killer = $participants[$evt["killerId"]];
-						$string = "<img data-uk-tooltip src=\"images/gamepic/" + makeFirstLetterCapital(transform($evt["monsterType"])) + ".png\" alt=\"" + makeFirstLetterCapital(transform($evt["monsterType"])) + "\" title=\"" + makeFirstLetterCapital(transform($evt["monsterType"])) + "\" />" + ' Was Slain By ' + "<img data-uk-tooltip style=\"border: 1px solid " + $team[$participants[$evt["killerId"]]["teamId"]]+ "\" src=\"images/champion/"+ $champs[$killer['championId']] + "46.png\" alt=\"" + $champs[$killer['championId']] + "\" />";
+						$string = "<img data-uk-tooltip src=\"images/gamepic/" + makeFirstLetterCapital(transform($evt["monsterType"])) + ".png\" alt=\"" + makeFirstLetterCapital(transform($evt["monsterType"])) + "\" title=\"" + makeFirstLetterCapital(transform($evt["monsterType"])) + "\" />" + ' Has been Slain By ' + "<img data-uk-tooltip style=\"border: 1px solid " + $team[$participants[$evt["killerId"]]["teamId"]]+ "\" src=\"images/champion/"+ $champs[$killer['championId']] + "46.png\" alt=\"" + $champs[$killer['championId']] + "\" />";
 							if ($evt["monsterType"] == "DRAGON") {
 								updateDragonCount($killer['teamId']);
 							} else if ($evt["monsterType"] == "BARON_NASHOR") {
