@@ -108,10 +108,15 @@ body{
 .participantblue{
     color:blue;
 }
+.participantblue img{
+    border:1px solid blue;
+}
 .participantred{
     color:red;
 }
-
+.participantred img{
+    border:1px solid red;
+}
 .items_name{
     color:darkviolet;
     font-weight: bold;

@@ -41,21 +41,35 @@
 						var $killer = $participants[$evt["killerId"]];
 						
 						if ($evt['buildingType'] == "TOWER_BUILDING") {
-							$string +=$lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "</span> Got Destroyed";
+                                                    if($evt['teamId'] == 100){
+							$string += "<img alt=\"" + $lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "\" class=\"champImageSmall\" data-uk-tooltip title=\""+ $lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "\" src=\"images/gamepic/t1.png\" />";
 							updateTowerCount(($evt["teamId"] == 100 ? 200 : 100)); // reverse teams (blue team turret destroyed -> redTeamCounter++)
+                                                    }
+                                                    else{
+                                                        $string += "<img alt=\"" + $lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "\" class=\"champImageSmall\" data-uk-tooltip title=\""+ $lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "\" src=\"images/gamepic/t.png\" />";
+                                                        updateTowerCount(($evt["teamId"] == 100 ? 200 : 100));
+                                                    }
+                                                    
 						} else { // inhib
-							$string += $lanes[$evt['laneType']] + " Inhibitor</span> Got Destroyed";							
+                                                     if($evt['teamId'] == 100){
+                                                        $string += "<img alt=\"" + $lanes[$evt['laneType']] + "Inhibitor\" class=\"champImageSmall\" data-uk-tooltip title=\"" + $lanes[$evt['laneType']] + " Inhibitor\" src=\"images/gamepic/b2.png\" />";
+							updateTowerCount(($evt["teamId"] == 100 ? 200 : 100)); // reverse teams (blue team turret destroyed -> redTeamCounter++)
+                                                    }
+                                                    else{
+                                                        $string += "<img alt=\"" + $lanes[$evt['laneType']] + "Inhibitor\" class=\"champImageSmall\" data-uk-tooltip title=\"" + $lanes[$evt['laneType']] + " Inhibitor\" src=\"images/gamepic/r2.png\" />";
+                                                        updateTowerCount(($evt["teamId"] == 100 ? 200 : 100));
+                                                    }                                                             
 						}
 						
 						if (killerId != 0) {
-							$string += ' By ' + teamSpan($killer['teamId']) + $champs[$killer['championId']] + '</span> !';
+							$string += ' Has been destroyed By ' + "<img data-uk-tooltip title=\"" + $champs[$killer['championId']] + " (" + kda($evt["killerId"]) + ")\" style=\"border: 1px solid " + $team[$participants[$evt["killerId"]]["teamId"]]+ "\" src=\"images/champion/"+ $champs[$killer['championId']] + "46.png\" alt=\"" + $champs[$killer['championId']] + "\" />";
 						} else {
-							$string += ' By a Minion!';
+							$string += " Has been destroyed By <img alt=\"Minion\" class=\"champImageSmall\" data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" />";
 						}
 					} else if (type == "ELITE_MONSTER_KILL" && ($evt["monsterType"] == "BARON_NASHOR" || $evt["monsterType"] == "DRAGON")) {
 						var killerId = $evt["killerId"];
 						var $killer = $participants[$evt["killerId"]];
-						$string = makeFirstLetterCapital(transform($evt["monsterType"])) + ' Was Slain By ' + teamSpan($killer['teamId']) + $champs[$killer['championId']] + '</span> !';
+						$string = "<img data-uk-tooltip src=\"images/gamepic/" + makeFirstLetterCapital(transform($evt["monsterType"])) + ".png\" alt=\"" + makeFirstLetterCapital(transform($evt["monsterType"])) + "\" title=\"" + makeFirstLetterCapital(transform($evt["monsterType"])) + "\" />" + ' Was Slain By ' + "<img data-uk-tooltip style=\"border: 1px solid " + $team[$participants[$evt["killerId"]]["teamId"]]+ "\" src=\"images/champion/"+ $champs[$killer['championId']] + "46.png\" alt=\"" + $champs[$killer['championId']] + "\" />";
 							if ($evt["monsterType"] == "DRAGON") {
 								updateDragonCount($killer['teamId']);
 							} else if ($evt["monsterType"] == "BARON_NASHOR") {
