@@ -198,8 +198,11 @@
                         yScale = d3.scale.linear()
                                 .domain([domain.min.y, domain.max.y])
                                 .range([520, 0]);
-						$svg.append('<g id="circle' + idCounter + '" title="Hallo Welt"><circle class="kills" r="5" cx="' + xScale($event["position"]["x"]) + '" cy="' + yScale($event["position"]["y"]) + '" fill="red"></circle></g>');
-						$('#circle' + idCounter).tipsy({gravity:'s'});
+						$svg.append('<g id="circle' + idCounter + '"><circle class="kills" r="5" cx="' + xScale($event["position"]["x"]) + '" cy="' + yScale($event["position"]["y"]) + '" fill="red"></circle></g>');
+						$('#circle' + idCounter).tipsy({gravity:'s', html:true, title: function() {		
+						 return '<span class="participantblue">Hallo Welt</span>';
+						}
+						});
 						idCounter++;
                         return true;
                     }
