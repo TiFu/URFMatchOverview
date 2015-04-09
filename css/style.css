@@ -7,6 +7,15 @@ and open the template in the editor.
     Created on : 02/04/2015, 03:10:38 ص
     Author     : Dante
 */
+.killIcon {
+	background:url(images/kill_icon.png) no-repeat center center;
+	width:18px;
+	height:19px;
+}
+.tooltipMap {
+	width:32px;
+	height:32px;
+}
 #mapPicture {
 	position:relative;
 	margin-top:10px;
