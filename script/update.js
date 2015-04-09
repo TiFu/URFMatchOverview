@@ -177,3 +177,29 @@
 			function teamSpan($teamId) {
 				return '<span class="participant' + $team[$teamId] +'">';
 			}
+			
+			
+			var idCounter = 0;
+            function drawomap($event) {
+						var domain = {
+                               min: {x: -1000, y: -570},
+                               max: {x: 14800, y: 14800}
+                        },
+
+                        color = d3.scale.linear()
+                                .domain([0, 3])
+                                .range(["white", "steelblue"])
+                                .interpolate(d3.interpolateLab);
+
+                        xScale = d3.scale.linear()
+                                .domain([domain.min.x, domain.max.x])
+                                .range([0, 512]);
+
+                        yScale = d3.scale.linear()
+                                .domain([domain.min.y, domain.max.y])
+                                .range([520, 0]);
+						$svg.append('<g id="circle' + idCounter + '" title="Hallo Welt"><circle class="kills" r="5" cx="' + xScale($event["position"]["x"]) + '" cy="' + yScale($event["position"]["y"]) + '" fill="red"></circle></g>');
+						$('#circle' + idCounter).tipsy({gravity:'s'});
+						idCounter++;
+                        return true;
+                    }

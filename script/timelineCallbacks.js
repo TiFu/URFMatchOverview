@@ -8,7 +8,7 @@ function event_callback(eventPointer) {
 	while (globalEventPointer <= eventPointer) {
 		$string = generateEventString($evts[globalEventPointer]);
 		if ( typeof $evts[globalEventPointer]["position"] !== "undefined") { // if position exists
-			drawomap([$evts[globalEventPointer]['position']['x'],[$evts[globalEventPointer]['position']['y']]]) ;
+			drawomap($evts[globalEventPointer]) ;
 		}
 		if ($string != "") {
 			appendTextBox($string, $evts[globalEventPointer]['timestamp']);

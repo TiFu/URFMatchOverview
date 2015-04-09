@@ -56,6 +56,9 @@ and open the template in the editor.
         <script src="script/functions.js"></script>
         <script src="script/update.js"></script>
         <script src="script/timelineCallbacks.js"></script>
+		<script src="script/pablo.min.js"></script>
+		<script src="script/jquery.tipsy.js"></script>
+		<link rel="stylesheet" href="css/tipsy.css">
         <link rel="stylesheet" href="css/timeline.css">
         <script>
             window.drawn = false;
@@ -172,6 +175,11 @@ while ($champ = $champs->fetch_assoc()) {
 				
 				$('#blueVictory').html($winner == 100 ? "Victory" : "Defeat");
 				$('#redVictory').html($winner == 200 ? "Victory" : "Defeat");
+				// Draw map
+				$svg = Pablo('#mapPicture');
+				// init map
+				$svg.append('<image xlink:href="images/map.jpg" x="0" y="0" width="530" height="512"></image>');
+
 			});
         </script>
         <!-- timeline -->
@@ -187,65 +195,9 @@ while ($champ = $champs->fetch_assoc()) {
                 </div>
             </div>
             <div class="part_map">  
-                <div id="map"></div>
-                <script>
-
-                    function drawomap(cord) {
-                        var cords = [cord
-                        ],
-                                domain = {
-                                    min: {x: -1000, y: -570},
-                                    max: {x: 14800, y: 14800}
-                                },
-                        width = 512,
-                                height = 512,
-                                bg = "images/map.jpg",
-                                xScale, yScale, svg;
-
-                        color = d3.scale.linear()
-                                .domain([0, 3])
-                                .range(["white", "steelblue"])
-                                .interpolate(d3.interpolateLab);
-
-                        xScale = d3.scale.linear()
-                                .domain([domain.min.x, domain.max.x])
-                                .range([0, width]);
-
-                        yScale = d3.scale.linear()
-                                .domain([domain.min.y, domain.max.y])
-                                .range([height, 0]);
-
-                        if (drawn != true) {
-                            this.svg = d3.select("#map").append("svg:svg")
-                                    .attr("width", width)
-                                    .attr("height", height);
-
-                            this.svg.append('image')
-                                    .attr('xlink:href', bg)
-                                    .attr('x', '0')
-                                    .attr('y', '0')
-                                    .attr('width', '530')
-                                    .attr('height', height);
-                            drawn = true;
-                        }
-						
-						if (!(typeof cord == "undefined")) {
-							this.svg.append('svg:g').selectAll("circle")
-                                .data(cords)
-                                .enter().append("svg:circle")
-                                .attr('r', 5)
-                                .attr('cx', function (d) {
-                                    return xScale(d[0]);
-                                })
-                                .attr('cy', function (d) {
-                                    return yScale(d[1]);
-                                })
-                                .attr('class', 'kills');
-						}
-                        return true;
-                    }
-                    drawomap();
-                </script>
+                <div id="map">
+					<svg id="mapPicture"></svg>
+				</div>
             </div>
             <div class="clear"></div>
             <div id="timeline" class="timeline">
