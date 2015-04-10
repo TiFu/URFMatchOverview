@@ -289,7 +289,7 @@ while ($champ = $champs->fetch_assoc()) {
                 <div class="urfdata">Ultra Rapid Fire Champions Statistical</div>
 
             </div>
-            <div class="backurf"> 
+            <div class="backurf" style="background-position: 25px 50px"> 
                 <table id="keywords">
                     <thead>
                         <tr>

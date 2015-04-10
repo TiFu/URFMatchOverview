@@ -1,6 +1,22 @@
+<!DOCTYPE html>
+<?php
+$db = new mysqli('localhost', 'root', '', 'challenge');
+if (isset($_POST['go'])) {
+    $serv = $_POST['server'];
+} else {
+    $serv = "na";
+}
+if (!$result4 = $db->query("SELECT * FROM `severrate` WHERE `name` =  '$serv'")) {
+    die('There was an error running the query [' . $db->error . ']');
+}
+$rowx4 = $result4->fetch_assoc();
+
+$red = $rowx4['winratered'] / $rowx4['gamenum'] * 100;
+$blue = $rowx4['winrateblue'] / $rowx4['gamenum'] * 100;
+?>
 <html>
     <head>
-        <title>URF Match Timeline</title> 
+        <title>URF Champions Statistical</title> 
         <meta charset="UTF-8" />
         <script src="script/d3.v3.min.js"></script>
         <script type="text/javascript" src="script/jquery-1.10.2.min.js"></script>
@@ -20,9 +36,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </head>
     <body>
-        <div class="main_info">
-                        <div class="summary">
-                <div id="blueVictory" class="tblue" data-uk-tooltip title="Blue Team Win Rate On All Servers">67%</div>
+        <div class="main_info" style="width: 1280px;">
+            <div class="summary">
+                <div id="blueVictory" class="tblue" data-uk-tooltip title="Blue Team Win Rate On <?php echo $rowx4['name']; ?> Server"><?php echo number_format((float)$blue, 2, '.', ''); ?>%</div>
                 <div class="sele">
                     <form action="" method="post">
                         <select data-cached-title="قم بإختيار السيرفر" name="server">
@@ -31,18 +47,22 @@
                             <option value="eune" data-tselect-selected-label="EUNE">Europe Nordic &amp; East</option>
                             <option value="br" data-tselect-selected-label="BR">Brazil</option>
                             <option value="tr" data-tselect-selected-label="TR">Turkey</option>
-                            <option value="kr" data-tselect-selected-label="TR">Turkey</option>
+                            <option value="kr" data-tselect-selected-label="TR">Korea</option>
                             <option value="ru" data-tselect-selected-label="RU">Russia</option>
                             <option value="lan" data-tselect-selected-label="LAN">Latin America North</option>
                             <option value="las" data-tselect-selected-label="LAS">Latin America South</option>
                             <option value="oce" data-tselect-selected-label="OCE">Oceania</option>
                         </select>
-                        <br />
                         <input class="inputte" name="go" value="Filter" type="submit">
 
                     </form>
+                    <div class="stats">
+                        Server Selected : <?php echo $rowx4['name']; ?>
+                        <br />
+                        Number Of Matches : <?php echo $rowx4['gamenum']; ?>
+                    </div>
                 </div>
-                <div id="redVictory" style="padding-right: 105px;" class="tred" data-uk-tooltip title="Red Team Win Rate On All Servers">77%</div>
+                <div id="redVictory" style="padding-right: 170px;" class="tred" data-uk-tooltip title="Red Team Win Rate On <?php echo $rowx4['name']; ?> Server"><?php echo number_format((float)$red, 2, '.', ''); ?>%</div>
             </div>
 
             <div class="backurf"> 
@@ -74,12 +94,6 @@
                     </thead>
                     <tbody>
                         <?php
-                        $db = new mysqli('localhost', 'root', '', 'challenge');
-                        if (isset($_POST['go'])) {
-                            $serv = $_POST['server'];
-                        } else {
-                            $serv = "na";
-                        }
                         $num = 1;
                         $championnum = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 48, 50, 51, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64,
                             67, 68, 69, 72, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 89, 90, 91, 92, 96, 98, 99, 101, 102, 103, 104, 105, 106, 107, 110, 111, 112, 113, 114, 115, 117, 119, 120, 121, 122, 126, 127, 131, 133, 134, 143, 150, 222, 154, 157, 161, 201, 236, 238, 254, 266, 267, 268, 412, 421, 429, 432
@@ -132,7 +146,7 @@ GROUP BY `id`
                                 echo "<td><span>$num</span></td>\n";
                                 echo "<td><span><img data-uk-tooltip title=\"{$rowx['name']}\" style=\"border-radius: 50%;\" width=\"24\" height=\"24\" src=\"images/champion/" . str_replace(" ", "%20", $rowx['name']) . "46.png\" alt=\"\" /></span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['pick'], 2)) . "%</percentege> Pickrate In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['pick'], 0) / 10) . "%</rate> Pickrate In All Servers\">" . (round($row['pick'], 2)) . "%</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['winrate'], 2)) . "%</percentege> Win Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['winrate'], 0)/ 10) . "%</rate> Win Rate Per Game In All Servers\">" . (round($row['winrate'], 2)) . "%</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['winrate'], 2)) . "%</percentege> Win Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['winrate'], 0) / 10) . "%</rate> Win Rate Per Game In All Servers\">" . (round($row['winrate'], 2)) . "%</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['kda'], 2) . "</percentege> KDA Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['kda'], 1) / 10) . "%</rate> KDA Per Game In All Servers\">" . round($row['kda'], 2) . "</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['ban'], 2) . "%</percentege> Ban Rate In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['ban'], 0) / 10) . "%</rate> Ban Rate In All Servers\">" . round($row['ban'], 2) . "%</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['kills'], 2) . "</percentege> Kill Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['kills'], 0) / 10) . "</rate> Kill Per Game In All Servers\">" . round($row['kills'], 2) . "</span></td>\n";
