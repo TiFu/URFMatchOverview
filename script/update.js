@@ -37,34 +37,30 @@
 					var type = $evt["eventType"];
 					if (type == "BUILDING_KILL") {
 						var killerId = $evt["killerId"];
-						var $string = teamSpan($evt['teamId']);
+						var $string = "";
 						var $killer = $participants[$evt["killerId"]];
 						
 						if ($evt['buildingType'] == "TOWER_BUILDING") {
-                                                    if($evt['teamId'] == 100){
-							$string += "<img alt=\"" + $lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "\" class=\"champImageSmall\" data-uk-tooltip title=\""+ $lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "\" src=\"images/gamepic/t1.png\" />";
-							updateTowerCount(($evt["teamId"] == 100 ? 200 : 100)); // reverse teams (blue team turret destroyed -> redTeamCounter++)
-                                                    }
-                                                    else{
-                                                        $string += "<img alt=\"" + $lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "\" class=\"champImageSmall\" data-uk-tooltip title=\""+ $lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "\" src=\"images/gamepic/t.png\" />";
-                                                        updateTowerCount(($evt["teamId"] == 100 ? 200 : 100));
-                                                    }
+                            if($evt['teamId'] == 100){
+								$string += "<img alt=\"" + $lanes[$evt['laneType']] + "\" style=\"border: 1px solid " + ($evt["teamId"] == 100 ? "blue" : "red")+ "\" " + $towerTypes[$evt['towerType']] + "\" class=\"champImageSmall\" data-uk-tooltip title=\""+ $lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "\" src=\"images/gamepic/t1.png\" />";
+								updateTowerCount(($evt["teamId"] == 100 ? 200 : 100)); // reverse teams (blue team turret destroyed -> redTeamCounter++)
+                            } else {
+                                $string += "<img alt=\"" + $lanes[$evt['laneType']] + $towerTypes[$evt['towerType']] + "\" style=\"border: 1px solid " + ($evt["teamId"] == 100 ? "blue" : "red")+ "\" class=\"champImageSmall\" data-uk-tooltip title=\""+ $lanes[$evt['laneType']] + " " + $towerTypes[$evt['towerType']] + "\" src=\"images/gamepic/t.png\" />";
+                                updateTowerCount(($evt["teamId"] == 100 ? 200 : 100));
+                            }
                                                     
 						} else { // inhib
-                                                     if($evt['teamId'] == 100){
-                                                        $string += "<img alt=\"" + $lanes[$evt['laneType']] + "Inhibitor\" class=\"champImageSmall\" data-uk-tooltip title=\"" + $lanes[$evt['laneType']] + " Inhibitor\" src=\"images/gamepic/b2.png\" />";
-							updateTowerCount(($evt["teamId"] == 100 ? 200 : 100)); // reverse teams (blue team turret destroyed -> redTeamCounter++)
-                                                    }
-                                                    else{
-                                                        $string += "<img alt=\"" + $lanes[$evt['laneType']] + "Inhibitor\" class=\"champImageSmall\" data-uk-tooltip title=\"" + $lanes[$evt['laneType']] + " Inhibitor\" src=\"images/gamepic/r2.png\" />";
-                                                        updateTowerCount(($evt["teamId"] == 100 ? 200 : 100));
-                                                    }                                                             
+                            if($evt['teamId'] == 100){
+                                $string += "<img style=\"border:1px solid blue\" alt=\"" + $lanes[$evt['laneType']] + "Inhibitor\" class=\"champImageSmall\" data-uk-tooltip title=\"" + $lanes[$evt['laneType']] + " Inhibitor\" src=\"images/gamepic/b2.png\" />";
+                            }else {
+                                $string += "<img style=\"border:1px solid red\" alt=\"" + $lanes[$evt['laneType']] + "Inhibitor\" class=\"champImageSmall\" data-uk-tooltip title=\"" + $lanes[$evt['laneType']] + " Inhibitor\" src=\"images/gamepic/r2.png\" />";
+                            }                                                             
 						}
 						
 						if (killerId != 0) {
 							$string += ' Has been destroyed By ' + "<img data-uk-tooltip title=\"" + $champs[$killer['championId']] + " (" + kda($evt["killerId"]) + ")\" style=\"border: 1px solid " + $team[$participants[$evt["killerId"]]["teamId"]]+ "\" src=\"images/champion/"+ $champs[$killer['championId']] + "46.png\" alt=\"" + $champs[$killer['championId']] + "\" />";
 						} else {
-							$string += " Has been destroyed By <img alt=\"Minion\" class=\"champImageSmall\" data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" />";
+							$string += " Has been destroyed By <img style=\"border:1px solid " +  ($evt["teamId"] == 100 ? "red" : "blue") + "\" alt=\"Minion\" class=\"champImageSmall\" data-uk-tooltip title=\"Minion\" src=\"images/" + ($evt["teamId"] == 100 ? "minionRed.png" : "minionBlue.png")+ "\" />";
 						}
 					} else if (type == "ELITE_MONSTER_KILL" && ($evt["monsterType"] == "BARON_NASHOR" || $evt["monsterType"] == "DRAGON")) {
 						var killerId = $evt["killerId"];
@@ -77,7 +73,7 @@
 							}
 					} else if (type == "CHAMPION_KILL") {
                                             if ($evt["killerId"] == 0) {
-                                                var $string = "<img alt=\"Minion\" class=\"champImageSmall\" data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" /> ";
+                                                var $string = "<img style=\"border: 1px solid " + ($participants[$evt["victimId"]]["teamId"] == 100 ? "red" : "blue")+ "\" alt=\"Minion\" class=\"champImageSmall\" data-uk-tooltip title=\"Minion\" src=\"images/" + ($participants[$evt["victimId"]]["teamId"] == 100 ? "minionRed.png" : "minionBlue.png") +"\" /> ";
                                             } else {
 												updateCurrentKDA($evt["killerId"], $evt["victimId"], $evt["assistingParticipantIds"]);
 												$killern = $champs[$participants[$evt["killerId"]]["championId"]];
@@ -256,12 +252,14 @@ function Timer(callback, delay, arg1) {
 					} else {
 						$string += '<img style="border: 2px solid ' + ($event["teamId"] == 100 ? "red" : "blue") + '" class="tooltipMap" src="images/' + ($event["teamId"] == 100 ? "minionRed.png" : "minionBlue.png") + '" alt="minion">';
 					}
-					$string += '<img src="images/kill_icon.png" style="margin-bottom:5px;" alt="kill"><img class="tooltipMap"  src="images/turret_' + $event["teamId"] + '.png" alt="turret">';
+					
+					$buildingPic = ($event["buildingType"] == "TOWER_BUILDING" ? ($event["teamId"] == 100 ? "t1.png" : "t.png") : ($event["teamId"] == 100 ? "b2.png" : "r2.png"));
+					$string += '<img src="images/kill_icon.png" style="margin-bottom:5px;" alt="kill"><img class="tooltipMap" style="border:2px solid ' + ($event["teamId"] == 100 ? "blue" : "red") +'" src="images/gamepic/' + $buildingPic + '" alt="turret">';
 				} else if ($event["eventType"] == "ELITE_MONSTER_KILL") {
 					var $teamId = $participants[$event["killerId"]]["teamId"];
 					var $killerChamp = $champs[$participants[$event["killerId"]]["championId"]];
 					$string = '<img  style="border:2px solid ' + ($participants[$event["killerId"]]["teamId"] == 100 ? "blue" : "red") + '"class="tooltipMap" src="images/champion/' + $killerChamp + '.png" alt="' + $killerChamp + '">';					
-					$string += '<img src="images/kill_icon.png" style="margin-bottom:5px;" alt="kill"><img class="tooltipMap"  src="images/' + ($event["monsterType"] =="DRAGON" ? "dragon" : "baron_nashor") + '_' + $teamId + '.png" alt="turret">';
+					$string += '<img src="images/kill_icon.png" style="margin-bottom:5px;" alt="kill"><img class="tooltipMap"  src="images/gamepic/' + ($event["monsterType"] =="DRAGON" ? "Dragon" : "Baron%20nashor") + '.png" alt="turret">';
 				} else if ($event["eventType"] == "CHAMPION_KILL") {
 					$victimTeam = $participants[$event["victimId"]]["teamId"];
 					$victimChamp = $champs[$participants[$event["victimId"]]["championId"]];
