@@ -155,6 +155,11 @@ while ($champ = $champs->fetch_assoc()) {
 					$participants[i]["field"]["currentGold"] = $participants[i]["field"].find(".currentGold");
 					$participants[i]["field"]["currentMinions"] = $participants[i]["field"].find(".currentMinions");
 					$participants[i]["field"]["level"] = $participants[i]["field"].find(".level");
+					for (z = 0; z < 7; z++) {
+						$($participants[i]["field"]["items"][z]).tipsy({gravity:'s', title: function () {
+							return $(this).attr("original-title");
+						}, opacity:1});
+					}
 				}
 				$towerCountField = new Array();
 				$towerCountField[100] = $('#towerCount100');// blue team;

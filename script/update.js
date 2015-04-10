@@ -118,10 +118,10 @@
 						} else {
 							$elem.hide();
 						}
+						// Replace? 
 						$item.attr("src", $item.attr("src").replace(/(.*)\/.*(\.png$)/i, '$1/' + $id + '$2'));
-						$item.attr("title", $items[$id]);
-						$item.attr("alt", $items[$id]);
-						// TODO add stack counter wenn stack != 1
+						$item.attr("original-title", $items[$id]);
+						$item.attr("alt", $items[$id]);	
 					}
 					$participants[i]["field"]["currentGold"].html(formatMoney($stats[i]["totalGold"]));
 					$participants[i]["field"]["currentMinions"].html($stats[i]["minionsKilled"]);

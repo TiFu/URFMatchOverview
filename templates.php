@@ -19,16 +19,16 @@ define("PARTICIPANT_TEMPLATE", '<div class="champlloadin" id=participant{partici
                         <div class="champbuild">
                             <table>
                                 <tr>
-                                    <td><div><span style="display:none" title="Stock" data-cached-title="" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item0}.png" data-uk-tooltip title="{item0}" width="38" height="38" alt="{item0}" /></div></td>
-                                    <td><div><span style="display:none" title="Stock" data-cached-title="Stat" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item1}.png" data-uk-tooltip title="{item1}" width="38" height="38" alt="{item1}" /></div></td>
-                                    <td><div><span style="display:none" title="Stock" data-cached-title="Stat" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item2}.png" data-uk-tooltip title="{item2}" width="38" height="38" alt="{item2}" /></div></td>
+                                    <td><div><span style="display:none" title="Stock" data-cached-title="" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item0}.png" title="{item0}" width="38" height="38" alt="{item0}" /></div></td>
+                                    <td><div><span style="display:none" title="Stock" data-cached-title="Stat" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item1}.png" title="{item1}" width="38" height="38" alt="{item1}" /></div></td>
+                                    <td><div><span style="display:none" title="Stock" data-cached-title="Stat" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item2}.png" title="{item2}" width="38" height="38" alt="{item2}" /></div></td>
 									<td></td>
                                 </tr>
                                 <tr>
-                                    <td><div><span style="display:none" title="Stock" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item3}.png" data-uk-tooltip title="{item3}" width="38" height="38" alt="{item3}" /></div></td>
-                                    <td><div><span style="display:none" title="Stock" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item4}.png" data-uk-tooltip title="{item4}" width="38" height="38" alt="{item4}" /></div></td>
-                                    <td><div><span style="display:none" title="Stock" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item5}.png" data-uk-tooltip title="{item5}" width="38" height="38" alt="{item5}" /></div></td>
-                                    <td class="trinket"><img src="images/items/{trinket}.png" data-uk-tooltip title="{trinket}" width="38" height="38" alt="{trinket}" /></td>
+                                    <td><div><span style="display:none" title="Stock" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item3}.png" title="{item3}" width="38" height="38" alt="{item3}" /></div></td>
+                                    <td><div><span style="display:none" title="Stock" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item4}.png" title="{item4}" width="38" height="38" alt="{item4}" /></div></td>
+                                    <td><div><span style="display:none" title="Stock" class="stat" data-uk-tooltip="">2</span><img src="images/items/{item5}.png" title="{item5}" width="38" height="38" alt="{item5}" /></div></td>
+                                    <td class="trinket"><img src="images/items/{trinket}.png" title="{trinket}" width="38" height="38" alt="{trinket}" /></td>
                                 </tr>
                             </table>
                         </div>
