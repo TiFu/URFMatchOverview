@@ -7,6 +7,25 @@ and open the template in the editor.
     Created on : 02/04/2015, 03:10:38 ص
     Author     : Dante
 */
+.killIcon {
+	background:url(images/kill_icon.png) no-repeat center center;
+	width:18px;
+	height:19px;
+}
+.tooltipMap {
+	width:32px;
+	height:32px;
+}
+#mapPicture {
+	position:relative;
+	margin-top:10px;
+	width:550px;
+	height:512px;
+}
+#map {
+	width:550px;
+	height:512px;
+}
 .urfdata{
     font-family: "LaoUIb";
     font-size: 41.67px;
@@ -51,7 +70,7 @@ body{
 }
 
 .main_info{
-    width: 1280px;
+    width: 1300px;
     margin: 0 auto;
     border:8px solid #d4d4d4;
     display: block;
@@ -63,7 +82,7 @@ body{
     padding-left:10px;
     padding-top: 7px;
     padding-bottom: 10px;
-    width:740px;
+    width:720px;
 }
 .highelight{
     font-size: 20.63px;
@@ -83,8 +102,9 @@ body{
 }
 .part_map{
     float:right;
-    padding-right:10px;
+    padding-right:0px;
     padding-top: 7px;
+	width:550px;
 }
 
 .highelight_comment p {

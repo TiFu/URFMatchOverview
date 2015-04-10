@@ -127,13 +127,26 @@
 				if ($pause) {
 					playLocal();
 					$pause = false;
+					the_resume_callback();
 				} else {
 					$pause = true;
 					pauseLocal();
+					the_pause_callback();
 				}
 			}
 			
 			// Callback
+			function the_pause_callback() {
+				if (typeof pause_callback === 'function') {
+					pause_callback();
+				}
+			}
+			
+			function the_resume_callback() {
+				if (typeof resume_callback === 'function') {
+					resume_callback();
+				}
+			}
 			function the_event_callback(lastEvent) {
 				if(typeof event_callback === 'function'){
 					// call with current time

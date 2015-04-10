@@ -37,7 +37,7 @@
 					var type = $evt["eventType"];
 					if (type == "BUILDING_KILL") {
 						var killerId = $evt["killerId"];
-						$string = teamSpan($evt['teamId']);
+						var $string = teamSpan($evt['teamId']);
 						var $killer = $participants[$evt["killerId"]];
 						
 						if ($evt['buildingType'] == "TOWER_BUILDING") {
@@ -77,26 +77,26 @@
 							}
 					} else if (type == "CHAMPION_KILL") {
                                             if ($evt["killerId"] == 0) {
-                                                $string = "<img alt=\"Minion\" class=\"champImageSmall\" data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" /> ";
+                                                var $string = "<img alt=\"Minion\" class=\"champImageSmall\" data-uk-tooltip title=\"Minion\" src=\"images/champion/Minions.png\" /> ";
                                             } else {
 												updateCurrentKDA($evt["killerId"], $evt["victimId"], $evt["assistingParticipantIds"]);
 												$killern = $champs[$participants[$evt["killerId"]]["championId"]];
-                                                $string  = "<img alt=\"" + $killern + "\" class=\"champImageSmall\" style=\"border: 1px solid " + $team[$participants[$evt["killerId"]]["teamId"]]+ "\" data-uk-tooltip title=\"" + $killern + " (" + kda($evt["killerId"]) + ")\" src=\"images/champion/" + $killern.replace(" ", "%20") + "46.png\" /> ";
+                                                var $string  = "<img alt=\"" + $killern + "\" class=\"champImageSmall\" style=\"border: 1px solid " + $team[$participants[$evt["killerId"]]["teamId"]]+ "\" data-uk-tooltip title=\"" + $killern + " (" + kda($evt["killerId"]) + ")\" src=\"images/champion/" + $killern.replace(" ", "%20") + "46.png\" /> ";
                                             }
                                             $victimn = $champs[$participants[$evt["victimId"]]["championId"]];
                                           $string += " killed " + "<img alt=\"" + $victimn + "\" class=\"champImageSmall\" style=\"border: 1px solid " + $team[$participants[$evt["victimId"]]["teamId"]]+ "\" data-uk-tooltip title=\"" + $victimn + " (" + kda($evt["victimId"]) +")\" width=\"46\" height=\"46\" src=\"images/champion/" + $victimn.replace(" ", "%20") + "46.png\" /> "; 
                     } else if (type == "STAT_UPDATE") {
 						updateStats($evt['data']);
-						$string = "";
+						var $string = "";
 					} else {
-						$string = "";
+						var $string = "";
 					} 
 					return $string;
 			}
 
 			function kda($id) {
-				$part = $participants[$id];
-				$string = "" + $part["currentKills"] + " - " + $part["currentDeaths"] + " - " + $part["currentAssists"] + "";
+				var $part = $participants[$id];
+				var $string = "" + $part["currentKills"] + " - " + $part["currentDeaths"] + " - " + $part["currentAssists"] + "";
 				return $string;
 			}
 
@@ -176,4 +176,104 @@
 			}
 			function teamSpan($teamId) {
 				return '<span class="participant' + $team[$teamId] +'">';
+			}
+			
+			var idCounter = 0;
+			var timers = new Array(); // contains all timers
+            function drawomap($event) {
+						var domain = {
+                               min: {x: -1000, y: -570},
+                               max: {x: 14800, y: 14800}
+                        },
+
+                        color = d3.scale.linear()
+                                .domain([0, 3])
+                                .range(["white", "steelblue"])
+                                .interpolate(d3.interpolateLab);
+
+                        xScale = d3.scale.linear()
+                                .domain([domain.min.x, domain.max.x])
+                                .range([0, 512]);
+
+                        yScale = d3.scale.linear()
+                                .domain([domain.min.y, domain.max.y])
+                                .range([520, 0]);
+						var circle = Pablo('<circle id="circle' + idCounter + '" class="kills" r="5" cx="' + xScale($event["position"]["x"]) + '" cy="' + yScale($event["position"]["y"]) + '" fill="' + getEventColor($event) + '"></circle>');
+						$svg.append(circle);
+
+						var $newCircle = $('#circle' + idCounter);
+						$newCircle.tipsy({gravity:'s', html:true, title: function () {
+							return getEventTooltip($event);
+						}, opacity:1});
+
+						if ($event["eventType"] != "BUILDING_KILL") {
+							var timer = new Timer(removeCircle, 5000, circle);
+							timers[timers.length] = timer;
+						}
+						idCounter++;
+                        return true;
+                    }
+
+function Timer(callback, delay, arg1) {
+    var timerId, start, remaining = delay;
+
+    this.pause = function() {
+        window.clearTimeout(timerId);
+        remaining -= new Date() - start;
+    };
+
+    this.resume = function() {
+        start = new Date();
+        window.clearTimeout(timerId);
+        timerId = window.setTimeout(callback, remaining, arg1);
+    };
+
+    this.resume();
+}
+					
+			function removeCircle(circle) {
+				circle.remove();
+			}
+
+			function getEventColor($event) {
+				var $string = "";
+				if ($event["eventType"] == "BUILDING_KILL") {
+					$string = $event["teamId"] == 100 ? "red" : "blue";
+				} else if ($event["eventType"] == "ELITE_MONSTER_KILL") {
+					$string = $participants[$event["killerId"]]["teamId"] == 100 ? "blue" : "red";
+				} else if ($event["eventType"] == "CHAMPION_KILL") {
+					$string = $participants[$event["victimId"]]["teamId"] == 100 ? "red" : "blue";
+				}
+				return $string;
+			}
+
+			function getEventTooltip($event) {
+				var $string = "";
+				if ($event["eventType"] == "BUILDING_KILL") {
+					if ($event["killerId"] != 0) {
+						var $killerChamp = $champs[$participants[$event["killerId"]]["championId"]];
+						$string = '<img style="border:2px solid ' + ($participants[$event["killerId"]]["teamId"] == 100 ? "blue" : "red") + '" class="tooltipMap" src="images/champion/' + $killerChamp + '.png" alt="' + $killerChamp + '">';
+					} else {
+						$string += '<img style="border: 2px solid ' + ($event["teamId"] == 100 ? "red" : "blue") + '" class="tooltipMap" src="images/' + ($event["teamId"] == 100 ? "minionRed.png" : "minionBlue.png") + '" alt="minion">';
+					}
+					$string += '<img src="images/kill_icon.png" style="margin-bottom:5px;" alt="kill"><img class="tooltipMap"  src="images/turret_' + $event["teamId"] + '.png" alt="turret">';
+				} else if ($event["eventType"] == "ELITE_MONSTER_KILL") {
+					var $teamId = $participants[$event["killerId"]]["teamId"];
+					var $killerChamp = $champs[$participants[$event["killerId"]]["championId"]];
+					$string = '<img  style="border:2px solid ' + ($participants[$event["killerId"]]["teamId"] == 100 ? "blue" : "red") + '"class="tooltipMap" src="images/champion/' + $killerChamp + '.png" alt="' + $killerChamp + '">';					
+					$string += '<img src="images/kill_icon.png" style="margin-bottom:5px;" alt="kill"><img class="tooltipMap"  src="images/' + ($event["monsterType"] =="DRAGON" ? "dragon" : "baron_nashor") + '_' + $teamId + '.png" alt="turret">';
+				} else if ($event["eventType"] == "CHAMPION_KILL") {
+					$victimTeam = $participants[$event["victimId"]]["teamId"];
+					$victimChamp = $champs[$participants[$event["victimId"]]["championId"]];
+					if ($event["killerId"] != 0) {
+						$killerTeam = $participants[$event["killerId"]]["teamId"];
+						$killerChamp = $champs[$participants[$event["killerId"]]["championId"]];
+						$string = '<img style="border:2px solid ' + ($participants[$event["killerId"]]["teamId"] == 100 ? "blue" : "red") + '" class="tooltipMap" src="images/champion/' + $killerChamp + '.png" alt="' + $killerChamp + '">';
+					} else {
+						$string += '<img style="border: 2px solid ' + ($event["teamId"] == 100 ? "red" : "blue") + '" class="tooltipMap" src="images/' + ($participants[$event["victimId"]]["teamId"] == 100 ? "minionRed.png" : "minionBlue.png") + '" alt="minion">';
+					}		
+					$string += '<img src="images/kill_icon.png" style="margin-bottom:5px;" alt="kill">';
+					$string += '<img style="border:2px solid ' + ($participants[$event["victimId"]]["teamId"] == 100 ? "blue" : "red") +'"class="tooltipMap" src="images/champion/' + $victimChamp + '.png" alt="' + $victimChamp + '">';					
+				}
+				return $string;
 			}

@@ -56,6 +56,9 @@ and open the template in the editor.
         <script src="script/functions.js"></script>
         <script src="script/update.js"></script>
         <script src="script/timelineCallbacks.js"></script>
+		<script src="script/pablo.min.js"></script>
+		<script src="script/jquery.tipsy.js"></script>
+		<link rel="stylesheet" href="css/tipsy.css">
         <link rel="stylesheet" href="css/timeline.css">
         <script>
             window.drawn = false;
@@ -122,6 +125,7 @@ while ($champ = $champs->fetch_assoc()) {
                 $textboxInterval = setInterval(updateTextBox, 250);
                 $commentBox = $("#comments");
 
+<<<<<<< HEAD
                 $('#timeline').timeliner({events: [<?php
 $string = "";
 foreach ($logEvents as $event) {
@@ -173,6 +177,64 @@ echo rtrim($string, ',');
                 $('#blueVictory').html($winner == 100 ? "Victory" : "Defeat");
                 $('#redVictory').html($winner == 200 ? "Victory" : "Defeat");
             });
+=======
+                $('#timeline').timeliner({events: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= ((int) ($event['timestamp']/1000)) .',';
+					}
+					echo rtrim($string, ',');
+				?>], showEvent: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= ($event['eventType'] != 'CHAMPION_KILL' && $event['eventType'] != 'STAT_UPDATE') .',';
+					}
+					echo rtrim($string, ',');
+				?>], hoverText: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= "\"" .$match->createHoverText($event) ."\",";
+					}
+					echo rtrim($string, ',');
+			?>], timeLength: <?php echo $match->getDuration() ?>});
+				// Update textBox periodically (every 250ms)
+				$textboxInterval = setInterval(updateTextBox, 250);
+				$commentBox = $("#comments");
+				for (i = 1; i <=  10; i++) {
+					$participants[i]["field"] = $("#participant" + i);
+					$participants[i]["field"]["items"] = $participants[i]["field"].find(".champbuild").find("img");
+					$participants[i]["field"]["currentGold"] = $participants[i]["field"].find(".currentGold");
+					$participants[i]["field"]["currentMinions"] = $participants[i]["field"].find(".currentMinions");
+					$participants[i]["field"]["level"] = $participants[i]["field"].find(".level");
+				}
+				$towerCountField = new Array();
+				$towerCountField[100] = $('#towerCount100');// blue team;
+				$towerCountField[200] = $('#towerCount200');
+				
+				$dragonCountField = new Array();
+				$dragonCountField[100] = $('#dragonCount100');
+				$dragonCountField[200] = $('#dragonCount200');
+				
+				$baronCountField = new Array();
+				$baronCountField[100] = $('#baronCount100');
+				$baronCountField[200] = $('#baronCount200');
+				
+				$goldCountField = new Array();
+				$goldCountField[100] = $('#blueGold');
+				$goldCountField[200] = $('#redGold');
+			
+				$blueTeamKillsField = $('#blueTeamKills');
+				$redTeamKillsField = $('#redTeamKills');
+				
+				$('#blueVictory').html($winner == 100 ? "Victory" : "Defeat");
+				$('#redVictory').html($winner == 200 ? "Victory" : "Defeat");
+				// Draw map
+				$svg = Pablo('#mapPicture');
+				// init map
+				$svg.append('<image xlink:href="images/map.jpg" x="0" y="0" width="530" height="512"></image>');
+
+			});
+>>>>>>> origin/master
         </script>
         <!-- timeline -->
         <link href="css/style.css" rel="stylesheet" type="text/css" />
@@ -187,6 +249,7 @@ echo rtrim($string, ',');
                 </div>
             </div>
             <div class="part_map">  
+<<<<<<< HEAD
                 <div id="map"></div>
                 <script>
 
@@ -246,6 +309,11 @@ echo rtrim($string, ',');
                     }
                     drawomap();
                 </script>
+=======
+                <div id="map">
+					<svg id="mapPicture"></svg>
+				</div>
+>>>>>>> origin/master
             </div>
             <div class="clear"></div>
             <div id="timeline" class="timeline">
