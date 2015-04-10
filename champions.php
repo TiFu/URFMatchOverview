@@ -6,6 +6,7 @@ if (isset($_POST['go'])) {
 } else {
     $serv = "na";
 }
+echo $serv;
 if (!$result4 = $db->query("SELECT * FROM `severrate` WHERE `name` =  '$serv'")) {
     die('There was an error running the query [' . $db->error . ']');
 }

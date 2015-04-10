@@ -204,16 +204,16 @@ while ($champ = $champs->fetch_assoc()) {
     </head>
     <body>
         <div class="main_info">
-            <div class="part_chat">              
-                <div class="highelight">Highlight Match </div>
-                <div id="comments" class="highelight_comment">
-                    <p><span class="chat_time">[0:00]</span><span class="chat_info">Welcome to Summoner's Rift !</span></p> 
-                </div>
-            </div>
             <div class="part_map">  
                 <div id="map">
 					<svg id="mapPicture"></svg>
 				</div>
+            </div>
+            <div class="part_chat">              
+                <div class="highelight">Match Highlights</div>
+                <div id="comments" class="highelight_comment">
+                    <p><span class="chat_time">[0:00]</span><span class="chat_info">Welcome to Summoner's Rift !</span></p> 
+                </div>
             </div>
             <div class="clear"></div>
             <div id="timeline" class="timeline">
@@ -302,14 +302,14 @@ while ($champ = $champs->fetch_assoc()) {
             </div>
             <div class="clear"></div>       
             <div class="summary">
-                <div class="urfdata">Ultra Rapid Fire Champions Statistical</div>
+                <div class="urfdata">Ultra Rapid Fire Champions Statistics</div>
 
             </div>
-            <div class="backurf" style="background-position: 25px 50px"> 
+            <div class="backurf"> 
                 <table id="keywords">
                     <thead>
                         <tr>
-                            <th colspan="2"><span data-uk-tooltip title="Champion Rank">Rank</span></th>
+                            <th><span data-uk-tooltip title="Champion">Champion</span></th>
                             <th><span data-uk-tooltip title="Champion Pick Rate">Pick</span></th>
                             <th><span data-uk-tooltip title="Champion Win Rate">Win</span></th>                                                                                    
                             <th><span data-uk-tooltip title="Kill/Death/Assist Rate">KDA</span></th>
@@ -382,9 +382,9 @@ FROM br where id = $lastchamp
 )x
 GROUP BY `id`
 ");
+								echo mysqli_error($db);
                                 $rowx3 = $result3->fetch_assoc();
                                 echo "<tr class=\"yellow\">\n";
-                                echo "<td><span>$num</span></td>\n";
                                 echo "<td><span><img data-uk-tooltip title=\"{$rowx['name']}\" style=\"border-radius: 50%;\" width=\"24\" height=\"24\" src=\"images/champion/" .str_replace(" ", "%20",$rowx['name']) ."46.png\" alt=\"\" /></span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['pick'],2)."%</percentege> Pickrate In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['pick'],0) / 10)."%</rate> Pickrate In All Servers\">".round($row['pick'],2)."%</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['winrate'], 2)) . "%</percentege> Win Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['winrate'], 0)/ 10) . "%</rate> Win Rate Per Game In All Servers\">" . (round($row['winrate'], 2)) . "%</span></td>\n";                                
