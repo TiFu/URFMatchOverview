@@ -15,12 +15,14 @@ if (isset($_GET['matchId'])) {
     $matchId = getRandomMatchId();
 }
 
+
 if (!is_int($matchId)) {
     // do error handling here
 }
 $match = new Match(file_get_contents("data/" . $matchId . ".json"), $mysqli);
 $startEvents = $match->getEvents(array("CHAMPION_KILL", "BUILDING_KILL", "ELITE_MONSTER_KILL"));
 $logEvents = array();
+$animationDuration = $match->getDuration() / 600.0 * 45; // 2 min per 10 min game time
 
 // Filter red and blue buff out of the events
 foreach ($startEvents as $event) {
@@ -143,7 +145,7 @@ while ($champ = $champs->fetch_assoc()) {
 						$string .= "\"" .$match->createHoverText($event) ."\",";
 					}
 					echo rtrim($string, ',');
-			?>], timeLength: <?php echo $match->getDuration() ?>});
+			?>], timeLength: <?php echo $match->getDuration() ?>, animationLength: <?php echo $animationDuration ?>});
 				// Update textBox periodically (every 250ms)
 				$textboxInterval = setInterval(updateTextBox, 250);
 				$commentBox = $("#comments");
