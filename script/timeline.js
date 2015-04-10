@@ -119,11 +119,9 @@
 			
 			function createClusters(arr) {
 				border = o.timeLength * 10 / $width;	
-				console.log("Length: " + cluster.length);
 				for (i = 0; i < arr.length; i++) {
 					clust = Math.floor(arr[i] / border);
-					console.log(clust);
-
+				
 					cluster[clust].push(i); // store index of element in that cluster
 				}
 			}
