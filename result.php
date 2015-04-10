@@ -368,7 +368,6 @@ FROM br where id = $lastchamp
 )x
 GROUP BY `id`
 ");
-echo mysqli_error($db);
                                 $rowx3 = $result3->fetch_assoc();
                                 echo "<tr class=\"yellow\">\n";
                                 echo "<td><span>$num</span></td>\n";
