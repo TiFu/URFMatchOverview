@@ -34,5 +34,17 @@ function complete_callback() {
     $winner = '<span class="' + ($winner == 100 ? 'participantblue>Blue' : 'participantred">Red') + " team</span> wins in " + secToMin($duration) + " !";
     appendTextBox($winner, $duration * 1000);
     updateTextBox();
+	// update Stats
+	var $teamBlue = $teams["100"]["participants"];
+	var $teamRed = $teams["200"]["participants"];
+	var $concat = new Array();
+	for (var i = 0; i <= 10; i++) {
+		if (i <= 5) {
+			$concat[i] = $teamBlue[i];
+		} else {
+			$concat[i] = $teamRed[i];
+		}
+	}
+	updateStats($concat);
 }
 			

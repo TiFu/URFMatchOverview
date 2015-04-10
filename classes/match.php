@@ -146,7 +146,7 @@ class Match {
 		if ($info === false) {
 			$team = null;
 			$info = array ();
-			foreach ( $this->matchArray ['teams'] as $team ) {
+			foreach ( $this->matchArray['teams'] as $team ) {
 				if ($team ['teamId'] == $teamId) {
 					$info ['teamId'] = $team ['teamId'];
 					$info ['dragonKills'] = $team ['dragonKills'];
@@ -154,9 +154,27 @@ class Match {
 					$info ['winner'] = $team ['winner'];
 				}
 			}
+			$info["participants"] = array(); // map from participantId -> stats
+			foreach ($this->matchArray["participants"] as $participant) {
+				if ($participant["teamId"] == $teamId) {
+					$stats = $participant["stats"];
+					$info["participants"][$participant["participantId"]] = array();
+					$part = array();
+					$part["assists"] = $stats["assists"];
+					$part["kills"] = $stats["kills"];
+					$part["deaths"] = $stats["deaths"];
+					$part["totalGold"] = $stats["goldEarned"];
+					$part["items"] = array();
+					$part["minionsKilled"] = $stats["minionsKilled"];
+					for ($i = 0; $i < 7; $i++) {
+						$part["items"][$i]["itemId"] = $stats["item" .$i];
+						$part["items"][$i]["stock"] = 1;
+					}
+					$info["participants"][$participant["participantId"]] = $part;
+				}
+			}
 			$this->cache->setData ( "team" . $teamId, $info );
 		}
-		
 		return $info;
 	}
 	
