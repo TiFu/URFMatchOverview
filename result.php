@@ -125,59 +125,6 @@ while ($champ = $champs->fetch_assoc()) {
                 $textboxInterval = setInterval(updateTextBox, 250);
                 $commentBox = $("#comments");
 
-<<<<<<< HEAD
-                $('#timeline').timeliner({events: [<?php
-$string = "";
-foreach ($logEvents as $event) {
-    $string .= ((int) ($event['timestamp'] / 1000)) . ',';
-}
-echo rtrim($string, ',');
-?>], showEvent: [<?php
-$string = "";
-foreach ($logEvents as $event) {
-    $string .= ($event['eventType'] != 'CHAMPION_KILL' && $event['eventType'] != 'STAT_UPDATE') . ',';
-}
-echo rtrim($string, ',');
-?>], hoverText: [<?php
-$string = "";
-foreach ($logEvents as $event) {
-    $string .= "\"" . $match->createHoverText($event) . "\",";
-}
-echo rtrim($string, ',');
-?>], timeLength: <?php echo $match->getDuration() ?>});
-                // Update textBox periodically (every 250ms)
-                $textboxInterval = setInterval(updateTextBox, 250);
-                $commentBox = $("#comments");
-                for (i = 1; i <= 10; i++) {
-                    $participants[i]["field"] = $("#participant" + i);
-                    $participants[i]["field"]["items"] = $participants[i]["field"].find(".champbuild").find("img");
-                    $participants[i]["field"]["currentGold"] = $participants[i]["field"].find(".currentGold");
-                    $participants[i]["field"]["currentMinions"] = $participants[i]["field"].find(".currentMinions");
-                    $participants[i]["field"]["level"] = $participants[i]["field"].find(".level");
-                }
-                $towerCountField = new Array();
-                $towerCountField[100] = $('#towerCount100');// blue team;
-                $towerCountField[200] = $('#towerCount200');
-
-                $dragonCountField = new Array();
-                $dragonCountField[100] = $('#dragonCount100');
-                $dragonCountField[200] = $('#dragonCount200');
-
-                $baronCountField = new Array();
-                $baronCountField[100] = $('#baronCount100');
-                $baronCountField[200] = $('#baronCount200');
-
-                $goldCountField = new Array();
-                $goldCountField[100] = $('#blueGold');
-                $goldCountField[200] = $('#redGold');
-
-                $blueTeamKillsField = $('#blueTeamKills');
-                $redTeamKillsField = $('#redTeamKills');
-
-                $('#blueVictory').html($winner == 100 ? "Victory" : "Defeat");
-                $('#redVictory').html($winner == 200 ? "Victory" : "Defeat");
-            });
-=======
                 $('#timeline').timeliner({events: [<?php 
 					$string = "";
 					foreach ($logEvents as $event) {
@@ -234,7 +181,6 @@ echo rtrim($string, ',');
 				$svg.append('<image xlink:href="images/map.jpg" x="0" y="0" width="530" height="512"></image>');
 
 			});
->>>>>>> origin/master
         </script>
         <!-- timeline -->
         <link href="css/style.css" rel="stylesheet" type="text/css" />
@@ -249,71 +195,9 @@ echo rtrim($string, ',');
                 </div>
             </div>
             <div class="part_map">  
-<<<<<<< HEAD
-                <div id="map"></div>
-                <script>
-
-                    function drawomap(cord) {
-                        var cords = [cord
-                        ],
-                                domain = {
-                                    min: {x: -1000, y: -570},
-                                    max: {x: 14800, y: 14800}
-                                },
-                        width = 512,
-                                height = 512,
-                                bg = "images/map.jpg",
-                                xScale, yScale, svg;
-
-                        color = d3.scale.linear()
-                                .domain([0, 3])
-                                .range(["white", "steelblue"])
-                                .interpolate(d3.interpolateLab);
-
-                        xScale = d3.scale.linear()
-                                .domain([domain.min.x, domain.max.x])
-                                .range([0, width]);
-
-                        yScale = d3.scale.linear()
-                                .domain([domain.min.y, domain.max.y])
-                                .range([height, 0]);
-
-                        if (drawn != true) {
-                            this.svg = d3.select("#map").append("svg:svg")
-                                    .attr("width", width)
-                                    .attr("height", height);
-
-                            this.svg.append('image')
-                                    .attr('xlink:href', bg)
-                                    .attr('x', '0')
-                                    .attr('y', '0')
-                                    .attr('width', '530')
-                                    .attr('height', height);
-                            drawn = true;
-                        }
-
-                        if (!(typeof cord == "undefined")) {
-                            this.svg.append('svg:g').selectAll("circle")
-                                    .data(cords)
-                                    .enter().append("svg:circle")
-                                    .attr('r', 5)
-                                    .attr('cx', function (d) {
-                                        return xScale(d[0]);
-                                    })
-                                    .attr('cy', function (d) {
-                                        return yScale(d[1]);
-                                    })
-                                    .attr('class', 'kills');
-                        }
-                        return true;
-                    }
-                    drawomap();
-                </script>
-=======
                 <div id="map">
 					<svg id="mapPicture"></svg>
 				</div>
->>>>>>> origin/master
             </div>
             <div class="clear"></div>
             <div id="timeline" class="timeline">
@@ -331,67 +215,67 @@ echo rtrim($string, ',');
 
                 </div>
                 <div class="blueteam">
-                    <div class="blueteamborder">
-                        <?php
-                        $summonerSpells = array();
-                        $summoners = $mysqli->query("SELECT * FROM " . SUMMONERS_TABLE);
-                        while ($summoner = $summoners->fetch_assoc()) {
-                            $summonerSpells[$summoner["id"]] = $summoner["name"];
-                        }
-
-                        $participants = $match->getParticipants();
-                        $search = array("{participantId}", "{champurl}", "{champname}", "{kills}", "{deaths}", "{assists}", "{item0}", "{item1}", "{item2}", "{item3}", "{item4}", "{item5}", "{trinket}", "{gold}", "{minions}", "{level}", "{sum1}", "{sum2}");
-                        foreach ($participants as $participant) {
-                            if ($participant["teamId"] == BLUE_SIDE_ID) {
-                                $replace = array();
-                                $replace[] = $participant["participantId"];
-                                $replace[] = str_replace(" ", "%20", $champions[$participant["championId"]]);
-                                $replace[] = $champions[$participant["championId"]];
-                                $replace[] = $participant["currentKills"];
-                                $replace[] = $participant["currentDeaths"];
-                                $replace[] = $participant["currentAssists"];
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 475;
-                                $replace[] = 0;
-                                $replace[] = 1;
-                                $replace[] = $summonerSpells[$participant["spell1"]];
-                                $replace[] = $summonerSpells[$participant["spell2"]];
-                                echo str_replace($search, $replace, PARTICIPANT_TEMPLATE);
-                            }
-                        }
-                        ?>
-                    </div>					
+					<div class="blueteamborder">
+					<?php
+						$summonerSpells = array();
+						$summoners = $mysqli->query("SELECT * FROM " .SUMMONERS_TABLE);
+						while ($summoner = $summoners->fetch_assoc()) {
+							$summonerSpells[$summoner["id"]] = $summoner["name"];
+						}
+						
+						$participants = $match->getParticipants();
+						$search = array("{participantId}", "{champurl}", "{champname}", "{kills}", "{deaths}", "{assists}" ,"{item0}", "{item1}", "{item2}", "{item3}", "{item4}", "{item5}", "{trinket}", "{gold}", "{minions}", "{level}", "{sum1}", "{sum2}");
+						foreach ($participants as $participant) {
+							if ($participant["teamId"] == BLUE_SIDE_ID) {
+								$replace = array();
+								$replace[] = $participant["participantId"];
+								$replace[] = str_replace(" ", "%20", $champions[$participant["championId"]]);
+								$replace[] = $champions[$participant["championId"]];
+								$replace[] = $participant["currentKills"];
+								$replace[] = $participant["currentDeaths"];
+								$replace[] = $participant["currentAssists"];
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 475;
+								$replace[] = 0;
+								$replace[] = 1;
+								$replace[] = $summonerSpells[$participant["spell1"]];
+								$replace[] = $summonerSpells[$participant["spell2"]];
+								echo str_replace($search, $replace, PARTICIPANT_TEMPLATE);
+							}
+						}						
+					?>
+					</div>					
                 </div>               
                 <div class="redteam">
-                    <div class="redteamborder">
-                        <?php
-                        foreach ($participants as $participant) {
-                            if ($participant["teamId"] == RED_SIDE_ID) {
-                                $replace = array();
-                                $replace[] = $participant["participantId"];
-                                $replace[] = str_replace(" ", "%20", $champions[$participant["championId"]]);
-                                $replace[] = $champions[$participant["championId"]];
-                                $replace[] = $participant["currentKills"];
-                                $replace[] = $participant["currentDeaths"];
-                                $replace[] = $participant["currentAssists"];
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 0;
-                                $replace[] = 475;
-                                $replace[] = 0;
-                                $replace[] = 1;
-                                $replace[] = $summonerSpells[$participant["spell1"]];
-                                $replace[] = $summonerSpells[$participant["spell2"]];
+					<div class="redteamborder">
+					<?php
+						foreach ($participants as $participant) {
+							if ($participant["teamId"] == RED_SIDE_ID) {
+								$replace = array();
+								$replace[] = $participant["participantId"];
+								$replace[] = str_replace(" ", "%20", $champions[$participant["championId"]]);
+								$replace[] = $champions[$participant["championId"]];
+								$replace[] = $participant["currentKills"];
+								$replace[] = $participant["currentDeaths"];
+								$replace[] = $participant["currentAssists"];
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 0;
+								$replace[] = 475;
+								$replace[] = 0;
+								$replace[] = 1;
+								$replace[] = $summonerSpells[$participant["spell1"]];
+								$replace[] = $summonerSpells[$participant["spell2"]];
 
                                 echo str_replace($search, $replace, PARTICIPANT_TEMPLATE);
                             }
@@ -411,7 +295,6 @@ echo rtrim($string, ',');
                         <tr>
                             <th colspan="2"><span data-uk-tooltip title="Champion Rank">Rank</span></th>
                             <th><span data-uk-tooltip title="Champion Pick Rate">Pick</span></th>
-                            <th><span data-uk-tooltip title="Win Rate">Win</span></th>                                                        
                             <th><span data-uk-tooltip title="Kill/Death/Assist Rate">KDA</span></th>
                             <th><span data-uk-tooltip title="Champion Ban Rate">Ban</span></th>
                             <th><span data-uk-tooltip title="Champion Kills Rate">Kills</span></th>
@@ -426,6 +309,7 @@ echo rtrim($string, ',');
                             <th><span data-uk-tooltip title="Creeps Slain Rate (Minions & Jungle Monsters)">C S</span></th>
                             <th><span data-uk-tooltip title="Tower Destroy Rate">Tower Destroy</span></th>
                             <th><span data-uk-tooltip title="Wards Place Rate">Wards Place</span></th>
+                            <th><span data-uk-tooltip title="Wards Kills Rate">Wards Killed</span></th>
                             <th><span data-uk-tooltip title="True Damage Rate (For Champions)">True Dmg</span></th>
                             <th><span data-uk-tooltip title="Physical Damage Rate (For Champions)">Physical Dmg</span></th>
                             <th><span data-uk-tooltip title="Magic Damage Rate (For Champions)">Magic Dmg</span></th>
@@ -434,9 +318,9 @@ echo rtrim($string, ',');
                     </thead>
                     <tbody>
                         <?php
-                        $db = $mysqli;
+						$db = $mysqli;
                         $serv = strtolower($match->getRegion());
-                        $gaza3 = $match->getParticipants();
+						$gaza3 = $match->getParticipants();
                         $num = 1;
                         for ($cmp = 0; $cmp < 10; $cmp++) {
                             $lastchamp = $gaza3[$cmp]['championId'];
@@ -447,7 +331,7 @@ echo rtrim($string, ',');
                                 $row = $result->fetch_assoc();
                                 $rowx = $result2->fetch_assoc();
                                 $result3 = $db->query("
-                                   SELECT `id` , sum( `numgames` ) AS `numgames` , sum( `pick` ) AS `pick` , sum( `kda` ) AS `kda` , sum( `ban` ) AS `ban` , sum( `kills` ) AS `kills` , sum( `death` ) AS `death` , sum( `assist` ) AS `assist` , sum( `fb` ) AS `fb` , sum( `dk` ) AS `dk` , sum( `tk` ) AS `tk` , sum( `qk` ) AS `qk` , sum( `pk` ) AS `pk` , sum( `ks` ) AS `ks` , `cs` , sum( `cs` ) AS `cs` , sum( `towerdestroy` ) AS `towerdestroy` , sum( `wardplace` ) AS `wardplace` , sum( `winrate` ) AS `winrate` , sum( `truedmg` ) AS `truedmg` , sum( `phycdmg` ) AS `phycdmg` , sum( `magicdmg` ) AS `magicdmg` , sum( `totaldmg` ) AS `totaldmg`
+                                   SELECT `id` , sum( `numgames` ) AS `numgames` , sum( `pick` ) AS `pick` , sum( `kda` ) AS `kda` , sum( `ban` ) AS `ban` , sum( `kills` ) AS `kills` , sum( `death` ) AS `death` , sum( `assist` ) AS `assist` , sum( `fb` ) AS `fb` , sum( `dk` ) AS `dk` , sum( `tk` ) AS `tk` , sum( `qk` ) AS `qk` , sum( `pk` ) AS `pk` , sum( `ks` ) AS `ks` , `cs` , sum( `cs` ) AS `cs` , sum( `towerdestroy` ) AS `towerdestroy` , sum( `wardplace` ) AS `wardplace` , sum( `wardkill` ) AS `wardkill` , sum( `truedmg` ) AS `truedmg` , sum( `phycdmg` ) AS `phycdmg` , sum( `magicdmg` ) AS `magicdmg` , sum( `totaldmg` ) AS `totaldmg`
 FROM (
 SELECT *
 FROM eune where id = $lastchamp
@@ -459,7 +343,7 @@ SELECT *
 FROM oce where id = $lastchamp
 UNION ALL
 SELECT *
-FROM lan where id = $lastchamp  
+FROM lan where id = $lastchamp
 UNION ALL
 SELECT *
 FROM las where id = $lastchamp
@@ -484,27 +368,27 @@ GROUP BY `id`
                                 $rowx3 = $result3->fetch_assoc();
                                 echo "<tr class=\"yellow\">\n";
                                 echo "<td><span>$num</span></td>\n";
-                                echo "<td><span><img data-uk-tooltip title=\"{$rowx['name']}\" style=\"border-radius: 50%;\" width=\"24\" height=\"24\" src=\"images/champion/" . str_replace(" ", "%20", $rowx['name']) . "46.png\" alt=\"\" /></span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['pick'], 2)) . "%</percentege> Pickrate In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['pick'], 0) / 10) . "%</rate> Pickrate In All Servers\">" . (round($row['pick'], 2)) . "%</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['winrate'], 2)) . "%</percentege> Win Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['winrate'], 0)/ 10) . "%</rate> Win Rate Per Game In All Servers\">" . (round($row['winrate'], 2)) . "%</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['kda'], 2) . "</percentege> KDA Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['kda'], 1) / 10) . "%</rate> KDA Per Game In All Servers\">" . round($row['kda'], 2) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['ban'], 2) . "%</percentege> Ban Rate In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['ban'], 0) / 10) . "%</rate> Ban Rate In All Servers\">" . round($row['ban'], 2) . "%</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['kills'], 2) . "</percentege> Kill Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['kills'], 0) / 10) . "</rate> Kill Per Game In All Servers\">" . round($row['kills'], 2) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['death'], 2) . "</percentege> Assist Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['death'], 0) / 10) . "</rate> Assist Per Game In All Servers\">" . round($row['death'], 2) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['assist'], 2) . "</percentege> Death Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['assist'], 0) / 10) . "</rate> Death Per Game In All Servers\">" . round($row['assist'], 2) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['fb'], 2)) . "%</percentege> First Blood Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['fb'], 2)) . "%</rate> First Blood Rate Per Game In All Servers\">" . (round($row['fb'], 2)) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['dk'], 2)) . "%</percentege> Double Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['dk'], 2)) . "%</rate> Double Kill Rate Per Game In All Servers\">" . (round($row['dk'], 2)) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['tk'], 2)) . "%</percentege> Triple Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['tk'], 2)) . "%</rate> Triple Kill Rate Per Game In All Servers\">" . (round($row['tk'], 2)) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['qk'], 2)) . "%</percentege> Quadra Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['qk'], 2)) . "%</rate> Quadra Kill Rate Per Game In All Servers\">" . (round($row['qk'], 2)) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['pk'], 2)) . "%</percentege> Penta Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['pk'], 2)) . "%</rate> Penta Kill Rate Per Game In All Servers\">" . (round($row['pk'], 2)) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['ks'], 2)) . "%</percentege> Killing Spree Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['ks'], 2)) . "%</rate> Killing Spree Rate Per Game In All Servers\">" . (round($row['ks'], 2)) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['cs'], 2)) . "</percentege> Creeps Slain Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['cs'], 2)) . "</rate> Creeps Slain Rate Per Game In All Servers\">" . (round($row['cs'], 2)) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['towerdestroy'], 2)) . "%</percentege> Tower Destroy Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['towerdestroy'], 2)) . "%</rate> Tower Destroy Rate Per Game In All Servers\">" . (round($row['towerdestroy'], 2)) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['wardplace'], 2)) . "%</percentege> Ward Place Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['wardplace'], 2)) . "%</rate> Ward Place Rate Per Game In All Servers\">" . (round($row['wardplace'], 2)) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['truedmg'], 0) . "</percentege> True Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['truedmg'], 0) / 10) . "</rate> True Damage Per Game In All Servers\">" . round($row['truedmg'], 0) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['phycdmg'], 0) . "</percentege> Physical Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['phycdmg'], 0) / 10) . "</rate> Physical Damage Per Game In All Servers\">" . round($row['phycdmg'], 0) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['magicdmg'], 0) . "</percentege> Magaic Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['magicdmg'], 0) / 10) . "</rate> Magaic Damage Per Game In All Servers\">" . round($row['magicdmg'], 0) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . round($row['totaldmg'], 0) . "</percentege> Total Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['totaldmg'], 0) / 10) . "</rate> Total Damage Per Game In All Servers\">" . round($row['totaldmg'], 0) . "</span></td>\n";
+                                echo "<td><span><img data-uk-tooltip title=\"{$rowx['name']}\" style=\"border-radius: 50%;\" width=\"24\" height=\"24\" src=\"images/champion/" .str_replace(" ", "%20",$rowx['name']) ."46.png\" alt=\"\" /></span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['pick'],2)."%</percentege> Pickrate In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['pick'],0) / 10)."%</rate> Pickrate In All Servers\">".round($row['pick'],2)."%</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['kda'],2)."</percentege> KDA Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['kda'],1) / 10)."%</rate> KDA Per Game In All Servers\">".round($row['kda'],2)."</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['ban'],2)."%</percentege> Ban Rate In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['ban'],0) / 10)."%</rate> Ban Rate In All Servers\">".round($row['ban'],2)."%</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['kills'],2)."</percentege> Kill Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['kills'],0) / 10)."</rate> Kill Per Game In All Servers\">".round($row['kills'],2)."</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['death'],2)."</percentege> Assist Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['death'],0) / 10)."</rate> Assist Per Game In All Servers\">".round($row['death'],2)."</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['assist'],2)."</percentege> Death Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['assist'],0) / 10)."</rate> Death Per Game In All Servers\">".round($row['assist'],2)."</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['fb'],2))."%</percentege> First Blood Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['fb'],2))."%</rate> First Blood Rate Per Game In All Servers\">".(round($row['fb'],2))."</span></td>\n";                               
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['dk'],2))."%</percentege> Double Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['dk'],2))."%</rate> Double Kill Rate Per Game In All Servers\">".(round($row['dk'],2))."</span></td>\n";                               
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['tk'],2))."%</percentege> Triple Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['tk'],2))."%</rate> Triple Kill Rate Per Game In All Servers\">".(round($row['tk'],2))."</span></td>\n";                               
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['qk'],2))."%</percentege> Quadra Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['qk'],2))."%</rate> Quadra Kill Rate Per Game In All Servers\">".(round($row['qk'],2))."</span></td>\n";                               
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['pk'],2))."%</percentege> Penta Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['pk'],2))."%</rate> Penta Kill Rate Per Game In All Servers\">".(round($row['pk'],2))."</span></td>\n";                               
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['ks'],2))."%</percentege> Killing Spree Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['ks'],2))."%</rate> Killing Spree Rate Per Game In All Servers\">".(round($row['ks'],2))."</span></td>\n";                               
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['cs'],2))."</percentege> Creeps Slain Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['cs'],2))."</rate> Creeps Slain Rate Per Game In All Servers\">".(round($row['cs'],2))."</span></td>\n";                               
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['towerdestroy'],2))."%</percentege> Tower Destroy Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['towerdestroy'],2))."%</rate> Tower Destroy Rate Per Game In All Servers\">".(round($row['towerdestroy'],2))."</span></td>\n";                               
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['wardplace'],2))."%</percentege> Ward Place Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['wardplace'],2))."%</rate> Ward Place Rate Per Game In All Servers\">".(round($row['wardplace'],2))."</span></td>\n";                               
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['wardkill'],2))."%</percentege> Ward Destroy Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['wardkill'],2))."%</rate> Ward Destroy Rate Per Game In All Servers\">".(round($row['wardkill'],2))."</span></td>\n";                               
+                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['truedmg'],0)."</percentege> True Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['truedmg'],0) / 10)."</rate> True Damage Per Game In All Servers\">".round($row['truedmg'],0)."</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['phycdmg'],0)."</percentege> Physical Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['phycdmg'],0) / 10)."</rate> Physical Damage Per Game In All Servers\">".round($row['phycdmg'],0)."</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['magicdmg'],0)."</percentege> Magaic Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['magicdmg'],0) / 10)."</rate> Magaic Damage Per Game In All Servers\">".round($row['magicdmg'],0)."</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['totaldmg'],0)."</percentege> Total Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['totaldmg'],0) / 10)."</rate> Total Damage Per Game In All Servers\">".round($row['totaldmg'],0)."</span></td>\n";
                                 echo "                        </tr> ";
                             }
                             $num++;
