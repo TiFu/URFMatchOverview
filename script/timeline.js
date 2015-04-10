@@ -30,7 +30,7 @@
 			var end = 0;
 			// Space to pause listener
 			$(document).keypress(function(e) {
-				   if(e.which === 32 && e.target === document.body) {
+				   if(e.which === 32) {
 						e.preventDefault();
 						$($id).timeliner.pauseplay();
 						return false;  
