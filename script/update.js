@@ -123,13 +123,22 @@
 						$item.attr("alt", $items[$id]);
 						// TODO add stack counter wenn stack != 1
 					}
-					$participants[i]["field"]["currentGold"].html($stats[i]["totalGold"]);
+					$participants[i]["field"]["currentGold"].html(formatMoney($stats[i]["totalGold"]));
 					$participants[i]["field"]["currentMinions"].html($stats[i]["minionsKilled"]);
 					$participants[i]["field"]["level"].html($stats[i]["level"]);
 				}
 				// Update gold counts
 				$goldCountField[100].html(Math.round(blueSum / 100.0) / 10.0 + "K")
 				$goldCountField[200].html(Math.round(redSum / 100.0) / 10.0 + "K")
+			}
+			
+			function formatMoney(money) {
+				money = "" + money;
+				if (money.length > 3) {
+				return [money.slice(0,money.length-3), ".", money.slice(money.length-3, money.length)].join("");
+				} else {
+					return money;
+				}
 			}
 			function updateDragonCount($killerTeam) {
 				var $value = $dragonCountField[$killerTeam].html();
