@@ -343,6 +343,7 @@ while ($champ = $champs->fetch_assoc()) {
                         <tr>
                             <th colspan="2"><span data-uk-tooltip title="Champion Rank">Rank</span></th>
                             <th><span data-uk-tooltip title="Champion Pick Rate">Pick</span></th>
+                            <th><span data-uk-tooltip title="Win Rate">Win</span></th>                            
                             <th><span data-uk-tooltip title="Kill/Death/Assist Rate">KDA</span></th>
                             <th><span data-uk-tooltip title="Champion Ban Rate">Ban</span></th>
                             <th><span data-uk-tooltip title="Champion Kills Rate">Kills</span></th>
@@ -356,7 +357,6 @@ while ($champ = $champs->fetch_assoc()) {
                             <th><span data-uk-tooltip title="Killing Spree Rate">K S</span></th>
                             <th><span data-uk-tooltip title="Creeps Slain Rate (Minions & Jungle Monsters)">C S</span></th>
                             <th><span data-uk-tooltip title="Tower Destroy Rate">Tower Destroy</span></th>
-                            <th><span data-uk-tooltip title="Wards Place Rate">Wards Place</span></th>
                             <th><span data-uk-tooltip title="Wards Kills Rate">Wards Killed</span></th>
                             <th><span data-uk-tooltip title="True Damage Rate (For Champions)">True Dmg</span></th>
                             <th><span data-uk-tooltip title="Physical Damage Rate (For Champions)">Physical Dmg</span></th>
@@ -379,7 +379,7 @@ while ($champ = $champs->fetch_assoc()) {
                                 $row = $result->fetch_assoc();
                                 $rowx = $result2->fetch_assoc();
                                 $result3 = $db->query("
-                                   SELECT `id` , sum( `numgames` ) AS `numgames` , sum( `pick` ) AS `pick` , sum( `kda` ) AS `kda` , sum( `ban` ) AS `ban` , sum( `kills` ) AS `kills` , sum( `death` ) AS `death` , sum( `assist` ) AS `assist` , sum( `fb` ) AS `fb` , sum( `dk` ) AS `dk` , sum( `tk` ) AS `tk` , sum( `qk` ) AS `qk` , sum( `pk` ) AS `pk` , sum( `ks` ) AS `ks` , `cs` , sum( `cs` ) AS `cs` , sum( `towerdestroy` ) AS `towerdestroy` , sum( `wardplace` ) AS `wardplace` , sum( `wardkill` ) AS `wardkill` , sum( `truedmg` ) AS `truedmg` , sum( `phycdmg` ) AS `phycdmg` , sum( `magicdmg` ) AS `magicdmg` , sum( `totaldmg` ) AS `totaldmg`
+                                   SELECT `id` , sum( `numgames` ) AS `numgames` , sum( `pick` ) AS `pick` , sum( `kda` ) AS `kda` , sum( `ban` ) AS `ban` , sum( `kills` ) AS `kills` , sum( `death` ) AS `death` , sum( `assist` ) AS `assist` , sum( `fb` ) AS `fb` , sum( `dk` ) AS `dk` , sum( `tk` ) AS `tk` , sum( `qk` ) AS `qk` , sum( `pk` ) AS `pk` , sum( `ks` ) AS `ks` , `cs` , sum( `cs` ) AS `cs` , sum( `towerdestroy` ) AS `towerdestroy` , sum( `wardplace` ) AS `wardplace` , sum( `winrate` ) AS `winrate` , sum( `truedmg` ) AS `truedmg` , sum( `phycdmg` ) AS `phycdmg` , sum( `magicdmg` ) AS `magicdmg` , sum( `totaldmg` ) AS `totaldmg`
 FROM (
 SELECT *
 FROM eune where id = $lastchamp
@@ -418,6 +418,7 @@ GROUP BY `id`
                                 echo "<td><span>$num</span></td>\n";
                                 echo "<td><span><img data-uk-tooltip title=\"{$rowx['name']}\" style=\"border-radius: 50%;\" width=\"24\" height=\"24\" src=\"images/champion/" .str_replace(" ", "%20",$rowx['name']) ."46.png\" alt=\"\" /></span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['pick'],2)."%</percentege> Pickrate In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['pick'],0) / 10)."%</rate> Pickrate In All Servers\">".round($row['pick'],2)."%</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['winrate'],2))."%</percentege> Win Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['winrate'],2))."%</rate> Win Rate Per Game In All Servers\">".(round($row['winrate'],2))."%</span></td>\n";                                                               
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['kda'],2)."</percentege> KDA Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['kda'],1) / 10)."%</rate> KDA Per Game In All Servers\">".round($row['kda'],2)."</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['ban'],2)."%</percentege> Ban Rate In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['ban'],0) / 10)."%</rate> Ban Rate In All Servers\">".round($row['ban'],2)."%</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['kills'],2)."</percentege> Kill Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['kills'],0) / 10)."</rate> Kill Per Game In All Servers\">".round($row['kills'],2)."</span></td>\n";
@@ -432,8 +433,7 @@ GROUP BY `id`
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['cs'],2))."</percentege> Creeps Slain Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['cs'],2))."</rate> Creeps Slain Rate Per Game In All Servers\">".(round($row['cs'],2))."</span></td>\n";                               
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['towerdestroy'],2))."%</percentege> Tower Destroy Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['towerdestroy'],2))."%</rate> Tower Destroy Rate Per Game In All Servers\">".(round($row['towerdestroy'],2))."</span></td>\n";                               
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['wardplace'],2))."%</percentege> Ward Place Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['wardplace'],2))."%</rate> Ward Place Rate Per Game In All Servers\">".(round($row['wardplace'],2))."</span></td>\n";                               
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['wardkill'],2))."%</percentege> Ward Destroy Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['wardkill'],2))."%</rate> Ward Destroy Rate Per Game In All Servers\">".(round($row['wardkill'],2))."</span></td>\n";                               
-                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['truedmg'],0)."</percentege> True Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['truedmg'],0) / 10)."</rate> True Damage Per Game In All Servers\">".round($row['truedmg'],0)."</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['truedmg'],0)."</percentege> True Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['truedmg'],0) / 10)."</rate> True Damage Per Game In All Servers\">".round($row['truedmg'],0)."</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['phycdmg'],0)."</percentege> Physical Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['phycdmg'],0) / 10)."</rate> Physical Damage Per Game In All Servers\">".round($row['phycdmg'],0)."</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['magicdmg'],0)."</percentege> Magaic Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['magicdmg'],0) / 10)."</rate> Magaic Damage Per Game In All Servers\">".round($row['magicdmg'],0)."</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['totaldmg'],0)."</percentege> Total Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['totaldmg'],0) / 10)."</rate> Total Damage Per Game In All Servers\">".round($row['totaldmg'],0)."</span></td>\n";
