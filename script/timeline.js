@@ -39,6 +39,9 @@
 			$('<img alt="Pause/Play (spacebar)" src="images/play.png" data-uk-tooltip title="Play/Stop (Spacebar)" class="playButton" onClick="$(' + $id + ').timeliner.pauseplay()">').appendTo($timerDiv);
 			for (var i = 300; i <= o.timeLength; i += 300) {
 				i = Math.min(o.timeLength, i);
+				if (o.timeLength - i < 120) {
+					break;
+				}
 				$('<span class="time">'  + secToMin(i) + '</span>').css({position:"absolute", left: Math.max(i / o.timeLength * $width - 5, 0)}).appendTo($timerDiv);
 				end = i;
 			}
@@ -47,8 +50,8 @@
 			}
 
 			// Create clusters for events
-			var cluster = new Array(Math.floor($width / 10));
-				for(i = 0; i < $width / 10+1; i++) {
+			var cluster = new Array(Math.ceil($width / 10)+2);
+				for(i = 0; i < Math.ceil($width / 10)+2; i++) {
 					cluster[i] = new Array();
 				}
 
@@ -116,8 +119,11 @@
 			
 			function createClusters(arr) {
 				border = o.timeLength * 10 / $width;	
+				console.log("Length: " + cluster.length);
 				for (i = 0; i < arr.length; i++) {
 					clust = Math.floor(arr[i] / border);
+					console.log(clust);
+
 					cluster[clust].push(i); // store index of element in that cluster
 				}
 			}
