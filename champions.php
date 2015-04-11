@@ -38,20 +38,84 @@ $blue = $rowx4['winrateblue'] / $rowx4['gamenum'] * 100;
     <body>
         <div class="main_info" style="width: 1280px;">
             <div class="summary">
-                <div id="blueVictory" class="tblue" data-uk-tooltip title="Blue Team Win Rate On <?php echo $rowx4['name']; ?> Server"><?php echo number_format((float)$blue, 2, '.', ''); ?>%</div>
+                <div id="blueVictory" class="tblue" data-uk-tooltip title="Blue Team Win Rate On <?php echo $rowx4['name']; ?> Server"><?php echo number_format((float) $blue, 2, '.', ''); ?>%</div>
                 <div class="sele">
                     <form action="" method="post">
                         <select data-cached-title="قم بإختيار السيرفر" name="server">
-                            <option value="na" data-tselect-selected-label="NA">North America</option>
-                            <option value="euw" data-tselect-selected-label="EUW">Europe West</option>
-                            <option value="eune" data-tselect-selected-label="EUNE">Europe Nordic &amp; East</option>
-                            <option value="br" data-tselect-selected-label="BR">Brazil</option>
-                            <option value="tr" data-tselect-selected-label="TR">Turkey</option>
-                            <option value="kr" data-tselect-selected-label="TR">Korea</option>
-                            <option value="ru" data-tselect-selected-label="RU">Russia</option>
-                            <option value="lan" data-tselect-selected-label="LAN">Latin America North</option>
-                            <option value="las" data-tselect-selected-label="LAS">Latin America South</option>
-                            <option value="oce" data-tselect-selected-label="OCE">Oceania</option>
+                            <option value="na" 
+                            <?php
+                            if ($rowx4['name'] == "na") {
+                                echo "selected=\"\"";
+                            }
+                            ?> 
+                                    data-tselect-selected-label="NA">North America</option>
+                            <option value="euw" 
+                            <?php
+                            if ($rowx4['name'] == "euw") {
+                                echo "selected=\"\"";
+                            }
+                            ?> 
+
+                                    data-tselect-selected-label="EUW">Europe West</option>
+                            <option value="eune" 
+                            <?php
+                            if ($rowx4['name'] == "eune") {
+                                echo "selected=\"\"";
+                            }
+                            ?> 
+                                    data-tselect-selected-label="EUNE">Europe Nordic &amp; East</option>
+                            <option value="br"
+                            <?php
+                            if ($rowx4['name'] == "br") {
+                                echo "selected=\"\"";
+                            }
+                            ?> 
+                                    data-tselect-selected-label="BR">Brazil</option>
+                            <option value="tr"
+                            <?php
+                            if ($rowx4['name'] == "tr") {
+                                echo "selected=\"\"";
+                            }
+                            ?> 
+                                    data-tselect-selected-label="TR">Turkey</option>
+                            <option value="kr" 
+                            <?php
+                            if ($rowx4['name'] == "kr") {
+                                echo "selected=\"\"";
+                            }
+                            ?> 
+                                    data-tselect-selected-label="TR">Korea</option>
+                            <option value="ru" 
+                            <?php
+                            if ($rowx4['name'] == "ru") {
+                                echo "selected=\"\"";
+                            }
+                            ?> 
+                                    data-tselect-selected-label="RU">Russia</option>
+                            <option value="lan" 
+                            <?php
+                            if ($rowx4['name'] == "lan") {
+                                echo "selected=\"\"";
+                            }
+                            ?> 
+
+                                    data-tselect-selected-label="LAN">Latin America North</option>
+                            <option value="las"
+                            <?php
+                            if ($rowx4['name'] == "las") {
+                                echo "selected=\"\"";
+                            }
+                            ?> 
+
+                                    data-tselect-selected-label="LAS">Latin America South</option>
+                            <option value="oce" 
+                            <?php
+                            if ($rowx4['name'] == "oce") {
+                                echo "selected=\"\"";
+                            }
+                            ?> 
+
+                                    data-tselect-selected-label="OCE">Oceania</option>
                         </select>
                         <input class="inputte" name="go" value="Filter" type="submit">
 
@@ -62,7 +126,7 @@ $blue = $rowx4['winrateblue'] / $rowx4['gamenum'] * 100;
                         Number Of Matches : <?php echo $rowx4['gamenum']; ?>
                     </div>
                 </div>
-                <div id="redVictory" style="padding-right: 170px;" class="tred" data-uk-tooltip title="Red Team Win Rate On <?php echo $rowx4['name']; ?> Server"><?php echo number_format((float)$red, 2, '.', ''); ?>%</div>
+                <div id="redVictory" style="padding-right: 170px;" class="tred" data-uk-tooltip title="Red Team Win Rate On <?php echo $rowx4['name']; ?> Server"><?php echo number_format((float) $red, 2, '.', ''); ?>%</div>
             </div>
 
             <div class="backurf"> 
@@ -161,10 +225,10 @@ GROUP BY `id`
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['cs'], 2)) . "</percentege> Creeps Slain Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['cs'], 2)) . "</rate> Creeps Slain Rate Per Game In All Servers\">" . (round($row['cs'], 2)) . "</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['towerdestroy'], 2)) . "%</percentege> Tower Destroy Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['towerdestroy'], 2)) . "%</rate> Tower Destroy Rate Per Game In All Servers\">" . (round($row['towerdestroy'], 2)) . "</span></td>\n";
                                 echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['wardplace'], 2)) . "%</percentege> Ward Place Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['wardplace'], 2)) . "%</rate> Ward Place Rate Per Game In All Servers\">" . (round($row['wardplace'], 2)) . "</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".number_format(round($row['truedmg'],0))."</percentege> True Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".number_format((round($rowx3['truedmg'],0) / 10))."</rate> True Damage Per Game In All Servers\">".number_format(round($row['truedmg'],0))."</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".number_format(round($row['phycdmg'],0))."</percentege> Physical Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".number_format((round($rowx3['phycdmg'],0) / 10))."</rate> Physical Damage Per Game In All Servers\">".number_format(round($row['phycdmg'],0))."</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".number_format(round($row['magicdmg'],0))."</percentege> Magaic Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".number_format((round($rowx3['magicdmg'],0) / 10))."</rate> Magaic Damage Per Game In All Servers\">".number_format(round($row['magicdmg'],0))."</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".number_format(round($row['totaldmg'],0))."</percentege> Total Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".number_format((round($rowx3['totaldmg'],0) / 10))."</rate> Total Damage Per Game In All Servers\">".number_format(round($row['totaldmg'],0))."</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . number_format(round($row['truedmg'], 0)) . "</percentege> True Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>" . number_format((round($rowx3['truedmg'], 0) / 10)) . "</rate> True Damage Per Game In All Servers\">" . number_format(round($row['truedmg'], 0)) . "</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . number_format(round($row['phycdmg'], 0)) . "</percentege> Physical Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>" . number_format((round($rowx3['phycdmg'], 0) / 10)) . "</rate> Physical Damage Per Game In All Servers\">" . number_format(round($row['phycdmg'], 0)) . "</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . number_format(round($row['magicdmg'], 0)) . "</percentege> Magaic Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>" . number_format((round($rowx3['magicdmg'], 0) / 10)) . "</rate> Magaic Damage Per Game In All Servers\">" . number_format(round($row['magicdmg'], 0)) . "</span></td>\n";
+                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . number_format(round($row['totaldmg'], 0)) . "</percentege> Total Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>" . number_format((round($rowx3['totaldmg'], 0) / 10)) . "</rate> Total Damage Per Game In All Servers\">" . number_format(round($row['totaldmg'], 0)) . "</span></td>\n";
                                 echo "                        </tr> ";
                             }
                             $num++;
