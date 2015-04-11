@@ -15,7 +15,6 @@ if (isset($_GET['matchId'])) {
     $matchId = getRandomMatchId();
 }
 
-
 if (!is_int($matchId)) {
     // do error handling here
 }

@@ -50,8 +50,8 @@
 			}
 
 			// Create clusters for events
-			var cluster = new Array(Math.ceil($width / 10)+2);
-				for(i = 0; i < Math.ceil($width / 10)+2; i++) {
+			var cluster = new Array(Math.ceil($width / 10));
+				for(i = 0; i < Math.ceil($width / 10); i++) {
 					cluster[i] = new Array();
 				}
 
@@ -121,7 +121,6 @@
 				border = o.timeLength * 10 / $width;	
 				for (i = 0; i < arr.length; i++) {
 					clust = Math.floor(arr[i] / border);
-				
 					cluster[clust].push(i); // store index of element in that cluster
 				}
 			}
