@@ -54,7 +54,7 @@ class Match {
 			
 			foreach ( $this->matchArray ['timeline'] ['frames'] as $frameNumber => $frame ) {
 				$statUpdateEvent = array ();
-				$statUpdateEvent ["timestamp"] = $frame["timestamp"] > $this->getDuration() ? $this->getDuration() : $frame["timestamp"];
+				$statUpdateEvent ["timestamp"] = $frame["timestamp"] > $this->getDuration()*1000 ? $this->getDuration()*1000 : $frame["timestamp"];
 				$statUpdateEvent ["eventType"] = "STAT_UPDATE";
 				$statUpdateEvent ["data"] = array ();
 				foreach ( $frame ["participantFrames"] as $partFrame ) {
