@@ -229,7 +229,7 @@ function Timer(callback, delay, arg1) {
 					var $killer = new Champion($killerChamp, $killerTeam);
 
 					if ($event["buildingType"] == "TOWER_BUILDING") {
-						var $victim = new Tower($event["laneType"], $event["towerType"], $event["teamId"]);
+						var $victim = new Turret($event["laneType"], $event["towerType"], $event["teamId"]);
 					} else if ($event["buildingType"] == "INHIBITOR_BUILDING") {
 						var $victim = new Inhibitor($event["laneType"], $event["teamId"]);
 					}
