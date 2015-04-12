@@ -38,13 +38,13 @@
 						var $killerTeam = $evt["teamId"] == 100 ? 200 : 100;
 						var $killer = new Champion($champName, $killerTeam);
 
-						$string = $killer.getTextboxImage().add($($templates["highlights"]["BUILDING_KILL"])).add($victim.getTextboxImage());
+						$string = $victim.getTextboxImage().add($($templates["highlights"]["BUILDING_KILL"])).add($killer.getTextboxImage());
 					} else if (type == "ELITE_MONSTER_KILL" && ($evt["monsterType"] == "BARON_NASHOR" || $evt["monsterType"] == "DRAGON")) {
 						var $monster = new Monster($evt["monsterType"]);
 						var $killerPart = $participants[$evt["killerId"]];
 						var $killer = new Champion($champs[$killerPart["championId"]], $killerPart["teamId"]);
 						
-						$string = $killer.getTextboxImage().add($($templates["highlights"]["ELITE_MONSTER_KILL"])).add($monster.getTextboxImage());
+						$string = $monster.getTextboxImage().add($($templates["highlights"]["ELITE_MONSTER_KILL"])).add($killer.getTextboxImage());
 					} else if (type == "CHAMPION_KILL") {
 						var $victimChamp = $champs[$participants[$evt["victimId"]]["championId"]];
 						var $victimTeam = $participants[$evt["victimId"]]["teamId"];
