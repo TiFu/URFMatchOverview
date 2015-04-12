@@ -34,7 +34,7 @@
 							var $victim = new Inhibitor($evt["laneType"], $evt["teamId"]);
 						}
 						
-						var $champName = killerId == 0 ? $champs[$participants[$evt["killerId"]]["championId"]] : "Minion";
+						var $champName = $evt["killerId"] != 0 ? $champs[$participants[$evt["killerId"]]["championId"]] : "Minion";
 						var $killerTeam = $evt["teamId"] == 100 ? 200 : 100;
 						var $killer = new Champion($champName, $killerTeam);
 
@@ -129,10 +129,6 @@
 				$towerCountField[$killerTeam].html($valu);
 			}
 			function updateCurrentKDA($killer, $victim, $assists) {
-				console.log("Updating current KDA");
-				console.log($killer);
-				console.log($victim);
-				console.log($assists);
 				// Update team kill count
 				if ($participants[$victim]["teamId"] == 200) {
 					var $value = $blueTeamKillsField.html();
