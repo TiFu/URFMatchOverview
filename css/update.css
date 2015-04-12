@@ -1,0 +1,42 @@
+.killIcon {
+    width:18px;
+    height:19px;
+}
+
+.imageTextbox {
+	width:24px;
+	height:24px;
+}
+
+.imageMap {
+	width:32px;
+	height:32px;
+}
+.span_100 {
+	color:blue;
+}
+
+.killIcon {
+	margin-bottom:5px;
+}
+
+.span_200 {
+	color:red;
+}
+
+.textbox_border_100 {
+	border:1px solid blue;
+}
+
+.textbox_border_200 {
+	border:1px solid red;
+}
+
+.map_border_100 {
+	border:2px solid blue;
+}
+
+.map_border_200 {
+	border:2px solid red;
+}
+

@@ -1,0 +1,67 @@
+<html>
+<head>
+<script src="script/jquery-1.10.2.min.js"></script>
+<script src="script/jquery.tipsy.js"></script>
+<script src="script/functions.js"></script>
+<script src="script/prototypes.js"></script>
+<link rel="stylesheet" href="css/update.css">
+<link rel="stylesheet" href="css/tipsy.css">
+<script>
+	function createPictures() {
+		// Champions
+		var annie = new Champion("Annie", 100);
+		$(annie.getTextboxImage()).appendTo($('#bot'));
+		$(annie.getMapImage()).appendTo($('#bot'));
+		annie = new Champion("Olaf", 200);
+		$('<br>').appendTo($('#bot'));
+		$(annie.getTextboxImage()).appendTo($('#bot'));
+		$(annie.getMapImage()).appendTo($('#bot'));
+		$('<br>').appendTo($('#bot'));
+
+		// Minion
+		var annie = new Champion("Minion", 100);
+		$(annie.getTextboxImage()).appendTo($('#bot'));
+		$(annie.getMapImage()).appendTo($('#bot'));
+		annie = new Champion("Minion", 200);
+		$('<br>').appendTo($('#bot'));
+		$(annie.getTextboxImage()).appendTo($('#bot'));
+		$(annie.getMapImage()).appendTo($('#bot'));
+		$('<br>').appendTo($('#bot'));
+
+		// Turrets
+		var turret = new Turret("MID_LANE", "INNER_TURRET", 100);
+		$(turret.getTextboxImage()).appendTo($('#bot'));
+		$(turret.getMapImage()).appendTo($('#bot'));
+		$('<br>').appendTo($('#bot'));
+		var turret = new Turret("BOT_LANE", "BASE_TURRET", 200);
+		$(turret.getTextboxImage()).appendTo($('#bot'));
+		$(turret.getMapImage()).appendTo($('#bot'));
+		$('<br>').appendTo($('#bot'));
+		
+		
+		// Inhibs
+		var inhib = new Inhibitor("MID_LANE", 100);
+		$(inhib.getTextboxImage()).appendTo($('#bot'));
+		$(inhib.getMapImage()).appendTo($('#bot'));
+		$('<br>').appendTo($('#bot'));
+		var inhib = new Inhibitor("TOP_LANE", 200);
+		$(inhib.getTextboxImage()).appendTo($('#bot'));
+		$(inhib.getMapImage()).appendTo($('#bot'));
+		$('<br>').appendTo($('#bot'));
+		
+		// Monster
+		var monster = new Monster("BARON_NASHOR");
+		$(monster.getTextboxImage()).appendTo($('#bot'));
+		$(monster.getMapImage()).appendTo($('#bot'));
+		$('<br>').appendTo($('#bot'));
+		var monster = new Monster("DRAGON");
+		$(monster.getTextboxImage()).appendTo($('#bot'));
+		$(monster.getMapImage()).appendTo($('#bot'));
+		
+		$('<p>HalloWelt</p>').appendTo($('#bot'));
+}
+</script>
+</head>
+<body onload="createPictures()">
+<div id="bot" style="margin-top:50px; margin-left:50px"></div> 
+</body>

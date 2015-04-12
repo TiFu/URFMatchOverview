@@ -15,7 +15,6 @@ if (isset($_GET['matchId'])) {
     $matchId = getRandomMatchId();
 }
 file_put_contents("log.log", $matchId ."\n", FILE_APPEND);
-
 if (!is_int($matchId)) {
     // do error handling here
 }
@@ -56,12 +55,15 @@ and open the template in the editor.
         <script src="script/jquery.timer.js"></script>
         <script src="script/timeline.js"></script>
         <script src="script/functions.js"></script>
-        <script src="script/update.js"></script>
+		<script src="script/templates.js"></script>
+		<script src="script/prototypes.js"></script>
+		<script src="script/update.js"></script>
         <script src="script/timelineCallbacks.js"></script>
 		<script src="script/pablo.min.js"></script>
 		<script src="script/jquery.tipsy.js"></script>
 		<link rel="stylesheet" href="css/tipsy.css">
         <link rel="stylesheet" href="css/timeline.css">
+        <link rel="stylesheet" href="css/update.css">
         <script>
             window.drawn = false;
 
@@ -344,7 +346,7 @@ while ($champ = $champs->fetch_assoc()) {
                             if (!$result = $db->query("SELECT * FROM $serv WHERE id = $lastchamp ORDER BY 'numgames' DESC")) {
                                 die('There was an error running the query [' . $db->error . ']');
                             } else {
-                                $result2 = $db->query("SELECT * FROM champs WHERE id = $lastchamp");
+                                $result2 = $db->query("SELECT * FROM " .CHAMP_TABLE ." WHERE id = $lastchamp");
                                 $row = $result->fetch_assoc();
                                 $rowx = $result2->fetch_assoc();
                                 $result3 = $db->query("

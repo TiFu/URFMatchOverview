@@ -36,7 +36,7 @@
 						return false;  
 					}
 			});
-			$('<img alt="Pause/Play (spacebar)" src="images/play.png" data-uk-tooltip title="Play/Stop (Spacebar)" class="playButton" onClick="$(' + $id + ').timeliner.pauseplay()">').appendTo($timerDiv);
+			$('<img alt="Play/Pause (spacebar)" src="images/play.png" data-uk-tooltip title="Play/Pause (Spacebar)" class="playButton" onClick="$(' + $id + ').timeliner.pauseplay()">').appendTo($timerDiv);
 			for (var i = 300; i <= o.timeLength; i += 300) {
 				i = Math.min(o.timeLength, i);
 				if (o.timeLength - i < 120) {
