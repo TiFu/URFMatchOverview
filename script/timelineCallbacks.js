@@ -6,13 +6,33 @@
 function event_callback(eventPointer) {
 			// first create string
 	while (globalEventPointer <= eventPointer) {
-		$string = generateEventString($evts[globalEventPointer]);
-		if ( typeof $evts[globalEventPointer]["position"] !== "undefined") { // if position exists
-			drawomap($evts[globalEventPointer]);
-		}
+		var $event = $evts[globalEventPointer];
+
+		$string = generateEventString($event);
 		if ($string != "") {
-			appendTextBox($string, $evts[globalEventPointer]['timestamp']);
+			appendTextBox($string, $event['timestamp']);
 		}
+
+		if (typeof $event["position"] !== "undefined") { // if position exists
+			drawomap($event);
+		}
+
+		// Do some updates
+		if ($event["eventType"] == "CHAMPION_KILL") {
+			updateCurrentKDA($event["killerId"], $event["victimId"], $event["assistingParticipantIds"]);	
+		} else if ($event["eventType"] == "BUILDING_KILL" && $event["buildingType"] == "TOWER_BUILDING") {
+            updateTowerCount(($event["teamId"] == 100 ? 200 : 100));
+		} else if ($event["eventType"] == "ELITE_MONSTER_KILL") {
+			$killer = $participants[$event["killerId"]];
+			if ($event["monsterType"] == "DRAGON") {
+				updateDragonCount($killer['teamId']);
+			} else if ($event["monsterType"] == "BARON_NASHOR") {
+				updateBaronCount($killer["teamId"]);
+			}
+		} else if ($event["eventType"] == "STAT_UPDATE") {
+			updateStats($event['data']);	
+		}
+		
         globalEventPointer++;
     }
 }

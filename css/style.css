@@ -7,15 +7,6 @@ and open the template in the editor.
     Created on : 02/04/2015, 03:10:38 ص
     Author     : Dante
 */
-.killIcon {
-    background:url(images/kill_icon.png) no-repeat center center;
-    width:18px;
-    height:19px;
-}
-.tooltipMap {
-    width:32px;
-    height:32px;
-}
 
 #mapPicture {
     position:relative;
@@ -42,7 +33,7 @@ rate{
 }
 .xd{
     float: left;
-    margin-top: -10px;
+    margin-top: -20px;
 }
 
 @font-face {
@@ -120,7 +111,7 @@ body{
     font-size: 16.57px;
     font-weight: bold;
 }
-.chat_info{
+.chat_info {
     margin-left: 5px;
     color:#c07704;
     font-weight: bold;

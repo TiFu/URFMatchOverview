@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
-$db = new mysqli('localhost', 'root', '', 'challenge');
+include("config/config.php");
+$db = new mysqli(SERVER, DB_USER, DB_PW, DATABASE);
 if (isset($_POST['go'])) {
     $serv = $_POST['server'];
 } else {
@@ -121,7 +122,7 @@ $blue = $rowx4['winrateblue'] / $rowx4['gamenum'] * 100;
 
                     </form>
                     <div class="stats">
-                        Server Selected : <?php echo $rowx4['name']; ?>
+                        Current Server : <?php echo $rowx4['name']; ?>
                         <br />
                         Number Of Matches : <?php echo $rowx4['gamenum']; ?>
                     </div>
