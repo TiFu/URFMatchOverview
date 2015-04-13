@@ -373,6 +373,23 @@ while ($champ = $champs->fetch_assoc()) {
 							if ($rowKey == "numgames") {
 								continue;
 							}
+							if ($rowKey == "kills") {
+								echo "<tr class=\"yellow\">";
+										echo "<td style=\"border-right:1px solid #b8b8b8\">KDA</td>";
+									foreach ($values as $participantId => $value) {
+										echo "<td colspan=\"2\">";
+										echo tableCell("kda", ($thisGame["kills"][$participantId] + $thisGame["assists"][$participantId])/max($thisGame["deaths"][$participantId], 1));
+										echo "</td>";
+										echo "<td colspan=\"2\">";
+										echo tableCell("kda", ($serverValues["kills"][$participantId] + $serverValues["assists"][$participantId])/max(1, $serverValues["deaths"][$participantId]));
+										echo "</td>";
+										echo "<td colspan=\"2\"  style=\"border-right:1px solid #b8b8b8\">";
+										echo tableCell("kda",($allServersValues["kills"][$participantId] + $allServersValues["assists"][$participantId])/max(1, $allServersValues["deaths"][$participantId]));
+										echo "</td>";								
+									}
+								echo "</tr>";
+							}
+
 							echo $body ? "<tr class=\"yellow\">" : "<tr  style=\"border-bottom:1px solid #b8b8b8\">";
 							echo $rowKey == "champion" ? "<th>" : "<td  style=\"border-right:1px solid #b8b8b8\">";
 							echo $rowKey != "firstBloodKill" ? transformColumnNameToText($rowKey) : "First Blood";
@@ -430,8 +447,10 @@ while ($champ = $champs->fetch_assoc()) {
 								return '<span><img data-uk-tooltip title="' .$value .'" style="border-radius:50%;" width="24px;" height="24px" src="images/champion/' .str_replace(" ", "%20", $value) .'46.png" alt=""></span>';
 							} else if (strpos(strtolower($rowKey), "rate") !== false) {
 								return round($value * 100,0) ."%";
+							} else if ($rowKey == "kda") {
+								return number_format($value, 1, ",", ".");
 							} else {
-								return number_format(round($value,2), 0, ",", ".");
+								return number_format($value, 0, ",", ".");
 							}
 							
 							return $value;
