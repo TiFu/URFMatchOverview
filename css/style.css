@@ -338,11 +338,8 @@ table{
     color:white;  
 }
 .backurf{
-    background: url('../images/urfdata.jpg') 50% 50%;
-    width: 100%;
-    background-repeat: no-repeat;
-	background-size: 100% 100%;
-	background-position:static;
+    background: url('../images/urfdata.jpg') no-repeat 50% 50%;
+    background-attachment: fixed;
 }
 
 #keywords td {
