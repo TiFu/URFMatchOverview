@@ -358,6 +358,7 @@ while ($champ = $champs->fetch_assoc()) {
 									}
 								}	
 
+								$totalNumberOfGames = max(1, $totalNumberOfGames);
 								foreach ($allServersValues as $key => $ch) {
 										$allServersValues[$key][$participantId] = $allServersValues[$key][$participantId] / $totalNumberOfGames;
 								}
