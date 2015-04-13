@@ -22,7 +22,7 @@ if (!is_int($matchId)) {
 $match = new Match(file_get_contents(MATCH_PATH .$matchId .".json"), $mysqli);
 $startEvents = $match->getEvents(array("CHAMPION_KILL", "BUILDING_KILL", "ELITE_MONSTER_KILL"));
 $logEvents = array();
-$animationDuration = $match->getDuration() / 600.0 * 45; // 45 secs per 10 min game time
+$animationDuration = $match->getDuration() / 600.0 * 5; // 45 secs per 10 min game time
 
 // Filter red and blue buff out of the events
 foreach ($startEvents as $event) {
@@ -135,38 +135,15 @@ while ($champ = $champs->fetch_assoc()) {
              *  Initialize the timeline with events, showEvent and hoverText (currently BS)
              */
             $(document).ready(function () {
-                // Update textBox periodically (every 250ms)
-                $textboxInterval = setInterval(updateTextBox, 250);
-                $commentBox = $("#comments");
-
-                $('#timeline').timeliner({events: [<?php 
-					$string = "";
-					foreach ($logEvents as $event) {
-						$string .= ((int) ($event['timestamp']/1000)) .',';
-					}
-					echo rtrim($string, ',');
-				?>], showEvent: [<?php 
-					$string = "";
-					foreach ($logEvents as $event) {
-						$string .= ($event['eventType'] != 'CHAMPION_KILL' && $event['eventType'] != 'STAT_UPDATE') .',';
-					}
-					echo rtrim($string, ',');
-				?>], hoverText: [<?php 
-					$string = "";
-					foreach ($logEvents as $event) {
-						$string .= "\"" .$match->createHoverText($event) ."\",";
-					}
-					echo rtrim($string, ',');
-			?>], timeLength: <?php echo $match->getDuration() ?>, animationLength: <?php echo $animationDuration ?>});
-				// Update textBox periodically (every 250ms)
-				$textboxInterval = setInterval(updateTextBox, 250);
 				$commentBox = $("#comments");
-				for (i = 1; i <=  10; i++) {
-					$participants[i]["field"] = $("#participant" + i);
-					$participants[i]["field"]["items"] = $participants[i]["field"].find(".champbuild").find("img");
-					$participants[i]["field"]["currentGold"] = $participants[i]["field"].find(".currentGold");
-					$participants[i]["field"]["currentMinions"] = $participants[i]["field"].find(".currentMinions");
-					$participants[i]["field"]["level"] = $participants[i]["field"].find(".level");
+				for (var i = 1; i <=  10; i++) {
+					var $field = $("#participant" + i);
+					$participants[i]["field"] = new Array();
+					$participants[i]["field"]["items"] = $field.find(".champbuild").find("img");
+					$participants[i]["field"]["currentGold"] = $field.find(".currentGold");
+					$participants[i]["field"]["currentMinions"] = $field.find(".currentMinions");
+					$participants[i]["field"]["level"] = $field.find(".level");
+					$participants[i]["field"]["kda"] = $field.find(".kda");
 					for (z = 0; z < 7; z++) {
 						$($participants[i]["field"]["items"][z]).tipsy({gravity:'s', title: function () {
 							return $(this).attr("original-title");
@@ -198,6 +175,28 @@ while ($champ = $champs->fetch_assoc()) {
 				$svg = Pablo('#mapPicture');
 				// init map
 				$svg.append('<image xlink:href="images/map.jpg" x="0" y="0" width="530" height="512"></image>');
+				// Update textBox periodically (every 250ms)
+				$textboxInterval = setInterval(updateTextBox, 250);
+				                $('#timeline').timeliner({events: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= ((int) ($event['timestamp']/1000)) .',';
+					}
+					echo rtrim($string, ',');
+				?>], showEvent: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= ($event['eventType'] != 'CHAMPION_KILL' && $event['eventType'] != 'STAT_UPDATE') .',';
+					}
+					echo rtrim($string, ',');
+				?>], hoverText: [<?php 
+					$string = "";
+					foreach ($logEvents as $event) {
+						$string .= "\"" .$match->createHoverText($event) ."\",";
+					}
+					echo rtrim($string, ',');
+			?>], timeLength: <?php echo $match->getDuration() ?>, animationLength: <?php echo $animationDuration ?>});
+
 
 			});
         </script>
@@ -350,9 +349,9 @@ while ($champ = $champs->fetch_assoc()) {
 								$serverValues["champion"][$participantId] = $champName;
 								$allServersValues["champion"][$participantId] = $champName;
 								
-								$query = $mysqli->query("SELECT * FROM " .$server . " WHERE id = " .$champId)->fetch_assoc();
+								$query = $mysqli->query("SELECT * FROM " .AVERAGE_TABLE . " WHERE championId = " .$champId ." AND region='" .$server ."'")->fetch_assoc();
 								foreach ($query as $key => $value) {
-									if ($key == "name" || $key == "id") {
+									if ($key == "championId") {
 										continue;
 									}
 									if (!isset($serverValues[$key])) {
@@ -366,7 +365,7 @@ while ($champ = $champs->fetch_assoc()) {
 								}
 								
 								foreach ($servers as $currentServer) {
-									$query = $mysqli->query("SELECT * FROM " .$currentServer . " WHERE id = " .$champId)->fetch_assoc();
+									$query = $mysqli->query("SELECT * FROM " .AVERAGE_TABLE . " WHERE id = " .$champId)->fetch_assoc() ." AND region='" .$currentServer ."'";
 									$numGames = $query["numgames"];
 									foreach ($query as $key => $value) {
 										if ($key == "name" || $key == "id") {

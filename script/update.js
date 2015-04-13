@@ -141,14 +141,14 @@
 				}
 				if ($killer != 0) {
 					$participants[$killer]["currentKills"]++;
-					$participants[$killer]["field"].find(".kda").html(kda($killer));
+					$participants[$killer]["field"]["kda"].html(kda($killer));
 				}
 					$participants[$victim]["currentDeaths"]++;
-					$participants[$victim]["field"].find(".kda").html(kda($victim));
+					$participants[$victim]["field"]["kda"].html(kda($victim));
 				if (typeof $assists != 'undefined') {
 					for(i = 0; i < $assists.length; i++) {
 						$participants[$assists[i]]["currentAssists"]++;
-						$participants[$assists[i]]["field"].find(".kda").html(kda($assists[i]));
+						$participants[$assists[i]]["field"]["kda"].html(kda($assists[i]));
 					}
 				}
 			}

@@ -38,6 +38,15 @@ function transformTypeToText($type) {
 	return rtrim($val);
 }
 
+function transformColumnNameToText($text) {
+	$pieces = preg_split('/(?=[A-Z])/',$text);
+	$ret = "";
+	foreach ($pieces as $piece) {
+		$ret .= $piece ." ";
+	}
+	return rtrim($ret);
+}
+
 function startsWith($haystack, $needle) {
     // search backwards starting from haystack length characters from the end
     return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
