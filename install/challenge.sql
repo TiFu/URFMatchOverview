@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 13. Apr 2015 um 02:25
+-- Erstellungszeit: 13. Apr 2015 um 21:25
 -- Server Version: 5.6.21
 -- PHP-Version: 5.6.3
 
@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS `analyzedgames` (
   `winRate` decimal(15,10) NOT NULL,
   `banRate` decimal(15,10) NOT NULL,
   `kills` decimal(15,10) NOT NULL,
-  `assists` decimal(15,10) NOT NULL,
   `deaths` decimal(15,10) NOT NULL,
+  `assists` decimal(15,10) NOT NULL,
   `minionsKilled` decimal(15,10) NOT NULL,
   `goldEarned` decimal(15,10) NOT NULL,
   `towerKills` decimal(15,10) NOT NULL,
