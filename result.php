@@ -14,6 +14,7 @@ if (isset($_GET['matchId'])) {
 } else {
     $matchId = getRandomMatchId();
 }
+
 file_put_contents("log.log", $matchId ."\n", FILE_APPEND);
 if (!is_int($matchId)) {
     // do error handling here

@@ -18,23 +18,16 @@ function storeUrlToFilesystem($url, $localFile) {
 }
 
 function getRandomMatchId() {
-	$dirscan = scandir(ID_PATH);
+	$dirscan = scandir(MATCH_PATH);
 	$files = array();
 	foreach ($dirscan as $file) {
-		if (endsWith($file, ".txt")) {
+		if (endsWith($file, ".json")) {
 			$files[] = $file;
 		}
 	}
 	$idFileCount = count($files);
 	$file = mt_rand(0, $idFileCount - 1); // file selected
-
-	// Number of lines:
-	$fileLines = count(file(ID_PATH .$files[$file]));
-	$lineNumber = mt_rand(0, $fileLines - 1); // Random number
-	$file = new SplFileObject(ID_PATH .$files[$file]);
-	$file->seek($lineNumber);
-		
-	return rtrim($file->current());
+	return substr($files[$file],0, -5);
 }
 function transformTypeToText($type) {
 	$arr = explode("_", $type);
