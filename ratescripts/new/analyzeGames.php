@@ -11,8 +11,8 @@ $mysqli = mysqli_init();
 $mysqli->real_connect(SERVER, DB_USER, DB_PW, DATABASE);
 
 // Create 1240 entries (each region and each champion pair)
-$count = $mysqli->query("SELECT * FROM " .CHAMP_TABLE)->num_rows;
-echo $count ."<br>";
+$count = $mysqli->query("SELECT * FROM " .AVERAGE_TABLE)->num_rows;
+echo "Count: " .$count ."<br>";
 if ($count != 1240) {
 	echo "Truncating table";
 	$mysqli->query("TRUNCATE TABLE " .AVERAGE_TABLE); // Clean it
