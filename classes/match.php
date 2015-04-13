@@ -291,6 +291,9 @@ class Match {
 			$info ['visionWardsBoughtInGame'] = $participant ['stats'] ['visionWardsBoughtInGame'];
 			$info ['wardsKilled'] = $participant ['stats'] ['wardsKilled'];
 			$info ['wardsPlaced'] = $participant ['stats'] ['wardsPlaced'];
+			$info ['firstTowerKill'] = $participant ['stats'] ['firstTowerKill'];
+			$info ['firstBloodKill'] = $participant ['stats'] ['firstBloodKill'];
+			$info ['towerKills'] = $participant ['stats'] ['towerKills'];
 			// Participant Timeline
 			$info ['lane'] = $participant ['timeline'] ['lane'];
 			

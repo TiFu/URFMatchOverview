@@ -307,37 +307,12 @@ while ($champ = $champs->fetch_assoc()) {
                 <div class="urfdata">Ultra Rapid Fire Champions Statistics</div>
 
             </div>
-            <div class="backurf"> 
-                <table id="keywords">
-                    <thead>
- <!--                       <tr>
-                            <th><span data-uk-tooltip title="Champion">Champion</span></th>
-                            <th><span data-uk-tooltip title="Champion Pick Rate">Pick</span></th>
-                            <th><span data-uk-tooltip title="Champion Win Rate">Win</span></th>                                                                                    
-                            <th><span data-uk-tooltip title="Kill/Death/Assist Rate">KDA</span></th>
-                            <th><span data-uk-tooltip title="Champion Ban Rate">Ban</span></th>
-                            <th><span data-uk-tooltip title="Champion Kills Rate">Kills</span></th>
-                            <th><span data-uk-tooltip title="Champion Death Rate">Death</span></th>
-                            <th><span data-uk-tooltip title="Champion Assist Rate">Assist</span></th>
-                            <th><span data-uk-tooltip title="First Blood Rate">F B</span></th>
-                            <th><span data-uk-tooltip title="Double Kill Rate">D K</span></th>
-                            <th><span data-uk-tooltip title="Triple Kill Rate">T K</span></th>
-                            <th><span data-uk-tooltip title="Quadra Kill Rate">Q K</span></th>
-                            <th><span data-uk-tooltip title="Penta Kill Rate">P K</span></th>
-                            <th><span data-uk-tooltip title="Killing Spree Rate">K S</span></th>
-                            <th><span data-uk-tooltip title="Creeps Slain Rate (Minions & Jungle Monsters)">C S</span></th>
-                            <th><span data-uk-tooltip title="Tower Destroy Rate">Tower Destroy</span></th>
-                            <th><span data-uk-tooltip title="Wards Place Rate">Wards Place</span></th>
-                            <th><span data-uk-tooltip title="True Damage Rate (For Champions)">True Dmg</span></th>
-                            <th><span data-uk-tooltip title="Physical Damage Rate (For Champions)">Physical Dmg</span></th>
-                            <th><span data-uk-tooltip title="Magic Damage Rate (For Champions)">Magic Dmg</span></th>
-                            <th><span data-uk-tooltip title="Total Damage Rate">Total Dmg</span></th>
-                        </tr> -->
                         <?php
                         $server = strtolower($match->getRegion());
 						$servers = array("br", "eune", "euw", "kr", "lan", "las", "na", "oce", "ru", "tr");
 						$serverValues = array();
 						$allServersValues = array();
+						$thisGame = array();
 						foreach ($participants as $participant) {
 								$participantId = $participant["participantId"];
 								if (!isset($serverValues["champion"])) {
@@ -348,146 +323,121 @@ while ($champ = $champs->fetch_assoc()) {
 								$champName = $mysqli->query("SELECT name FROM " .CHAMP_TABLE . " WHERE id = " .$champId)->fetch_assoc()['name'];
 								$serverValues["champion"][$participantId] = $champName;
 								$allServersValues["champion"][$participantId] = $champName;
-								
+								$thisGame["champion"][$participantId] = $champName;
+
 								$query = $mysqli->query("SELECT * FROM " .AVERAGE_TABLE . " WHERE championId = " .$champId ." AND region='" .$server ."'")->fetch_assoc();
+
 								foreach ($query as $key => $value) {
-									if ($key == "championId") {
+									if ($key == "championId" || $key == "numberOfGames" || $key == "region") {
 										continue;
 									}
 									if (!isset($serverValues[$key])) {
 										$serverValues[$key] = array();
 										$allServersValues[$key] = array();
+										$thisGame[$key] = array();
 									}
 									if (!isset($serverValues[$key][$participantId])) {
 										$allServersValues[$key][$participantId] = 0;
 									}
+									if ($key != "pickRate" && $key != "winRate" && $key != "banRate") {
+										$thisGame[$key][$participantId] = $participants[$participantId-1][$key];
+									} 
 									$serverValues[$key][$participantId] = $value;
 								}
-								
+
+								$totalNumberOfGames = 0;
 								foreach ($servers as $currentServer) {
-									$query = $mysqli->query("SELECT * FROM " .AVERAGE_TABLE . " WHERE id = " .$champId)->fetch_assoc() ." AND region='" .$currentServer ."'";
-									$numGames = $query["numgames"];
+									$query = $mysqli->query("SELECT * FROM " .AVERAGE_TABLE . " WHERE championId = " .$champId ." AND region='" .$currentServer ."'")->fetch_assoc();
+									$numGames = $query["numberOfGames"];
+									$totalNumberOfGames += $numGames;
 									foreach ($query as $key => $value) {
-										if ($key == "name" || $key == "id") {
+										if ($key == "name" || $key == "championId" || $key == "numberOfGames" || $key == "region") {
 											continue;
 										}
 										$allServersValues[$key][$participantId] += $value * $numGames;
 									}
-								}		
+								}	
+
+								foreach ($allServersValues as $key => $ch) {
+										$allServersValues[$key][$participantId] = $allServersValues[$key][$participantId] / $totalNumberOfGames;
+								}
 						}
+	?>
+            <div class="backurf"> 
+                <table id="keywords">
+                    <thead>
+						<?php
+						$body = false;
 						foreach ($serverValues as $rowKey => $values) {
 							if ($rowKey == "numgames") {
 								continue;
 							}
-							echo "<tr>";
-							echo $rowKey == "champion" ? "<th>" : "<td>";
-							echo rowName($rowKey);
+							echo $body ? "<tr class=\"yellow\">" : "<tr  style=\"border-bottom:1px solid #b8b8b8\">";
+							echo $rowKey == "champion" ? "<th>" : "<td  style=\"border-right:1px solid #b8b8b8\">";
+							echo $rowKey != "firstBloodKill" ? transformColumnNameToText($rowKey) : "First Blood";
 							echo $rowKey == "champion" ? "</th>" : "</td>";
 							foreach ($values as $participantId => $value) {
-								echo $rowKey == "champion" ? "<th>" : "<td>";
-								echo tableCell($rowKey, $value);
-								echo $rowKey == "champion" ? "</th>" : "</td>";
+								if ($rowKey == "champion") {
+									echo "<th colspan=\"6\" style=\"background-color:" .($participants[$participantId-1]["teamId"] == 100 ? "#C6E8F2" : "#F2C6C7") ."\">";
+									echo tableCell($rowKey, $value);
+									echo "</th>";
+								} else {
+									if ($rowKey == "pickRate" || $rowKey == "winRate" || $rowKey == "banRate") {
+										echo "<td colspan=\"3\">";
+										echo tableCell($rowKey, $value);
+										echo "</td>";
+										echo "<td colspan=\"3\" style=\"border-right:1px solid #b8b8b8\">";
+										echo tableCell($rowKey, $allServersValues[$rowKey][$participantId]);
+										echo "</td>";
+									} else {
+										echo "<td colspan=\"2\">";
+										echo tableCell($rowKey, $thisGame[$rowKey][$participantId]);
+										echo "</td>";
+										echo "<td colspan=\"2\">";
+										echo tableCell($rowKey, $value);
+										echo "</td>";
+										echo "<td colspan=\"2\"  style=\"border-right:1px solid #b8b8b8\">";
+										echo tableCell($rowKey, $allServersValues[$rowKey][$participantId]);
+										echo "</td>";
+									}
+								}
 							}
-							echo $rowKey == "champion" ? "</thead><tbody>" : "";
 							echo "</tr>";
+							if ($rowKey == "champion") {
+								echo "<tr>";
+								echo "<td class=\"yellow\" style=\"border-right:1px solid #b8b8b8\"></td>";
+								for ($k = 0; $k < 10; $k++) {
+									echo "<td colspan=\"3\">" .regionToServer($match->getRegion()) ."</td><td colspan=\"3\"   style=\"border-right:1px solid #b8b8b8\">All Servers</td>";
+								}
+								echo "</tr>";
+
+							}
+							if ($rowKey == "banRate") {
+								echo "<tr>";
+								echo "<td class=\"yellow\" style=\"border-right:1px solid #b8b8b8\"></td>";
+								for ($k = 0; $k < 10; $k++) {
+									echo "<td colspan=\"2\">This Game</td><td colspan=\"2\">" .regionToServer($match->getRegion()) ."</td><td colspan=\"2\"   style=\"border-right:1px solid #b8b8b8\">All Servers</td>";
+								}
+								echo "</tr>";
+							}
+						echo $rowKey == "champion" ? "</thead><tbody>" : "";
+							$body = $rowKey == "champion" ? true : $body;
 						}
 						
 						function tableCell($rowKey, $value) {
 							if ($rowKey == "champion") {
-								return '<span><img data-uk-tooltip title="' .$value .'" style="border-radius:50%;" width="24px" height="24px" src="images/champion/' .str_replace(" ", "%20", $value) .'46.png" alt=""></span>';
+								return '<span><img data-uk-tooltip title="' .$value .'" style="border-radius:50%;" width="24px;" height="24px" src="images/champion/' .str_replace(" ", "%20", $value) .'46.png" alt=""></span>';
+							} else if (strpos(strtolower($rowKey), "rate") !== false) {
+								return round($value * 100,0) ."%";
 							} else {
-								return round($value, 2);
+								return number_format(round($value,2), 0, ",", ".");
 							}
 							
 							return $value;
 						}
-						
-						function rowName($rowKey) {
-							if ($rowKey == "totaldmg") {
-								return "Total damage";
-							} else if ($rowKey == "magicdmg") {
-								return "Magic damage";
-							} else if ($rowKey == "phycdmg") {
-								return "Physical damage";
-							} else if ($rowKey == "winrate") {
-								return "Win rate";
-							} else if ($rowKey == "truedmg") {
-								return "True damage";
-							} else if ($rowKey == "ban") {
-								return "Ban rate";
-							} else if ($rowKey == "pick") {
-								return "Pick rate";
-							} else if ($rowKey == "cs") {
-								return "Minions";
-							} else if ($rowKey == "kills") {
-								return "Kills";
-							} else if ($rowKey == "kda") {
-								return "KDA";
-							} else if ($rowKey == "death") {
-								return "Deaths";
-							} else if ($rowKey == "wardplace") {
-								return "Wards placed";
-							} else if ($rowKey == "assist") {
-								return "Assists";
-							} else if ($rowKey == "ks") {
-								return "Killing spree";
-							} else if ($rowKey == "dk") {
-								return "Double Kills";
-							} else if ($rowKey == "towerdestroy") {
-								return "Turrets destroyed";
-							} else if ($rowKey == "tk") {
-								return "Triple Kills";
-							} else if ($rowKey == "fb") {
-								return "First blood";
-							} else if ($rowKey == "qk") {
-								return "Quadra Kills";
-							} else if ($rowKey == "pk") {
-								return "Penta Kills";
-							} else if ($rowKey == "champion") {
-								return "Champion";
-							}
-							
-							return $rowKey;
-							// Return row name here
-						}
-/*
-								echo mysqli_error($db);
-                                $rowx3 = $result3->fetch_assoc();
-                                echo "<tr class=\"yellow\">\n";
-                                echo "<td><span><img data-uk-tooltip title=\"{$rowx['name']}\" style=\"border-radius: 50%;\" width=\"24\" height=\"24\" src=\"images/champion/" .str_replace(" ", "%20",$rowx['name']) ."46.png\" alt=\"\" /></span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['pick'],2)."%</percentege> Pickrate In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['pick'],0) / 10)."%</rate> Pickrate In All Servers\">".round($row['pick'],2)."%</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>" . (round($row['winrate'], 2)) . "%</percentege> Win Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>" . (round($rowx3['winrate'], 0)/ 10) . "%</rate> Win Rate Per Game In All Servers\">" . (round($row['winrate'], 2)) . "%</span></td>\n";                                
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['kda'],2)."</percentege> KDA Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['kda'],1) / 10)."%</rate> KDA Per Game In All Servers\">".round($row['kda'],2)."</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['ban'],2)."%</percentege> Ban Rate In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['ban'],0) / 10)."%</rate> Ban Rate In All Servers\">".round($row['ban'],2)."%</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['kills'],2)."</percentege> Kill Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['kills'],0) / 10)."</rate> Kill Per Game In All Servers\">".round($row['kills'],2)."</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['death'],2)."</percentege> Assist Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['death'],0) / 10)."</rate> Assist Per Game In All Servers\">".round($row['death'],2)."</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".round($row['assist'],2)."</percentege> Death Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['assist'],0) / 10)."</rate> Death Per Game In All Servers\">".round($row['assist'],2)."</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['fb'],2))."%</percentege> First Blood Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['fb'],2))."%</rate> First Blood Rate Per Game In All Servers\">".(round($row['fb'],2))."</span></td>\n";                               
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['dk'],2))."%</percentege> Double Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['dk'],2))."%</rate> Double Kill Rate Per Game In All Servers\">".(round($row['dk'],2))."</span></td>\n";                               
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['tk'],2))."%</percentege> Triple Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['tk'],2))."%</rate> Triple Kill Rate Per Game In All Servers\">".(round($row['tk'],2))."</span></td>\n";                               
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['qk'],2))."%</percentege> Quadra Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['qk'],2))."%</rate> Quadra Kill Rate Per Game In All Servers\">".(round($row['qk'],2))."</span></td>\n";                               
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['pk'],2))."%</percentege> Penta Kill Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['pk'],2))."%</rate> Penta Kill Rate Per Game In All Servers\">".(round($row['pk'],2))."</span></td>\n";                               
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['ks'],2))."%</percentege> Killing Spree Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['ks'],2))."%</rate> Killing Spree Rate Per Game In All Servers\">".(round($row['ks'],2))."</span></td>\n";                               
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['cs'],2))."</percentege> Creeps Slain Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['cs'],2))."</rate> Creeps Slain Rate Per Game In All Servers\">".(round($row['cs'],2))."</span></td>\n";                               
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['towerdestroy'],2))."%</percentege> Tower Destroy Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['towerdestroy'],2))."%</rate> Tower Destroy Rate Per Game In All Servers\">".(round($row['towerdestroy'],2))."</span></td>\n";                               
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".(round($row['wardplace'],2))."%</percentege> Ward Place Rate Per Game In $serv <br/>{$rowx['name']} Got <rate>".(round($rowx3['wardplace'],2))."%</rate> Ward Place Rate Per Game In All Servers\">".(round($row['wardplace'],2))."</span></td>\n";                               
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".number_format(round($row['truedmg'],0))."</percentege> True Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".number_format((round($rowx3['truedmg'],0) / 10))."</rate> True Damage Per Game In All Servers\">".number_format(round($row['truedmg'],0))."</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".number_format(round($row['phycdmg'],0))."</percentege> Physical Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".number_format((round($rowx3['phycdmg'],0) / 10))."</rate> Physical Damage Per Game In All Servers\">".number_format(round($row['phycdmg'],0))."</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".number_format(round($row['magicdmg'],0))."</percentege> Magaic Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".number_format((round($rowx3['magicdmg'],0) / 10))."</rate> Magaic Damage Per Game In All Servers\">".number_format(round($row['magicdmg'],0))."</span></td>\n";
-                                echo "<td><span data-uk-tooltip title=\"{$rowx['name']} Got <percentege>".number_format(round($row['totaldmg'],0))."</percentege> Total Damage Per Game In $serv <br/>{$rowx['name']} Got <rate>".number_format((round($rowx3['totaldmg'],0) / 10))."</rate> Total Damage Per Game In All Servers\">".number_format(round($row['totaldmg'],0))."</span></td>\n";
-                                echo "                        </tr> ";
-                            }
-                            $num++;
-                        }
-						*/
                         ?>
                     </tbody>
                 </table>             
-                <script type="text/javascript">
-                    $(function () {
-                        $('#keywords').tablesorter();
-                    });
-                </script>            
             </div>
         </div>  
     </body>

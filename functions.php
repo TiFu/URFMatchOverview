@@ -42,9 +42,51 @@ function transformColumnNameToText($text) {
 	$pieces = preg_split('/(?=[A-Z])/',$text);
 	$ret = "";
 	foreach ($pieces as $piece) {
-		$ret .= $piece ." ";
+		$ret .= ucfirst($piece) ." ";
 	}
 	return rtrim($ret);
+}
+
+function regionToServer($region) {
+	if ($region == "BR") {
+		return "Brazil";
+	}
+
+	if ($region == "EUNE") {
+		return "EU Nordic & East";
+	}
+	
+	if ($region == "EUW") {
+		return "EU West";
+	}
+
+	if ($region == "LAN") {
+		return "Latin America North";
+	}
+
+	if ($region == "LAS") {
+		return "Latin America South";
+	}
+
+	if ($region == "KR") {
+		return "Korea";
+	}
+
+	if ($region == "OCE") {
+		return "Oceania";
+	}
+	
+	if ($region == "RU") {
+		return "Russia";
+	}
+
+	if ($region == "TR") {
+		return "Turkey";
+	}
+	if ($region == "NA") {
+		return "North America";
+	}
+
 }
 
 function startsWith($haystack, $needle) {

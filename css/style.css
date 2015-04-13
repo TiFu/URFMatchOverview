@@ -342,7 +342,7 @@ table{
     width: 100%;
     background-repeat: no-repeat;
 	background-size: 100% 100%;
-    background-attachment: fixed;
+	background-position:static;
 }
 
 #keywords td {
@@ -355,20 +355,25 @@ table{
     font-size:10px;
     background-color: #fbedb8;
     border-collapse: collapse;
-    opacity:0.85;
+    opacity:0.8;
 }
 #keywords td{
     padding:10px;
+	padding-left:0px;
+	padding-right:0px;
     text-align: center;
     vertical-align: middle;
     font-size: 11px;
     text-shadow: 0px 1px rgba(255, 255, 255, 0.9);
     color: #34495E;
 }
+
 #keywords tbody tr:hover{
     background-color:#dbdbdb;border-bottom:1px solid #b8b8b8;border-top:1px solid #cecece;
 }
-
+.yellow td {
+	width: 3%;
+}
 #keywords thead tr th {
     font-weight: bold;
     padding: 10px 0px 10px 0px;
@@ -377,8 +382,6 @@ table{
     font-size: 11px;
     text-shadow: 0px 1px rgba(255, 255, 255, 0.9);
     color: #292929;   
-    cursor: pointer;
-
 }
 
 #keywords thead  th span {
