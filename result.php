@@ -18,7 +18,7 @@ file_put_contents("log.log", $matchId ."\n", FILE_APPEND);
 if (!is_int($matchId)) {
     // do error handling here
 }
-$match = new Match(file_get_contents("data/" . $matchId . ".json"), $mysqli);
+$match = new Match(file_get_contents(MATCH_PATH .$matchId .".json"), $mysqli);
 $startEvents = $match->getEvents(array("CHAMPION_KILL", "BUILDING_KILL", "ELITE_MONSTER_KILL"));
 $logEvents = array();
 $animationDuration = $match->getDuration() / 600.0 * 45; // 45 secs per 10 min game time
@@ -310,7 +310,7 @@ while ($champ = $champs->fetch_assoc()) {
             <div class="backurf"> 
                 <table id="keywords">
                     <thead>
-                        <tr>
+ <!--                       <tr>
                             <th><span data-uk-tooltip title="Champion">Champion</span></th>
                             <th><span data-uk-tooltip title="Champion Pick Rate">Pick</span></th>
                             <th><span data-uk-tooltip title="Champion Win Rate">Win</span></th>                                                                                    
@@ -332,58 +332,125 @@ while ($champ = $champs->fetch_assoc()) {
                             <th><span data-uk-tooltip title="Physical Damage Rate (For Champions)">Physical Dmg</span></th>
                             <th><span data-uk-tooltip title="Magic Damage Rate (For Champions)">Magic Dmg</span></th>
                             <th><span data-uk-tooltip title="Total Damage Rate">Total Dmg</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                        </tr> -->
                         <?php
-			$db = $mysqli;
-                        $serv = strtolower($match->getRegion());
+                        $server = strtolower($match->getRegion());
+						$servers = array("br", "eune", "euw", "kr", "lan", "las", "na", "oce", "ru", "tr");
+						$serverValues = array();
+						$allServersValues = array();
+						foreach ($participants as $participant) {
+								$participantId = $participant["participantId"];
+								if (!isset($serverValues["champion"])) {
+									$serverValues["champion"] = array();
+									$allServersValues["champion"] = array();
+								}
+								$champId = $participant["championId"];
+								$champName = $mysqli->query("SELECT name FROM " .CHAMP_TABLE . " WHERE id = " .$champId)->fetch_assoc()['name'];
+								$serverValues["champion"][$participantId] = $champName;
+								$allServersValues["champion"][$participantId] = $champName;
+								
+								$query = $mysqli->query("SELECT * FROM " .$server . " WHERE id = " .$champId)->fetch_assoc();
+								foreach ($query as $key => $value) {
+									if ($key == "name" || $key == "id") {
+										continue;
+									}
+									if (!isset($serverValues[$key])) {
+										$serverValues[$key] = array();
+										$allServersValues[$key] = array();
+									}
+									if (!isset($serverValues[$key][$participantId])) {
+										$allServersValues[$key][$participantId] = 0;
+									}
+									$serverValues[$key][$participantId] = $value;
+								}
+								
+								foreach ($servers as $currentServer) {
+									$query = $mysqli->query("SELECT * FROM " .$currentServer . " WHERE id = " .$champId)->fetch_assoc();
+									$numGames = $query["numgames"];
+									foreach ($query as $key => $value) {
+										if ($key == "name" || $key == "id") {
+											continue;
+										}
+										$allServersValues[$key][$participantId] += $value * $numGames;
+									}
+								}		
+						}
+						foreach ($serverValues as $rowKey => $values) {
+							if ($rowKey == "numgames") {
+								continue;
+							}
+							echo "<tr>";
+							echo $rowKey == "champion" ? "<th>" : "<td>";
+							echo rowName($rowKey);
+							echo $rowKey == "champion" ? "</th>" : "</td>";
+							foreach ($values as $participantId => $value) {
+								echo $rowKey == "champion" ? "<th>" : "<td>";
+								echo tableCell($rowKey, $value);
+								echo $rowKey == "champion" ? "</th>" : "</td>";
+							}
+							echo $rowKey == "champion" ? "</thead><tbody>" : "";
+							echo "</tr>";
+						}
 						
-			$gaza3 = $match->getParticipants();
-                        $num = 1;
-                        for ($cmp = 0; $cmp < 10; $cmp++) {
-                            $lastchamp = $gaza3[$cmp]['championId'];
-                            if (!$result = $db->query("SELECT * FROM $serv WHERE id = $lastchamp ORDER BY 'numgames' DESC")) {
-                                die('There was an error running the query [' . $db->error . ']');
-                            } else {
-                                $result2 = $db->query("SELECT * FROM " .CHAMP_TABLE ." WHERE id = $lastchamp");
-                                $row = $result->fetch_assoc();
-                                $rowx = $result2->fetch_assoc();
-                                $result3 = $db->query("
-                                   SELECT `id` , sum( `numgames` ) AS `numgames` , sum( `pick` ) AS `pick` , sum( `kda` ) AS `kda` , sum( `ban` ) AS `ban` , sum( `kills` ) AS `kills` , sum( `death` ) AS `death` , sum( `assist` ) AS `assist` , sum( `fb` ) AS `fb` , sum( `dk` ) AS `dk` , sum( `tk` ) AS `tk` , sum( `qk` ) AS `qk` , sum( `pk` ) AS `pk` , sum( `ks` ) AS `ks` , `cs` , sum( `cs` ) AS `cs` , sum( `towerdestroy` ) AS `towerdestroy` , sum( `wardplace` ) AS `wardplace` , sum( `winrate` ) AS `winrate` , sum( `truedmg` ) AS `truedmg` , sum( `phycdmg` ) AS `phycdmg` , sum( `magicdmg` ) AS `magicdmg` , sum( `totaldmg` ) AS `totaldmg`
-FROM (
-SELECT *
-FROM eune where id = $lastchamp
-UNION ALL
-SELECT *
-FROM euw where id = $lastchamp
-UNION ALL
-SELECT *
-FROM oce where id = $lastchamp
-UNION ALL
-SELECT *
-FROM lan where id = $lastchamp
-UNION ALL
-SELECT *
-FROM las where id = $lastchamp
-UNION ALL
-SELECT *
-FROM tr where id = $lastchamp
-UNION ALL
-SELECT *
-FROM kr where id = $lastchamp
-UNION ALL
-SELECT *
-FROM ru where id = $lastchamp
-UNION ALL
-SELECT *
-FROM na where id = $lastchamp
-UNION ALL
-SELECT *
-FROM br where id = $lastchamp
-)x
-GROUP BY `id`
-");
+						function tableCell($rowKey, $value) {
+							if ($rowKey == "champion") {
+								return '<span><img data-uk-tooltip title="' .$value .'" style="border-radius:50%;" width="24px" height="24px" src="images/champion/' .str_replace(" ", "%20", $value) .'46.png" alt=""></span>';
+							} else {
+								return round($value, 2);
+							}
+							
+							return $value;
+						}
+						
+						function rowName($rowKey) {
+							if ($rowKey == "totaldmg") {
+								return "Total damage";
+							} else if ($rowKey == "magicdmg") {
+								return "Magic damage";
+							} else if ($rowKey == "phycdmg") {
+								return "Physical damage";
+							} else if ($rowKey == "winrate") {
+								return "Win rate";
+							} else if ($rowKey == "truedmg") {
+								return "True damage";
+							} else if ($rowKey == "ban") {
+								return "Ban rate";
+							} else if ($rowKey == "pick") {
+								return "Pick rate";
+							} else if ($rowKey == "cs") {
+								return "Minions";
+							} else if ($rowKey == "kills") {
+								return "Kills";
+							} else if ($rowKey == "kda") {
+								return "KDA";
+							} else if ($rowKey == "death") {
+								return "Deaths";
+							} else if ($rowKey == "wardplace") {
+								return "Wards placed";
+							} else if ($rowKey == "assist") {
+								return "Assists";
+							} else if ($rowKey == "ks") {
+								return "Killing spree";
+							} else if ($rowKey == "dk") {
+								return "Double Kills";
+							} else if ($rowKey == "towerdestroy") {
+								return "Turrets destroyed";
+							} else if ($rowKey == "tk") {
+								return "Triple Kills";
+							} else if ($rowKey == "fb") {
+								return "First blood";
+							} else if ($rowKey == "qk") {
+								return "Quadra Kills";
+							} else if ($rowKey == "pk") {
+								return "Penta Kills";
+							} else if ($rowKey == "champion") {
+								return "Champion";
+							}
+							
+							return $rowKey;
+							// Return row name here
+						}
+/*
 								echo mysqli_error($db);
                                 $rowx3 = $result3->fetch_assoc();
                                 echo "<tr class=\"yellow\">\n";
@@ -412,6 +479,7 @@ GROUP BY `id`
                             }
                             $num++;
                         }
+						*/
                         ?>
                     </tbody>
                 </table>             

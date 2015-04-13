@@ -195,7 +195,7 @@ class Match {
 	/**
 	 * Returns an map[participantId,data array]. 
 	 * 
-	 * @return map from participantId to the data associated with that participant.
+	 * @return array of all participants.
 	 */
 	public function getParticipants() {
 		$info = $this->cache->getData ( "participants" );
