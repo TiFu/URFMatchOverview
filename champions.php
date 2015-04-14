@@ -169,7 +169,7 @@ while ($champ = $champs->fetch_assoc()) {
 						</span>
 						<br>
 						<span style="margin-left:-100px">
-						<?php if ($page > 1) { ?><a href="champion.php?page=<?php echo ($page-1) ?>&server=<?php echo $server?>">previous</a> <?php } echo $page ?> of <?php echo $pageCount ?><?php if ($page < 13) { ?><a href="champion.php?page=<?php echo ($page+1) ?>&server=<?php echo $server?>">next</a> <?php } ?>
+						<?php if ($page > 1) { ?><a href="champions.php?page=<?php echo ($page-1) ?>&server=<?php echo $server?>">previous</a> <?php } echo $page ?> of <?php echo $pageCount ?><?php if ($page < 13) { ?><a href="champions.php?page=<?php echo ($page+1) ?>&server=<?php echo $server?>">next</a> <?php } ?>
 						</span>
                 </div>
                 <div id="redVictory" style="padding-right: 170px;" class="tred" data-uk-tooltip title="Red Team Win Rate On <?php echo $server; ?> Server"><?php echo number_format((float) $winRates["redSideRate"], 2, '.', ''); ?>%</div>
