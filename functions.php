@@ -47,6 +47,20 @@ function transformColumnNameToText($text) {
 	return rtrim($ret);
 }
 
+						function tableCell($rowKey, $value) {
+							if ($rowKey == "champion") {
+								return '<span><img data-uk-tooltip title="' .$value .'" style="border-radius:50%;" width="24px;" height="24px" src="images/champion/' .str_replace(" ", "%20", $value) .'46.png" alt=""></span>';
+							} else if (strpos(strtolower($rowKey), "rate") !== false) {
+								return round($value * 100,0) ."%";
+							} else if ($rowKey == "kda") {
+								return number_format($value, 1, ",", ".");
+							} else {
+								return number_format($value, 0, ",", ".");
+							}
+							
+							return $value;
+						}
+
 function regionToServer($region) {
 	if ($region == "BR") {
 		return "Brazil";

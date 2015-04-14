@@ -176,40 +176,6 @@ body{
     float:left;
 }
 
-.summary{
-    width: 100%;
-    height:80px;
-    background-color: #bcbcbc;
-    display: block;
-    position: relative;
-    overflow: hidden;
-}
-
-.tblue{
-    background:url('../images/blueteam.png') no-repeat 20% 30%;
-    width:63px;
-    height:80px;
-    font-family: 'LaoUIb';
-    font-size: 41.67px;
-    padding-left:100px;
-    padding-top: 10px;
-    color:white;
-    float:left;
-    cursor: pointer;
-}
-.tred{
-    background:url('../images/redteam.png') no-repeat 90% 30%;
-    width:63px;
-    height:80px;
-    font-family: 'LaoUIb';
-    font-size: 41.67px;
-    padding-top: 10px;
-    color:white;
-    float:right;
-    padding-right:165px;
-    cursor: pointer;
-}
-
 .redgold{
     float:left;
     background: url('../images/coin.png') no-repeat 0% 20%;
@@ -414,11 +380,6 @@ table{
     border-bottom: 1px solid #79bb67;
     border-top: 1px solid #79bb67;
 }
-.sele{
-    position: absolute;
-    margin-left:500px;
-    margin-top: 5px;
-}
 .sele select{
     width: 200px;
     border-radius: 6px;
@@ -438,14 +399,53 @@ table{
         padding: 5px;
     }
 }
-.stats{
+.tblue{
+    background:url('../images/blueteam.png') no-repeat 20% 30%;
+    width:63px;
+    height:80px;
+    font-family: 'LaoUIb';
+    font-size: 41.67px;
+    padding-left:100px;
+    padding-top: 10px;
+    color:white;
+    float:left;
+}
+.tred{
+    background:url('../images/redteam.png') no-repeat 90% 30%;
+    width:63px;
+    height:80px;
+    font-family: 'LaoUIb';
+    font-size: 41.67px;
+    padding-top: 10px;
+    color:white;
+    float:right;
+}
+
+.sele{
+	padding-top:10px;
+	position:absolute;
     font-weight: bold;
     text-align: center;
     font-size: 16px;
     text-shadow: 0px 1px rgba(255, 255, 255, 0.9);
     color: black;
-    cursor: pointer;
+	margin:0 auto;
+	position:absolute;
+	margin-left:40%;
 }
+
+.border {
+	border-right:1px solid #DBDEDF;
+}
+.summary{
+    width: 100%;
+    background-color: #bcbcbc;
+	height:115px;
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
 .inputte {
     font-family: "LaoUIb";
     color: #000;
