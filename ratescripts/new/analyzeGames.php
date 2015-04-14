@@ -26,6 +26,16 @@ if ($count != 1240) {
 } else {
 	echo "All fine.";
 }
+
+$servers = array("br", "eune", "euw", "lan", "las", "kr", "tr", "ru", "na", "oce");
+
+if ($mysqli->query("SELECT * FROM " .WINRATE_TABLE)->num_rows != 10) {
+	$mysqli->query("TRUNCATE TABLE " .WINRATE_TABLE);
+	foreach ($servers as $server) {
+		$mysqli->query("INSERT INTO " .WINRATE_TABLE ." (region, blueSideWins, redSideWins) VALUES ('" .$server ."', 0, 0)");
+	}
+}
+
 $handle = opendir($_GET["matchesFolder"]);
 $columns2 = $mysqli->query("SELECT * FROM " .AVERAGE_TABLE)->fetch_fields();
 $columns = array();
@@ -66,6 +76,14 @@ while (false !== ($entry = readdir($handle))) {
 		$update .= " WHERE championId = " .$participantId["championId"] ." AND region = '" .$region ."'";
 		$mysqli->query($update); // Update champ
 	}
+		// add win rate
+		$winningTeam = getWinningTeam($match);
+		if ($winningTeam == 100) {
+			$win = "blueSideWins";
+		}  else if ($winningTeam == 200) {
+			$win = "redSideWins";
+		}
+		$mysqli->query("UPDATE " .WINRATE_TABLE ." SET " .$win . " = (" .$win ."+1) WHERE region = '" .$region ."'");
 	
 }
 
@@ -79,6 +97,16 @@ function getBans($match) {
 		}
 	}
 	return $bans;
+}
+
+function getWinningTeam($match) {
+	foreach ($match["teams"] as $team) {
+		if ($team["winner"]) {
+			return $team["teamId"];
+		}
+	}
+	
+	return 0;
 }
 
 // Returns map from participantId -> hasWon?
