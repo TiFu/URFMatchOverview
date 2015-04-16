@@ -214,7 +214,7 @@ while ($champ = $champs->fetch_assoc()) {
             <div class="part_chat">              
                 <div class="highelight">Match Highlights</div>
                 <div id="comments" class="highelight_comment">
-                    <p><span class="chat_time">[0:00]</span><span class="chat_info">Welcome to Summoner's Rift !</span></p> 
+                    <p class="centerlyw"><span class="chat_time">[0:00]</span><span class="chat_info"><span class="moreinfp">Welcome to Summoner's Rift !</span></span></p> 
                 </div>
             </div>
             <div class="clear"></div>
@@ -222,7 +222,7 @@ while ($champ = $champs->fetch_assoc()) {
             </div>
             <div class="clear"></div>
             <div class="statsteam">
-                <div class="summary">
+                <div class="summarymatch">
                     <div id="blueVictory" class="tblue">Victory</div>
                     <div id="blueGold" class="redgold">5.0K</div>
                     <div class="destroyred">Towers : <span id="towerCount100">0</span>  - Dragons : <span id="dragonCount100">0</span>  - Baron : <span id="baronCount100">0</span></div>                    
@@ -304,8 +304,9 @@ while ($champ = $champs->fetch_assoc()) {
             </div>
             <div class="clear"></div>       
             <div class="summary">
-                <div class="urfdata">Ultra Rapid Fire Champions Statistics</div>
-
+                <a href="champions.php"><div data-uk-tooltip title="Click Here To See All Champions Statistics" class="seeallchamp"></div></a>
+                <a href="result.php"><div data-uk-tooltip title="Click Here To Random Another Match" class="anothermatch"></div></a>           
+                <div class="urfdata" data-uk-tooltip title="This Statistics for this game">Ultra Rapid Fire Champions Statistics</div>
             </div>
                         <?php
                         $server = strtolower($match->getRegion());
@@ -375,15 +376,15 @@ while ($champ = $champs->fetch_assoc()) {
 							}
 							if ($rowKey == "kills") {
 								echo "<tr class=\"yellow\">";
-										echo "<td style=\"border-right:1px solid #b8b8b8\">KDA</td>";
+										echo "<td style=\"font-weight: bold;border-right:1px solid #b8b8b8\">KDA</td>";
 									foreach ($values as $participantId => $value) {
-										echo "<td colspan=\"2\">";
+										echo "<td colspan=\"2\" style=\"color:#107360;\">";
 										echo tableCell("kda", ($thisGame["kills"][$participantId] + $thisGame["assists"][$participantId])/max($thisGame["deaths"][$participantId], 1));
 										echo "</td>";
-										echo "<td colspan=\"2\">";
+										echo "<td colspan=\"2\" style=\"color:#C0392B;\">";
 										echo tableCell("kda", ($serverValues["kills"][$participantId] + $serverValues["assists"][$participantId])/max(1, $serverValues["deaths"][$participantId]));
 										echo "</td>";
-										echo "<td colspan=\"2\"  style=\"border-right:1px solid #b8b8b8\">";
+										echo "<td colspan=\"2\"  style=\"color:#2980B9;border-right:1px solid #b8b8b8\">";
 										echo tableCell("kda",($allServersValues["kills"][$participantId] + $allServersValues["assists"][$participantId])/max(1, $allServersValues["deaths"][$participantId]));
 										echo "</td>";								
 									}
@@ -391,7 +392,7 @@ while ($champ = $champs->fetch_assoc()) {
 							}
 
 							echo $body ? "<tr class=\"yellow\">" : "<tr  style=\"border-bottom:1px solid #b8b8b8\">";
-							echo $rowKey == "champion" ? "<th>" : "<td  style=\"border-right:1px solid #b8b8b8\">";
+							echo $rowKey == "champion" ? "<th>" : "<td  style=\"font-weight: bold; border-right:1px solid #b8b8b8\">";
 							echo $rowKey != "firstBloodKill" ? transformColumnNameToText($rowKey) : "First Blood";
 							echo $rowKey == "champion" ? "</th>" : "</td>";
 							foreach ($values as $participantId => $value) {
@@ -401,20 +402,20 @@ while ($champ = $champs->fetch_assoc()) {
 									echo "</th>";
 								} else {
 									if ($rowKey == "pickRate" || $rowKey == "winRate" || $rowKey == "banRate") {
-										echo "<td colspan=\"3\">";
+										echo "<td colspan=\"3\" style=\"color:#C0392B;\">";
 										echo tableCell($rowKey, $value);
 										echo "</td>";
-										echo "<td colspan=\"3\" style=\"border-right:1px solid #b8b8b8\">";
+										echo "<td colspan=\"3\" style=\"color:#2980B9;border-right:1px solid #b8b8b8\">";
 										echo tableCell($rowKey, $allServersValues[$rowKey][$participantId]);
 										echo "</td>";
 									} else {
-										echo "<td colspan=\"2\">";
+										echo "<td colspan=\"2\" style=\"color:#107360;\">";
 										echo tableCell($rowKey, $thisGame[$rowKey][$participantId]);
 										echo "</td>";
-										echo "<td colspan=\"2\">";
+										echo "<td colspan=\"2\" style=\"color:#C0392B;\">";
 										echo tableCell($rowKey, $value);
 										echo "</td>";
-										echo "<td colspan=\"2\"  style=\"border-right:1px solid #b8b8b8\">";
+										echo "<td colspan=\"2\"  style=\"color:#2980B9;border-right:1px solid #b8b8b8\">";
 										echo tableCell($rowKey, $allServersValues[$rowKey][$participantId]);
 										echo "</td>";
 									}
@@ -423,18 +424,18 @@ while ($champ = $champs->fetch_assoc()) {
 							echo "</tr>";
 							if ($rowKey == "champion") {
 								echo "<tr>";
-								echo "<td class=\"yellow\" style=\"border-right:1px solid #b8b8b8\"></td>";
+								echo "<td class=\"yellow\" style=\"font-weight: bold;border-right:1px solid #b8b8b8\"></td>";
 								for ($k = 0; $k < 10; $k++) {
-									echo "<td colspan=\"3\">" .regionToServer($match->getRegion()) ."</td><td colspan=\"3\"   style=\"border-right:1px solid #b8b8b8\">All Servers</td>";
+									echo "<td colspan=\"3\" style=\"font-weight: bold;font-size:10px;\">" .regionToServer($match->getRegion()) ."</td><td colspan=\"3\"   style=\"font-weight: bold;border-right:1px solid #b8b8b8\">All Servers</td>";
 								}
 								echo "</tr>";
 
 							}
 							if ($rowKey == "banRate") {
 								echo "<tr>";
-								echo "<td class=\"yellow\" style=\"border-right:1px solid #b8b8b8\"></td>";
+								echo "<td class=\"yellow\" style=\"font-weight: bold;border-right:1px solid #b8b8b8\"></td>";
 								for ($k = 0; $k < 10; $k++) {
-									echo "<td colspan=\"2\">This Game</td><td colspan=\"2\">" .regionToServer($match->getRegion()) ."</td><td colspan=\"2\"   style=\"border-right:1px solid #b8b8b8\">All Servers</td>";
+									echo "<td colspan=\"2\" style=\"font-weight: bold;font-size:10px;\">This Game</td><td colspan=\"2\" style=\"font-weight: bold;font-size:10px;\">" .regionToServer($match->getRegion()) ."</td><td colspan=\"2\" style=\"font-weight: bold;border-right:1px solid #b8b8b8\">All Servers</td>";
 								}
 								echo "</tr>";
 							}

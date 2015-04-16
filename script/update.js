@@ -5,7 +5,7 @@
 					if (text == null) {
 						return;
 					}
-					var $p = $('<p><span class="xd"></span></p>');
+					var $p = $('<p class="centerlyw"></p>');
 					var $time = $('<span class="chat_time">[' + secToMin(time/1000) + ']</span>').appendTo($p);
 					var $info = $('<span class="chat_info"></span>').appendTo($p);
 					text.appendTo($info);

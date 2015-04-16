@@ -51,7 +51,7 @@ function resume_callback() {
 
 function complete_callback() {
     clearInterval($textboxInterval); // Stop the interval update. We are finished
-    $winner = $('<span><span class="' + ($winner == 100 ? 'participantblue">Blue' : 'participantred">Red') + " team</span> wins in " + secToMin($duration) + " !</span>");
+    $winner = $('<span class="moreinfp"><span class="' + ($winner == 100 ? 'participantblue">Blue' : 'participantred">Red') + " team</span> wins in " + secToMin($duration) + " !</span>");
     appendTextBox($winner, $duration * 1000);
     updateTextBox();
 	// update Stats

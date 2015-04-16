@@ -5,8 +5,8 @@
  */
 $templates = new Array();
 $templates["highlights"] = new Array();
-$templates["highlights"]["ELITE_MONSTER_KILL"] = "<span> has been slain by </span>";
-$templates["highlights"]["CHAMPION_KILL"] = "<span> killed </span>";
-$templates["highlights"]["BUILDING_KILL"] = "<span> was destroyed by </span>";
+$templates["highlights"]["ELITE_MONSTER_KILL"] = "<span class=\"moreinfp\"> Has Been Slain By </span>";
+$templates["highlights"]["CHAMPION_KILL"] = "<span class=\"moreinfp\"> Has Been Killed By </span>";
+$templates["highlights"]["BUILDING_KILL"] = "<span class=\"moreinfp\"> Has Been Destroyed By </span>";
 $templates["map"] = new Array();
 $templates["map"]["KILL"] = '{killer}<img src="images/kill_icon.png" class="killIcon" alt="killed">{victim}';
