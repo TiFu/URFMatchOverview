@@ -227,6 +227,7 @@ body{
     width:100px;
     text-align: center;
     margin-top: 10px;
+     text-shadow: 0px 1px rgba(0, 0, 0, 0.9);
 }
 
 .champlloadin{
@@ -367,7 +368,7 @@ table{
     vertical-align: middle;
     font-size: 11px;
     text-shadow: 0px 1px rgba(255, 255, 255, 0.9);
-    color: #34495E;
+    color: black;
 }
 
 #keywords tbody tr:hover{
@@ -530,8 +531,7 @@ table{
 
 .socialmedia{
     float:right;
-    margin-top: -36px;
-    margin-right:20px;
+    margin-top: -3px;
     width:70px;
 }
 
@@ -562,4 +562,9 @@ table{
     width:35px;    
     cursor: pointer;
 
+}
+
+.nextprev a{
+    text-decoration: none;
+    color:#aa0000;
 }
