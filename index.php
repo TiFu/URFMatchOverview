@@ -206,6 +206,10 @@ while ($champ = $champs->fetch_assoc()) {
     </head>
     <body>
         <div class="main_info">
+                        <div class="summary">
+                <a target="_blank" href="statistics.php"><div data-uk-tooltip title="Statistics for all Champions" class="seeallchamp"></div></a>
+                <a href="index.php"><div data-uk-tooltip title="Next random match" class="anothermatch"></div></a>           
+            </div>
             <div class="part_map">  
                 <div id="map">
 					<svg id="mapPicture"></svg>
