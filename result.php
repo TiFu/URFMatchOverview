@@ -212,14 +212,16 @@ while ($champ = $champs->fetch_assoc()) {
 				</div>
             </div>
             <div class="part_chat">              
-                <div class="highelight">Match Highlights</div>
-                    <div class="socialmedia" data-uk-tooltip title="Share This Match on Social Media">
+                <div class="highelight">Match Highlights
+                <div class="socialmedia" data-uk-tooltip title="Share This Match on Social Media">
                         <?php
                         $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                         ?>
                         <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?app_id=567308819967177&u=<?php echo $actual_link; ?>&display=popup&ref=plugin&src=share_button"><div class="facebook"></div></a>
                         <a target="_blank" href="https://twitter.com/share"><div class="twitter"></div></a>
-                    </div>                <div id="comments" class="highelight_comment">
+                    </div> 
+                </div>
+                    <div id="comments" class="highelight_comment">
                     <p class="centerlyw"><span class="chat_time">[0:00]</span><span class="chat_info"><span class="moreinfp">Welcome to Summoner's Rift !</span></span></p> 
                 </div>
             </div>
@@ -310,7 +312,7 @@ while ($champ = $champs->fetch_assoc()) {
             </div>
             <div class="clear"></div>       
             <div class="summary">
-                <a href="champions.php"><div data-uk-tooltip title="Click Here To See All Champions Statistics" class="seeallchamp"></div></a>
+                <a target="_blank"href="champions.php"><div data-uk-tooltip title="Click Here To See All Champions Statistics" class="seeallchamp"></div></a>
                 <a href="result.php"><div data-uk-tooltip title="Click Here To Random Another Match" class="anothermatch"></div></a>           
                 <div class="urfdata" data-uk-tooltip title="This Statistics for this game">Ultra Rapid Fire Champions Statistics</div>
             </div>
