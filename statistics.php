@@ -58,11 +58,11 @@ while ($champ = $champs->fetch_assoc()) {
         }
 
 		if ($key == "banRate") {
-			$value = $value / $winRates["numberOfGames"];
+			$value = $value / max(1, $winRates["numberOfGames"]);
 		}
 
 		if ($key == "pickRate") {
-			$value = $curr["numberOfGames"] / $winRates["numberOfGames"];
+			$value = $curr["numberOfGames"] / max(1, $winRates["numberOfGames"]);
 		}
 		$serverStats[$key][$champ["id"]] = $value;
     }
@@ -119,7 +119,7 @@ while ($champ = $champs->fetch_assoc()) {
         <div class="summary" style="height: 115px;padding: 0px 0px 0px;">
             <div id="blueVictory" class="tblue" style="margin-top:20px;" data-uk-tooltip title="Blue Team Win Rate In <?php echo regionToServer(strtoupper($server)); ?> Server"><?php echo number_format((float) $winRates["blueSideRate"]*100, 2, '.', ''); ?>%</div>
             <div class="sele">
-                <form action="champions.php" method="post">
+                <form action="statistics.php" method="post">
                     <select name="server">
                         <option value="na" 
                         <?php
@@ -200,11 +200,11 @@ while ($champ = $champs->fetch_assoc()) {
 
                 </form>
                 <span>
-                    Current Server: <?php echo regionToServer(strtoupper($server)); ?>
+                    Current Server: <?php echo regionToServer(strtoupper($server)); ?> / <?php echo number_format($winRates["numberOfGames"], 0); ?> Matches
                     <br />
                 </span>
                 <span>
-                    Number Of Matches: <?php echo number_format($numberOfGames["numberOfGames"], 0); ?>
+                    Total Number Of Matches: <?php echo number_format($numberOfGames["numberOfGames"], 0); ?>
                 </span>
                 <br>
                 <span class="nextprev">
