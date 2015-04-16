@@ -211,7 +211,7 @@ while ($champ = $champs->fetch_assoc()) {
                     <?php if ($page > 1) { ?><a href="champions.php?page=<?php echo ($page - 1) ?>&server=<?php echo $server ?>">Previous </a> <?php } echo $page ?> of <?php echo $pageCount ?><?php if ($page < 13) { ?><a href="champions.php?page=<?php echo ($page + 1) ?>&server=<?php echo $server ?>"> Next</a> <?php } ?>
                 </span>
             </div>
-            <div id="redVictory" style="padding-right: 147px;margin-top:20px;" class="tred" data-uk-tooltip title="Red Team Win Rate In <?php echo regionToServer(strtoupper($server)); ?> Server"><?php echo number_format((float) $winRates["redSideRate"]*100, 2, '.', ''); ?>%</div>
+            <div id="redVictory" style="padding-right: 175px;margin-top:20px;" class="tred" data-uk-tooltip title="Red Team Win Rate In <?php echo regionToServer(strtoupper($server)); ?> Server"><?php echo number_format((float) $winRates["redSideRate"]*100, 2, '.', ''); ?>%</div>
         </div>
         <div class="backurf"> 
             <table id="keywords">
