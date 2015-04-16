@@ -36,7 +36,7 @@ define("PARTICIPANT_TEMPLATE", '<div class="champlloadin" id=participant{partici
                             <div class="gold">Gold</div>
                             <div class="currentGold countgold">{gold}</div>    
                         </div>
-						´<div class="space"></div>
+						<div class="space"></div>
                         <div class="minion">
                             <div class="gold">Minions</div>
                             <div class="currentMinions countgold">{minions}</div>    
