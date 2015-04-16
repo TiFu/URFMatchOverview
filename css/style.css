@@ -98,7 +98,7 @@ body{
     background-color: #666666;
     font-family: 'f1reg';
     padding: 5px 9px 5px 9px;
-    width:230px;
+    width: 620px;    
     text-shadow: 0px 1px rgba(0, 0, 0, 0.9);
 
 }
@@ -526,4 +526,40 @@ table{
     text-align: center;
     border-radius: 6px;
     background: linear-gradient(to bottom, #EECA5F 0%, #F9AB13 100%) repeat scroll 0% 0% transparent;
+}
+
+.socialmedia{
+    float:right;
+    margin-top: -36px;
+    margin-right:20px;
+    width:70px;
+}
+
+.facebook{
+    background: url("../images/f.png") no-repeat;
+    height:35px;
+    width:35px;
+    float:right;
+}
+
+.facebook:hover{
+    background: url("../images/f1.png") no-repeat;
+    height:35px;
+    width:35px;
+    cursor: pointer;
+}
+
+.twitter{
+    background: url("../images/t.png") no-repeat;
+    height:35px;
+    width:35px;
+    float:right;
+}
+
+.twitter:hover{
+    background: url("../images/t1.png") no-repeat;
+    height:35px;
+    width:35px;    
+    cursor: pointer;
+
 }
