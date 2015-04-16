@@ -402,7 +402,7 @@ table{
     width: 46px;
     height: 46px;
     margin-top:12px;
-    margin-left: 70px;
+    margin-left: 35px;
     position: absolute;
 }
 .anothermatch{
@@ -410,8 +410,8 @@ table{
     width: 46px;
     height: 46px;
     margin-top:12px;
-    margin-left:1100px;
-    position: absolute;   
+	float:right;
+	margin-right:35px;
 }
 
 #keywords thead  th.headerSortUp span {background-image: url('down-arrow.png');}
