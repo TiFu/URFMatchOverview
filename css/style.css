@@ -480,6 +480,7 @@ table{
 }
 
 .tblue{
+	margin-top:25px;
 	vertical-align:middle;
     width:20%;
 	min-width:20%;
@@ -491,6 +492,7 @@ table{
     text-shadow: 0px 1px rgba(0, 0, 0, 0.9);
 }
 .tred{
+	margin-top:25px;
 	vertical-align:middle;
     width:20%;
     height:80px;
