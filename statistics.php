@@ -117,7 +117,7 @@ while ($champ = $champs->fetch_assoc()) {
 <body>
     <div class="main_info" style="width: 90%;">
 	<div class="header">
-		<div id="blueVictory" class="tblue"data-uk-tooltip title="Blue Team Win Rate In <?php echo regionToServer(strtoupper($server)); ?> Server"><div style="margin:0 auto;margin-left:15px;float:left;"><img src="images/blueteam.png"></div><div style="vertical-align:middle; margin:0 auto; height:100%;float:left; margin-left:10px;margin-top:2px;"><?php echo number_format((float) $winRates["blueSideRate"]*100, 2, '.', ''); ?>%</div></div>
+		<div id="blueVictory" class="tblue"data-uk-tooltip title="Blue Team Win Rate in <?php echo regionToServer(strtoupper($server)); ?> Server"><div style="margin:0 auto;margin-left:15px;float:left;"><img src="images/blueteam.png"></div><div style="vertical-align:middle; margin:0 auto; height:100%;float:left; margin-left:10px;margin-top:2px;"><?php echo number_format((float) $winRates["blueSideRate"]*100, 2, '.', ''); ?>%</div></div>
         <div class="summary">
             <div class="sele">
                 <form action="" method="post">
@@ -213,7 +213,7 @@ while ($champ = $champs->fetch_assoc()) {
                 </span>
             </div>
 		</div>
-        <div id="redVictory" class="tred" data-uk-tooltip title="Red Team Win Rate In <?php echo regionToServer(strtoupper($server)); ?> Server"><div style="margin:0 auto;margin-right:15px;float:right;"><img src="images/redteam.png"></div><div style="vertical-align:middle; margin:0 auto; height:100%;float:right; margin-right:10px;margin-top:2px;"><?php echo number_format((float) $winRates["redSideRate"]*100, 2, '.', ''); ?>%</div></div>
+        <div id="redVictory" class="tred" data-uk-tooltip title="Red Team Win Rate in <?php echo regionToServer(strtoupper($server)); ?> Server"><div style="margin:0 auto;margin-right:15px;float:right;"><img src="images/redteam.png"></div><div style="vertical-align:middle; margin:0 auto; height:100%;float:right; margin-right:10px;margin-top:2px;"><?php echo number_format((float) $winRates["redSideRate"]*100, 2, '.', ''); ?>%</div></div>
         </div>
         <div class="backurf"> 
             <table id="keywords">

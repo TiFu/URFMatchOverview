@@ -5,8 +5,10 @@
  */
 define("PARTICIPANT_TEMPLATE", '<div class="champlloadin" id=participant{participantId}>
                         <div class="champpic">
+							<div style="position:relative;">
                             <span class="level" data-uk-tooltip title="Level">{level}</span>
-                            <img src="images/champion/{champurl}.png" width="79" height="79" alt="{champname}" />
+                            <img src="images/champion/{champurl}.png" class="floatLeft" width="79" height="79" alt="{champname}" />
+							</div>
                             <div class="summonerspell">
                                 <img src="images/summoners/Summoner{sum1}.png" data-uk-tooltip title="{sum1}" width="37" height="37" alt="{sum1}" />
                                 <img src="images/summoners/Summoner{sum2}.png" data-uk-tooltip title="{sum2}" width="37" height="37" alt="{sum2}" />
