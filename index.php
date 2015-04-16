@@ -328,9 +328,7 @@ echo rtrim($string, ',');
             </div>
             <div class="clear"></div>       
             <div class="summary">
-                <a target="_blank" href="statistics.php"><div data-uk-tooltip title="Statistics for all Champions" class="seeallchamp"></div></a>
-                <a href="index.php"><div data-uk-tooltip title="Next random match" class="anothermatch"></div></a>           
-                <div class="urfdata">Ultra Rapid Fire Champions Statistics</div>
+                <div class="urfdata">Ultra Rapid Fire Champion Statistics</div>
             </div>
             <?php
             $server = strtolower($match->getRegion());
