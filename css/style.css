@@ -62,7 +62,6 @@ body{
     margin-bottom:5px;
     font-family: 'f1reg';
     background-color: #eeeeee;
-    text-shadow: 0px 1px rgba(255, 255, 255, 0.9);
 }
 
 .main_info{
@@ -265,6 +264,7 @@ body{
     font-size: 12px;
     font-family: "Tahoma"; 
     padding: 0px 2px 0px 2px;
+    text-shadow: 0px 1px rgba(0, 0, 0, 0.9);
 }
 
 .summonerspell{
@@ -280,6 +280,7 @@ body{
     color:#832c2c;
     font-family: 'LaoUIb';
     font-size: 18.64px;
+    text-shadow: 0px 1px rgba(255, 255, 255, 0.9);
 }
 .champbuild{
     text-align: center;
