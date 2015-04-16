@@ -270,15 +270,19 @@ body{
     padding-top: 10px;
 }
 .stat {
-    position:absolute;
-    color:white;
-    background-color: #bbc1bd;
-    border-radius: 5px;
-    margin-left:25px; 
-    margin-top:20px;
-    font-size:10px;
-    padding:0px 2px 0px 2px;
-    border: 1px solid black;
+position: absolute;
+z-index: 5;
+text-align: center;
+background: none repeat scroll 0% 0% padding-box rgba(0, 0, 0, 0.5);
+border: 1px solid #2C3E50;
+border-radius: 5px;
+color: #FFF;
+font-size: 11px;
+font-family: "Tahoma";
+padding: 0px 2px;
+text-shadow: 0px 1px rgba(0, 0, 0, 0.9);
+margin-top: 18px;
+margin-left: 25px;
 }
 .level{
     position: absolute;
