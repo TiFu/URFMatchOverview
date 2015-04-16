@@ -124,7 +124,7 @@ body{
     background-color: #666666;
     font-family: 'f1reg';
     padding: 5px 9px 5px 9px;
-    width: 620px;    
+    width: 100%;    
     text-shadow: 0px 1px rgba(0, 0, 0, 0.9);
 
 }
@@ -260,12 +260,14 @@ body{
 }
 
 .champlloadin{
+	width:100%;
     height: 100px;
     border-bottom:2px solid #bcbcbc;
 }
 
 .champpic{
-    width:120px;
+	float:left;
+    width:15%;
     padding-left: 8px;
     padding-top: 10px;
 }
@@ -306,24 +308,28 @@ margin-left: 25px;
     width: 37px;
 }
 .summonerkda{
+	margin-top:23px;
+	width:25%;
     text-align: center;
-    position: absolute;
-    margin-top: -65px;
-    margin-left:150px;
     padding: 0px 5px 0px 5px;
     color:#832c2c;
     font-family: 'LaoUIb';
     font-size: 18.64px;
     text-shadow: 0px 1px rgba(255, 255, 255, 0.9);
+	float:left;
 }
 .champbuild{
     text-align: center;
-    position: absolute;
-    margin-top: -93px;
-    margin-left:280px;
+	width:35%;
+	float:left;
     color:#832c2c;
     font-family: 'LaoUIb';
     font-size: 18.64px;
+}
+.space {
+	float:left;
+	width:2%;
+	height:100px;
 }
 .kda{
 
@@ -339,9 +345,9 @@ table{
 }
 
 .goldminions{
-    position: absolute;
-    margin-top: -65px;
-    margin-left: 470px;
+	margin-top:23px;
+	float:left;
+	width:9%;
     text-align: center;
     color:white;
     text-shadow: 0px 1px rgba(0, 0, 0, 0.9);
@@ -371,9 +377,9 @@ table{
 }
 
 .minion{
-    position: absolute;
-    margin-top: -65px;
-    margin-left: 534px;
+	margin-top:23px;
+	width:10%;
+	float:left;
     text-align: center;
     color:white;  
 }
@@ -572,6 +578,7 @@ table{
     float:right;
     margin-top: -3px;
     width:70px;
+	margin-right:10px;
 }
 
 .facebook{
