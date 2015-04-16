@@ -22,7 +22,7 @@ if (!is_int($matchId)) {
 $match = new Match(file_get_contents(MATCH_PATH . $matchId . ".json"), $mysqli);
 $startEvents = $match->getEvents(array("CHAMPION_KILL", "BUILDING_KILL", "ELITE_MONSTER_KILL"));
 $logEvents = array();
-$animationDuration = $match->getDuration() / 600.0 * 5; // 45 secs per 10 min game time
+$animationDuration = $match->getDuration() / 600.0 * 45; // 45 secs per 10 min game time
 // Filter red and blue buff out of the events
 foreach ($startEvents as $event) {
     if ($event['eventType'] == "ELITE_MONSTER_KILL") {
