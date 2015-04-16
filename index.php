@@ -209,6 +209,7 @@ while ($champ = $champs->fetch_assoc()) {
                         <div class="summary">
                 <a target="_blank" href="statistics.php"><div data-uk-tooltip title="Statistics for all Champions" class="seeallchamp"></div></a>
                 <a href="index.php"><div data-uk-tooltip title="Next random match" class="anothermatch"></div></a>           
+                <div class="urfdata">Ultra Rapid Fire Match Overview</div>
             </div>
             <div class="part_map">  
                 <div id="map">
