@@ -27,8 +27,8 @@ if (isset($_GET["page"])) {
 
 $lowerBound = ($page - 1) * CHAMPS_PER_PAGE;
 // Get champiosn & data
-$winRates = $mysqli->query("SELECT (blueSideWins / (blueSideWins + redSideWins)) as blueSideRate, (redSideWins / (blueSideWins + redSideWins)) as redSideRate FROM " . WINRATE_TABLE . " WHERE region ='" . $server . "'")->fetch_assoc();
-$numberOfGames = $mysqli->query("SELECT (blueSideWins + redSideWins) as numberOfGames FROM " . WINRATE_TABLE)->fetch_assoc();
+$winRates = $mysqli->query("SELECT (blueSideWins / (blueSideWins + redSideWins)) as blueSideRate, (redSideWins / (blueSideWins + redSideWins)) as redSideRate, (blueSideWins + redSideWins) as numberOfGames FROM " . WINRATE_TABLE . " WHERE region ='" . $server . "'")->fetch_assoc();
+$numberOfGames = $mysqli->query("SELECT SUM(blueSideWins + redSideWins) as numberOfGames FROM " . WINRATE_TABLE)->fetch_assoc();
 // TODO order by name
 $champs = $mysqli->query("SELECT * FROM " . CHAMP_TABLE . " ORDER BY name LIMIT " . $lowerBound . ", " . CHAMPS_PER_PAGE);
 
@@ -40,13 +40,14 @@ while ($champ = $champs->fetch_assoc()) {
     $columns = $stat->fetch_fields();
 
     $allServerQuery = "SELECT ";
-    foreach ($stat->fetch_assoc() as $key => $value) {
+	$curr = $stat->fetch_assoc();
+    foreach ($curr as $key => $value) {
         if (!isset($serverStats[$key])) {
             $serverStats[$key] = array();
         }
         if ($key == "championId" || $key == "region") {
             $allServerQuery .= $key . ", ";
-        } else if ($key == "numberOfGames") {
+        } else if ($key == "numberOfGames" || $key == "banRate") {
             $allServerQuery .= " SUM(" . $key . ") AS " . $key . ", ";
         } else {
             $allServerQuery .= " SUM(" . $key . " * numberOfGames) AS " . $key . ", ";
@@ -55,7 +56,15 @@ while ($champ = $champs->fetch_assoc()) {
             $key = "champion";
             $value = $champ["name"];
         }
-        $serverStats[$key][$champ["id"]] = $value;
+
+		if ($key == "banRate") {
+			$value = $value / $winRates["numberOfGames"];
+		}
+
+		if ($key == "pickRate") {
+			$value = $curr["numberOfGames"] / $winRates["numberOfGames"];
+		}
+		$serverStats[$key][$champ["id"]] = $value;
     }
     $allServerQuery = rtrim($allServerQuery, ", ");
     $allServerQuery .= " FROM " . AVERAGE_TABLE . " WHERE championId = " . $champ["id"];
@@ -68,8 +77,14 @@ while ($champ = $champs->fetch_assoc()) {
             $key = "champion";
             $value = $champ["name"];
         }
-        $allServerStats[$key][$champ["id"]] = $value;
-    }
+
+		if ($key != "banRate" && $key != "pickRate") {
+			$allServerStats[$key][$champ["id"]] = $value / $all["numberOfGames"];
+		} else {
+			$allServerStats[$key][$champ["id"]] = $value / $numberOfGames["numberOfGames"];			
+		}
+
+		}
 }
 ?>
 <head>
@@ -102,7 +117,7 @@ while ($champ = $champs->fetch_assoc()) {
 <body>
     <div class="main_info" style="width: 1280px;">
         <div class="summary" style="height: 115px;padding: 0px 0px 0px;">
-            <div id="blueVictory" class="tblue" style="margin-top:20px;" data-uk-tooltip title="Blue Team Win Rate In <?php echo regionToServer(strtoupper($server)); ?> Server"><?php echo number_format((float) $winRates["blueSideRate"], 2, '.', ''); ?>%</div>
+            <div id="blueVictory" class="tblue" style="margin-top:20px;" data-uk-tooltip title="Blue Team Win Rate In <?php echo regionToServer(strtoupper($server)); ?> Server"><?php echo number_format((float) $winRates["blueSideRate"]*100, 2, '.', ''); ?>%</div>
             <div class="sele">
                 <form action="champions.php" method="post">
                     <select name="server">
@@ -189,14 +204,14 @@ while ($champ = $champs->fetch_assoc()) {
                     <br />
                 </span>
                 <span>
-                    Number Of Matches: <?php echo $numberOfGames["numberOfGames"]; ?>
+                    Number Of Matches: <?php echo number_format($numberOfGames["numberOfGames"], 0); ?>
                 </span>
                 <br>
                 <span class="nextprev">
                     <?php if ($page > 1) { ?><a href="champions.php?page=<?php echo ($page - 1) ?>&server=<?php echo $server ?>">Previous </a> <?php } echo $page ?> of <?php echo $pageCount ?><?php if ($page < 13) { ?><a href="champions.php?page=<?php echo ($page + 1) ?>&server=<?php echo $server ?>"> Next</a> <?php } ?>
                 </span>
             </div>
-            <div id="redVictory" style="padding-right: 147px;margin-top:20px;" class="tred" data-uk-tooltip title="Red Team Win Rate In <?php echo regionToServer(strtoupper($server)); ?> Server"><?php echo number_format((float) $winRates["redSideRate"], 2, '.', ''); ?>%</div>
+            <div id="redVictory" style="padding-right: 147px;margin-top:20px;" class="tred" data-uk-tooltip title="Red Team Win Rate In <?php echo regionToServer(strtoupper($server)); ?> Server"><?php echo number_format((float) $winRates["redSideRate"]*100, 2, '.', ''); ?>%</div>
         </div>
         <div class="backurf"> 
             <table id="keywords">
@@ -234,7 +249,8 @@ while ($champ = $champs->fetch_assoc()) {
                         echo "<td class=\"yellow border\" style=\"font-family: 'gulim';text-shadow: 0px 1px rgba(255, 255, 255, 0.9);font-weight: bold;color:black;\">" . ($key != "firstBloodKill" ? transformColumnNameToText($key) : "First Blood") . "</td>";
                         foreach ($serverStats[$key] as $champId => $value) {
                             ?>
-                            <td class="yellow" style="font-family: 'gulim';text-shadow: 0px 1px rgba(255, 255, 255, 0.9);color: #C0392B;"><?php echo tableCell($key, $value); ?></td>
+                            <td class="yellow" style="font-family: 'gulim';text-shadow: 0px 1px rgba(255, 255, 255, 0.9);color: #C0392B;"><?php 
+							echo tableCell($key, $value); ?></td>
                             <td class="yellow border" style="font-family: 'gulim';text-shadow: 0px 1px rgba(255, 255, 255, 0.9);color: #2980B9;"><?php echo tableCell($key, $allServerStats[$key][$champId]) ?> </td>
                             <?php
                         }
