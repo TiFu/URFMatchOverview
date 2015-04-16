@@ -128,11 +128,23 @@ body{
     text-shadow: 0px 1px rgba(0, 0, 0, 0.9);
 }
 
+.highelight_full{
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
 .highelight_comment{
     margin-top: 10px;
     height:470px;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+.highelight_commentx{
+      margin-top: 10px;
+    overflow-x: hidden;
+    overflow-y: auto; 
+    
 }
 
 .highelight_comment p {

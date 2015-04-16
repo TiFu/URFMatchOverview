@@ -216,9 +216,8 @@ echo rtrim($string, ',');
                     <svg id="mapPicture"></svg>
                 </div>
             </div>
-            <div class="part_chat">              
-                <div id="scrolll" class="highelight_comment">
-               <div class="highelight">Match Highlights
+            <div class="highelight_commentx">
+                <div class="highelight">Match Highlights
                     <div class="socialmedia" data-uk-tooltip title="Share This Match on Social Media">
                         <?php
                         $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -226,7 +225,9 @@ echo rtrim($string, ',');
                         <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?app_id=567308819967177&u=<?php echo $actual_link; ?>&display=popup&ref=plugin&src=share_button"><div class="facebook"></div></a>
                         <a target="_blank" href="https://twitter.com/share"><div class="twitter"></div></a>
                     </div> 
-                </div>
+                </div></div>
+            <div class="part_chat">              
+                <div id="scrolll" class="highelight_comment">
 				<div id="comments">
 				<p class="centerlyw"><span class="chat_time">[0:00]</span><span class="chat_info"><span class="moreinfp">Welcome to Summoner's Rift !</span></span></p> 
 				</div>
