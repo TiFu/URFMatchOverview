@@ -318,67 +318,85 @@ while ($champ = $champs->fetch_assoc()) {
             </div>
                         <?php
                         $server = strtolower($match->getRegion());
-						$servers = array("br", "eune", "euw", "kr", "lan", "las", "na", "oce", "ru", "tr");
-						$serverValues = array();
-						$allServersValues = array();
-						$thisGame = array();
-						foreach ($participants as $participant) {
-								$participantId = $participant["participantId"];
-								if (!isset($serverValues["champion"])) {
-									$serverValues["champion"] = array();
-									$allServersValues["champion"] = array();
-								}
-								$champId = $participant["championId"];
-								$champName = $mysqli->query("SELECT name FROM " .CHAMP_TABLE . " WHERE id = " .$champId)->fetch_assoc()['name'];
-								$serverValues["champion"][$participantId] = $champName;
-								$allServersValues["champion"][$participantId] = $champName;
-								$thisGame["champion"][$participantId] = $champName;
+$winRates = $mysqli->query("SELECT (blueSideWins / (blueSideWins + redSideWins)) as blueSideRate, (redSideWins / (blueSideWins + redSideWins)) as redSideRate, (blueSideWins + redSideWins) as numberOfGames FROM " . WINRATE_TABLE . " WHERE region ='" . $server . "'")->fetch_assoc();
+$numberOfGames = $mysqli->query("SELECT SUM(blueSideWins + redSideWins) as numberOfGames FROM " . WINRATE_TABLE)->fetch_assoc();
 
-								$query = $mysqli->query("SELECT * FROM " .AVERAGE_TABLE . " WHERE championId = " .$champId ." AND region='" .$server ."'")->fetch_assoc();
+$serverValues = array();
+$allServerValues = array();
+$thisGame = array();
 
-								foreach ($query as $key => $value) {
-									if ($key == "championId" || $key == "numberOfGames" || $key == "region") {
-										continue;
-									}
-									if (!isset($serverValues[$key])) {
-										$serverValues[$key] = array();
-										$allServersValues[$key] = array();
-										$thisGame[$key] = array();
-									}
-									if (!isset($serverValues[$key][$participantId])) {
-										$allServersValues[$key][$participantId] = 0;
-									}
-									if ($key != "pickRate" && $key != "winRate" && $key != "banRate") {
-										$thisGame[$key][$participantId] = $participants[$participantId-1][$key];
-									} 
-									$serverValues[$key][$participantId] = $value;
-								}
+foreach ($participants as $participant) {
+	$participantId = $participant["participantId"];
+	$champId = $participant["championId"];
+	$champName = $mysqli->query("SELECT name FROM " .CHAMP_TABLE . " WHERE id = " .$champId)->fetch_assoc()['name'];
+	$thisGame["champion"][$participantId] = $champName;
+    $stat = $mysqli->query("SELECT * FROM " . AVERAGE_TABLE . " WHERE region = '" . $server . "' AND championId = " . $participant["championId"]);
+    $columns = $stat->fetch_fields();
 
-								$totalNumberOfGames = 0;
-								foreach ($servers as $currentServer) {
-									$query = $mysqli->query("SELECT * FROM " .AVERAGE_TABLE . " WHERE championId = " .$champId ." AND region='" .$currentServer ."'")->fetch_assoc();
-									$numGames = $query["numberOfGames"];
-									$totalNumberOfGames += $numGames;
-									foreach ($query as $key => $value) {
-										if ($key == "name" || $key == "championId" || $key == "numberOfGames" || $key == "region") {
-											continue;
-										}
-										$allServersValues[$key][$participantId] += $value * $numGames;
-									}
-								}	
+    $allServerQuery = "SELECT ";
+	$curr = $stat->fetch_assoc();
+    foreach ($curr as $key => $value) {
+        if (!isset($serverValues[$key])) {
+            $serverValues[$key] = array();
+			$thisGame[$key] = array();
+        }
+        if ($key == "championId" || $key == "region") {
+            $allServerQuery .= $key . ", ";
+        } else if ($key == "numberOfGames" || $key == "banRate") {
+            $allServerQuery .= " SUM(" . $key . ") AS " . $key . ", ";
+        } else {
+            $allServerQuery .= " SUM(" . $key . " * numberOfGames) AS " . $key . ", ";
+        }
+        if ($key == "championId") {
+            $key = "champion";
+            $value = $champions[$value];
+        }
 
-								$totalNumberOfGames = max(1, $totalNumberOfGames);
-								foreach ($allServersValues as $key => $ch) {
-										$allServersValues[$key][$participantId] = $allServersValues[$key][$participantId] / $totalNumberOfGames;
-								}
-						}
-	?>
+		if ($key == "champion") {
+			$thisGame[$key][$participantId] = $champions[$participants[$participantId-1]["championId"]];
+		} else if ($key != "pickRate" && $key != "winRate" && $key != "banRate" && $key != "region" && $key != "numberOfGames") {
+			$thisGame[$key][$participantId] = $participants[$participantId-1][$key];
+		}
+
+		if ($key == "banRate") {
+			$value = $value / max(1, $winRates["numberOfGames"]);
+		}
+
+		if ($key == "pickRate") {
+			$value = $curr["numberOfGames"] / max(1, $winRates["numberOfGames"]);
+		}
+		$serverValues[$key][$participant["participantId"]] = $value;
+    }
+    $allServerQuery = rtrim($allServerQuery, ", ");
+    $allServerQuery .= " FROM " . AVERAGE_TABLE . " WHERE championId = " . $participant["championId"];
+    $alls = $mysqli->query($allServerQuery);
+	$all = $alls->fetch_assoc();
+    foreach ($all as $key => $value) {
+        if (!isset($allServerValues[$key])) {
+            $allServerValues[$key] = array();
+        }
+        if ($key == "championId") {
+            $key = "champion";
+            $value = $champ["name"];
+        }
+
+		if ($key != "banRate" && $key != "pickRate") {
+			$allServerValues[$key][$participant["participantId"]] = $value / $all["numberOfGames"];
+		} else {
+			$allServerValues[$key][$participant["participantId"]] = $value / $numberOfGames["numberOfGames"];			
+		}
+
+		}
+}	?>
             <div class="backurf"> 
                 <table id="keywords">
                     <thead>
 						<?php
 						$body = false;
 						foreach ($serverValues as $rowKey => $values) {
+							if ($rowKey == "numberOfGames" || $rowKey == "championId" || $rowKey == "region") {
+								continue;
+							}
 							if ($rowKey == "numgames") {
 								continue;
 							}
@@ -393,7 +411,7 @@ while ($champ = $champs->fetch_assoc()) {
 										echo tableCell("kda", ($serverValues["kills"][$participantId] + $serverValues["assists"][$participantId])/max(1, $serverValues["deaths"][$participantId]));
 										echo "</td>";
 										echo "<td colspan=\"2\"  style=\"color:#2980B9;border-right:1px solid #b8b8b8\">";
-										echo tableCell("kda",($allServersValues["kills"][$participantId] + $allServersValues["assists"][$participantId])/max(1, $allServersValues["deaths"][$participantId]));
+										echo tableCell("kda",($allServerValues["kills"][$participantId] + $allServerValues["assists"][$participantId])/max(1, $allServerValues["deaths"][$participantId]));
 										echo "</td>";								
 									}
 								echo "</tr>";
@@ -414,7 +432,7 @@ while ($champ = $champs->fetch_assoc()) {
 										echo tableCell($rowKey, $value);
 										echo "</td>";
 										echo "<td colspan=\"3\" style=\"color:#2980B9;border-right:1px solid #b8b8b8\">";
-										echo tableCell($rowKey, $allServersValues[$rowKey][$participantId]);
+										echo tableCell($rowKey, $allServerValues[$rowKey][$participantId]);
 										echo "</td>";
 									} else {
 										echo "<td colspan=\"2\" style=\"color:#107360;\">";
@@ -424,7 +442,7 @@ while ($champ = $champs->fetch_assoc()) {
 										echo tableCell($rowKey, $value);
 										echo "</td>";
 										echo "<td colspan=\"2\"  style=\"color:#2980B9;border-right:1px solid #b8b8b8\">";
-										echo tableCell($rowKey, $allServersValues[$rowKey][$participantId]);
+										echo tableCell($rowKey, $allServerValues[$rowKey][$participantId]);
 										echo "</td>";
 									}
 								}
