@@ -19,7 +19,7 @@
 			function updateTextBox() {
 				if ($updateText != null) {
 					$updateText.appendTo($commentBox);
-					$commentBox.scrollTop($commentBox[0].scrollHeight);
+					$scrollBox.scrollTop($scrollBox[0].scrollHeight);
 					$updateText = null;
 				}
 			}
