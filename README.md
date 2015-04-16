@@ -8,9 +8,9 @@
   - DB\_PW 
 3. Start your server and go to install/install.php
 
-## How to add matches
-1. Go to ids/ and add a text file with one id per row.
-2. Go to matches/ and add for each added match id one file named %matchId%.json
+## How to add your own matches
+1. Download your match file from the Riot Games API and place it in data/matches/{yourMatchIdHere}.json
+2. By opening result.php?matchId={yourMatchIdHere} you can view your match
 
 ## Features
  - Match overview containing
@@ -21,6 +21,3 @@
    -  and all that synchronized with the timeline!
  - View general statistics of the match, the server it was played on and all servers
  
-## How to add your own matches
-1. Download your match file from the Riot Games API and place it in data/matches/{yourMatchIdHere}.json
-2. By opening result.php?matchId={yourMatchIdHere} you can view your match

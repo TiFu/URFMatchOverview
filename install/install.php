@@ -8,10 +8,10 @@ $query = file_get_contents("challenge.sql");
 $query = str_replace("challenge", DATABASE, $query);
 $query = preg_replace("/--.*/", "", $query);
 
-	echo "Error: " .mysqli_error($mysqli);
 	if ($mysqli->multi_query($query)) {
 		echo "Installation successful.";
 	} else {
 		echo "Installation failed.<br>";
 	}
+	echo mysqli_error($mysqli);
 ?>
