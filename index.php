@@ -235,8 +235,8 @@ echo rtrim($string, ',');
             <div class="clear"></div>
             <div class="statsteam">
                 <div class="summarymatch">
-                    <div id="blueVictory" class="tblue">Victory</div>
-                    <div id="redVictory" class="tred">Defeat</div>
+                    <div id="blueVictory" class="blueCircle">Victory</div>
+                    <div id="redVictory" class="redCircle">Defeat</div>
 
                     <div style="position: absolute; left: 50%;">
                         <div style="position: relative; left: -50%;">
