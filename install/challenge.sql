@@ -19,9 +19,10 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `challenge`
 --
-
 -- --------------------------------------------------------
+CREATE DATABASE IF NOT EXISTS challenge;
 
+USE challenge;
 --
 -- Tabellenstruktur für Tabelle `analyzedgames`
 --
