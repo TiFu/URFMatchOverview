@@ -216,7 +216,7 @@ echo rtrim($string, ',');
                 </div>
             </div>
             <div class="part_chat">              
-                <div id="comments" class="highelight_comment">
+                <div class="highelight_comment">
                <div class="highelight">Match Highlights
                     <div class="socialmedia" data-uk-tooltip title="Share This Match on Social Media">
                         <?php
@@ -226,7 +226,9 @@ echo rtrim($string, ',');
                         <a target="_blank" href="https://twitter.com/share"><div class="twitter"></div></a>
                     </div> 
                 </div>
+				<div id="comments" style="margin-top:5px; overflow-x: hidden;overflow-y: auto;">
 				<p class="centerlyw"><span class="chat_time">[0:00]</span><span class="chat_info"><span class="moreinfp">Welcome to Summoner's Rift !</span></span></p> 
+				</div>
                 </div>
             </div>
             <div class="clear"></div>
