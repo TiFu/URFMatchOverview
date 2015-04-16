@@ -119,7 +119,7 @@ while ($champ = $champs->fetch_assoc()) {
         <div class="summary" style="height: 115px;padding: 0px 0px 0px;">
             <div id="blueVictory" class="tblue" style="margin-top:20px;" data-uk-tooltip title="Blue Team Win Rate In <?php echo regionToServer(strtoupper($server)); ?> Server"><?php echo number_format((float) $winRates["blueSideRate"]*100, 2, '.', ''); ?>%</div>
             <div class="sele">
-                <form action="statistics.php" method="post">
+                <form action="" method="post">
                     <select name="server">
                         <option value="na" 
                         <?php
@@ -208,7 +208,7 @@ while ($champ = $champs->fetch_assoc()) {
                 </span>
                 <br>
                 <span class="nextprev">
-                    <?php if ($page > 1) { ?><a href="champions.php?page=<?php echo ($page - 1) ?>&server=<?php echo $server ?>">Previous </a> <?php } echo $page ?> of <?php echo $pageCount ?><?php if ($page < 13) { ?><a href="champions.php?page=<?php echo ($page + 1) ?>&server=<?php echo $server ?>"> Next</a> <?php } ?>
+                    <?php if ($page > 1) { ?><a href="?page=<?php echo ($page - 1) ?>&server=<?php echo $server ?>">Previous </a> <?php } echo $page ?> of <?php echo $pageCount ?><?php if ($page < 13) { ?><a href="?page=<?php echo ($page + 1) ?>&server=<?php echo $server ?>"> Next</a> <?php } ?>
                 </span>
             </div>
             <div id="redVictory" style="padding-right: 175px;margin-top:20px;" class="tred" data-uk-tooltip title="Red Team Win Rate In <?php echo regionToServer(strtoupper($server)); ?> Server"><?php echo number_format((float) $winRates["redSideRate"]*100, 2, '.', ''); ?>%</div>
