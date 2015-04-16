@@ -205,7 +205,7 @@ echo rtrim($string, ',');
     </head>
     <body>
         <div class="main_info">
-            <div class="summary">
+            <div class="titleHeader">
                 <a target="_blank" href="statistics.php"><div data-uk-tooltip title="Statistics for all Champions" class="seeallchamp"></div></a>
                 <a href="index.php"><div data-uk-tooltip title="Next random match" class="anothermatch"></div></a>           
                 <div class="urfdata">Ultra Rapid Fire Match Overview</div>
@@ -327,7 +327,7 @@ echo rtrim($string, ',');
                 </div>
             </div>
             <div class="clear"></div>       
-            <div class="summary">
+            <div class="titleHeader">
                 <div class="urfdata">Ultra Rapid Fire Champion Statistics</div>
             </div>
             <?php
