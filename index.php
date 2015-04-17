@@ -14,11 +14,6 @@ if (isset($_GET['matchId'])) {
 } else {
     $matchId = getRandomMatchId();
 }
-
-file_put_contents("log.log", $matchId . "\n", FILE_APPEND);
-if (!is_int($matchId)) {
-    // do error handling here
-}
 $match = new Match(file_get_contents(MATCH_PATH . $matchId . ".json"), $mysqli);
 $startEvents = $match->getEvents(array("CHAMPION_KILL", "BUILDING_KILL", "ELITE_MONSTER_KILL"));
 $logEvents = array();
@@ -46,9 +41,7 @@ and open the template in the editor.
         <meta charset="UTF-8" />
         <script src="script/d3.v3.min.js"></script>
         <script type="text/javascript" src="script/jquery-1.10.2.min.js"></script>
-        <script type="text/javascript" src="script/jquery.tablesorter.min.js"></script> 
         <!-- timeline -->
-        <link id="data-uikit-theme" rel="stylesheet" href="css/uikit.docs.min.css">
         <script src="script/uikit.min.js"></script>
         <script src="script/tooltip.js"></script>
         <script src="script/jquery.pause.min.js"></script>
@@ -64,6 +57,7 @@ and open the template in the editor.
         <link rel="stylesheet" href="css/tipsy.css">
         <link rel="stylesheet" href="css/timeline.css">
         <link rel="stylesheet" href="css/update.css">
+        <link id="data-uikit-theme" rel="stylesheet" href="css/uikit.docs.min.css">
         <script>
             window.drawn = false;
 
@@ -331,6 +325,8 @@ echo rtrim($string, ',');
             </div>
             <div class="clear"></div>       
             <div class="titleHeader">
+			                <a target="_blank" href="statistics.php"><div data-uk-tooltip title="Statistics for all Champions" class="seeallchamp"></div></a>
+
                 <div class="urfdata">Ultra Rapid Fire Champion Statistics</div>
             </div>
             <?php

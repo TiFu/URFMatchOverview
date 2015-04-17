@@ -87,15 +87,14 @@ while ($champ = $champs->fetch_assoc()) {
 		}
 }
 ?>
+<!DOCTYPE html>
+<html>
 <head>
     <title>URF Champions Statistics</title> 
     <link href="css/style.css" rel="stylesheet" type="text/css" />
-<head>
-    <title>URF Match Timeline</title> 
     <meta charset="UTF-8" />
     <script src="script/d3.v3.min.js"></script>
     <script type="text/javascript" src="script/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="script/jquery.tablesorter.min.js"></script> 
     <!-- timeline -->
     <link id="data-uikit-theme" rel="stylesheet" href="css/uikit.docs.min.css">
     <script src="script/uikit.min.js"></script>
@@ -117,10 +116,10 @@ while ($champ = $champs->fetch_assoc()) {
 <body>
     <div class="main_info" style="width: 90%;">
 	<div class="header">
-		<div id="blueVictory" class="tblue"data-uk-tooltip title="Blue Team Win Rate in <?php echo regionToServer(strtoupper($server)); ?> Server"><div style="margin:0 auto;margin-left:15px;float:left;"><img src="images/blueteam.png"></div><div style="vertical-align:middle; margin:0 auto; height:100%;float:left; margin-left:10px;margin-top:2px;"><?php echo number_format((float) $winRates["blueSideRate"]*100, 2, '.', ''); ?>%</div></div>
+		<div id="blueVictory" class="tblue" data-uk-tooltip title="Blue Team Win Rate in <?php echo regionToServer(strtoupper($server)); ?> Server"><div style="margin:0 auto;margin-left:15px;float:left;"><img src="images/blueteam.png" alt="blueteam"></div><div style="vertical-align:middle; margin:0 auto; height:100%;float:left; margin-left:10px;margin-top:2px;"><?php echo number_format((float) $winRates["blueSideRate"]*100, 2, '.', ''); ?>%</div></div>
         <div class="summary">
             <div class="sele">
-                <form action="" method="post">
+                <form action="?page=1" method="post">
                     <select name="server">
                         <option value="na" 
                         <?php
@@ -209,11 +208,11 @@ while ($champ = $champs->fetch_assoc()) {
                 </span>
                 <br>
                 <span class="nextprev">
-                    <?php if ($page > 1) { ?><a href="?page=<?php echo ($page - 1) ?>&server=<?php echo $server ?>">Previous </a> <?php } echo $page ?> of <?php echo $pageCount ?><?php if ($page < 13) { ?><a href="?page=<?php echo ($page + 1) ?>&server=<?php echo $server ?>"> Next</a> <?php } ?>
+                    <?php if ($page > 1) { ?><a href="?page=<?php echo ($page - 1) ?>&amp;server=<?php echo $server ?>">Previous </a> <?php } echo $page ?> of <?php echo $pageCount ?><?php if ($page < 13) { ?><a href="?page=<?php echo ($page + 1) ?>&amp;server=<?php echo $server ?>"> Next</a> <?php } ?>
                 </span>
             </div>
 		</div>
-        <div id="redVictory" class="tred" data-uk-tooltip title="Red Team Win Rate in <?php echo regionToServer(strtoupper($server)); ?> Server"><div style="margin:0 auto;margin-right:15px;float:right;"><img src="images/redteam.png"></div><div style="vertical-align:middle; margin:0 auto; height:100%;float:right; margin-right:10px;margin-top:2px;"><?php echo number_format((float) $winRates["redSideRate"]*100, 2, '.', ''); ?>%</div></div>
+        <div id="redVictory" class="tred" data-uk-tooltip title="Red Team Win Rate in <?php echo regionToServer(strtoupper($server)); ?> Server"><div style="margin:0 auto;margin-right:15px;float:right;"><img src="images/redteam.png" alt="redteam"></div><div style="vertical-align:middle; margin:0 auto; height:100%;float:right; margin-right:10px;margin-top:2px;"><?php echo number_format((float) $winRates["redSideRate"]*100, 2, '.', ''); ?>%</div></div>
         </div>
         <div class="backurf"> 
             <table id="keywords">
@@ -226,10 +225,10 @@ while ($champ = $champs->fetch_assoc()) {
                         ?>
                         <thead>
                             <tr>
-                                <td width="4.34%" class="border">Champion</td>
+                                <td style="width:4.34%" class="border">Champion</td>
                                 <?php
                                 foreach ($serverStats[$key] as $champId => $value) {
-                                    echo "<th  width=\"4.34%\" class=\"border\" colspan=\"2\">";
+                                    echo "<th  style=\"width:4.34%\" class=\"border\" colspan=\"2\">";
                                     echo tableCell($key, $value);
                                     echo "</th>";
                                 }
@@ -262,4 +261,6 @@ while ($champ = $champs->fetch_assoc()) {
                 ?>
             </table>
         </div>
+		</div>
 </body>
+</html>

@@ -14,8 +14,8 @@
 
 ## How To: Add more games to the statistics
 1. Paste all games you want to add into one folder (path may not contain spaces)
-2. Call ratescripts/new/analyzeGames.php?matchesFolder={folder}
-3. Call ratescripts/new/bans.php?file={file} for each match you want to add
+2. Call ratescripts/analyzeGames.php?matchesFolder={folder}
+3. Call ratescripts/bans.php?file={file} for each match you want to add
 
 ## Features
  - Match overview containing
