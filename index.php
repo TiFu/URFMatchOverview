@@ -331,7 +331,6 @@ echo rtrim($string, ',');
             </div>
             <div class="clear"></div>       
             <div class="titleHeader">
-                <a target="_blank" href="statistics.php"><div data-uk-tooltip title="Statistics for all Champions" class="seeallchamp"></div></a>
                 <div class="urfdata">Ultra Rapid Fire Champion Statistics</div>
             </div>
             <?php
