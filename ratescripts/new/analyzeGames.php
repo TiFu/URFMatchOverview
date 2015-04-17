@@ -53,13 +53,7 @@ while (false !== ($entry = readdir($handle))) {
 	$winners = getWinners($match);
 	$participants = $match["participants"];
 	$region = strtolower($match["region"]);
-	
-	// Update bans
-	foreach ($bans as $ban) {
-		$mysqli->query("UPDATE " .AVERAGE_TABLE . " SET banRate = ((banRate * numberOfGames + 1) / (numberOfGames+1)) WHERE championId = " .$ban ." AND region = " ."'" .$region ."'");
-		echo mysqli_error($mysqli);
-	}
-	
+		
 	foreach ($participants as $participantId) {
 		$participant = $participantId["stats"]; // use his stats^^
 		$participant["pickRate"] = 1;
