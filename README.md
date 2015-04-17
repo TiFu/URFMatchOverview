@@ -17,6 +17,7 @@
 2. Call ratescripts/analyzeGames.php?matchesFolder={folder}
 3. Call ratescripts/bans.php?file={file} for each match you want to add
 4. Or use one of the java programs included in ratescripts
+
 ## Features
  - Match overview containing
    - a timeline
@@ -26,3 +27,9 @@
    -  and all that synchronized with the timeline!
  - View general statistics of the match, the server it was played on and all servers (09.04 to 13.04. data is included in the installation)
  
+## Download of data
+Make sure that you insert your API-Key and that you change the paths to the needed files in the scripts.
+ - cronjob/downloadMatchIds.php
+   - downloads the match ids from the URF Endpoint
+ - cronjob/downloadMatchData.php
+   - Pulls the matchIds and downloads the match data including the timeline
