@@ -9,14 +9,14 @@
 3. Start your server and go to install/install.php
 
 ## How To: add your own matches
-1. Download your match file from the Riot Games API and place it in data/matches/{yourMatchIdHere}.json
-2. By opening result.php?matchId={yourMatchIdHere} you can view your match
+1. Download your match file with timeline from the Riot Games API and place it in data/matches/{yourMatchIdHere}.json
+2. By opening index.php?matchId={yourMatchIdHere} you can view your match
 
 ## How To: Add more games to the statistics
 1. Paste all games you want to add into one folder (path may not contain spaces)
 2. Call ratescripts/analyzeGames.php?matchesFolder={folder}
 3. Call ratescripts/bans.php?file={file} for each match you want to add
-
+4. Or use one of the java programs included in ratescripts
 ## Features
  - Match overview containing
    - a timeline
