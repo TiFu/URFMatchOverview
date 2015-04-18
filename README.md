@@ -1,5 +1,6 @@
 # Riot Games API Challenge 2015
 ## Install
+0. Make sure you are running PHP 5.6.3
 1. Open: config/config.php
 2. Enter your mysql configuration
   - SERVER
